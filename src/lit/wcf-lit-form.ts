@@ -15,20 +15,20 @@ export class Form extends LitElement {
 
     constructor() {
         super();
-        window.addEventListener('incrementCounter', () => { this.incrementCounter() });
+        window.addEventListener('incrementCounter', (e: Event) => this.updateCounter(e as CustomEvent));
     }
 
     @state() protected counter = 0;
 
-    incrementCounter() {
-        this.counter++;
+    updateCounter(event: CustomEvent) {
+        this.counter = event.detail.value;
     }
 
     render() {
         return html`
             <div id="form">
                 <h1>Lit Form</h1>
-                <wcf-lit-counter label="Click Me" clickCounter="${this.counter}"></wcf-lit-counter>
+                <wcf-lit-counter>Click Me</wcf-lit-counter>
                 <wcf-lit-info clickCounter="${this.counter}"></wcf-lit-info>
             </div>
         `
