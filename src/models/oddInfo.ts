@@ -1,6 +1,7 @@
 export type OddInfo = {
     id: string;
-    odds1: number;
-    draw?: number;
-    odds2: number;
+    gameId: string;
+    odd1: number;
+    oddDraw?: number;
+    odd2: number;
 }

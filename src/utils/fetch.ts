@@ -40,20 +40,23 @@ const gameList: GameInfo[] = [
 
 const oddsList: OddInfo[] = [
     {
-        id: '1',
-        odds1: 1.52,
-        draw: 3.20,
-        odds2: 2.57
+        id: 'e54rcds78',
+        gameId: '1',
+        odd1: 1.52,
+        oddDraw: 3.20,
+        odd2: 2.57
     },
     {
-        id: '2',
-        odds1: 1.12,
-        draw: 4.50,
-        odds2: 3.62
+        id: 'vc14sz85',
+        gameId: '2',
+        odd1: 1.12,
+        oddDraw: 4.50,
+        odd2: 3.62
     },
     {
-        id: '3',
-        odds1: 1.77,
-        odds2: 1.61
+        id: 'eaws4dc36',
+        gameId: '3',
+        odd1: 1.77,
+        odd2: 1.61
     },
 ];
