@@ -1,14 +1,14 @@
-import { BetInfo } from "../models/bet";
-import { GameInfo } from "../models/gameInfo";
-import { OddInfo } from "../models/oddInfo";
-import { mockFetch } from "../utils/fetch";
+import { BetInfo } from "../../models/bet";
+import { GameInfo } from "../../models/game";
+import { OddsInfo } from "../../models/odds";
+import { mockFetch } from "../../utils/mockFetch";
 
 export const getBetList = async (): Promise<BetInfo[]> => {
     const gameList = await mockFetch('games') as GameInfo[];
-    const oddList = await mockFetch('odds') as OddInfo[];
+    const oddList = await mockFetch('odds') as OddsInfo[];
 
     return gameList.map((game: GameInfo) => {
-        const oddInfo = oddList.find((odd: OddInfo) => odd.gameId === game.id)!;
+        const oddInfo = oddList.find((odd: OddsInfo) => odd.gameId === game.id)!;
 
         return {
             gameId: game.id,

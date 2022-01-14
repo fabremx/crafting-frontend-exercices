@@ -1,5 +1,5 @@
-import { getBetList } from "../../business/getBetList";
-import { Bet, BetChoice, BetInfo } from "../../models/bet";
+import { getBetList } from "../../../business/bets/getBetList";
+import { Bet, BetChoice, BetInfo } from "../../../models/bet";
 
 const template = document.createElement('template');
 template.innerHTML = `

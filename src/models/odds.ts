@@ -1,4 +1,4 @@
-export type OddInfo = {
+export type OddsInfo = {
     id: string;
     gameId: string;
     odd1: number;

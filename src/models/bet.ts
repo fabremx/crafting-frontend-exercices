@@ -1,7 +1,7 @@
-import { GameInfo } from "./gameInfo";
-import { OddInfo } from "./oddInfo";
+import { GameInfo } from "./game";
+import { OddsInfo } from "./odds";
 
-export type BetInfo = Omit<GameInfo & OddInfo, 'id'>;
+export type BetInfo = Omit<GameInfo & OddsInfo, 'id'>;
 
 export type BetChoice = '1' | 'Draw' | '2';
 export type Bet = {
