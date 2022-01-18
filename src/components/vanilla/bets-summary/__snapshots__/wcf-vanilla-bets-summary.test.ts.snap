@@ -1,19 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Bets-Summary Component Bets Summary Information should render correctly info when bets summary is displayed and user is NOT prenium 1`] = `
+exports[`Bets-Summary Component should render correctly info when user is NOT prenium 1`] = `
 "
-        <h3>Récapitulatif</h3>
-        <p class=\\"summary__info__bets-number\\">Nombre de paris joués: 2</p>
-        <p class=\\"summary__info__sum-odds\\">Côte(s) cummulée(s): 1.7</p>
-        <p class=\\"summary__info__potential-gain\\">Potentiel gain: 170</p>
-    "
+<div id=\\"bets-summary\\">
+    <h3>Récapitulatif des Paris</h3>
+    <p class=\\"bets-summary__bets-number\\">Nombre de paris joués: 2</p>
+    <p class=\\"bets-summary__sum-odds\\">Côte(s) cummulée(s): 1.7</p>
+    <p class=\\"bets-summary__potential-gain\\">Potentiel gain: 170</p>
+</div>
+"
 `;
 
-exports[`Bets-Summary Component Bets Summary Information should render correctly info when bets summary is displayed and user is prenium 1`] = `
+exports[`Bets-Summary Component should render correctly info when user is prenium 1`] = `
 "
-        <h3>Récapitulatif</h3>
-        <p class=\\"summary__info__bets-number\\">Nombre de paris joués: 2</p>
-        <p class=\\"summary__info__sum-odds\\">Côte(s) cummulée(s): 1.7</p>
-        <p class=\\"summary__info__potential-gain\\">Potentiel gain: 187</p>
-    "
+<div id=\\"bets-summary\\">
+    <h3>Récapitulatif des Paris</h3>
+    <p class=\\"bets-summary__bets-number\\">Nombre de paris joués: 2</p>
+    <p class=\\"bets-summary__sum-odds\\">Côte(s) cummulée(s): 1.7</p>
+    <p class=\\"bets-summary__potential-gain\\">Potentiel gain: 187</p>
+</div>
+"
 `;

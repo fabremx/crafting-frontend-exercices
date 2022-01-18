@@ -3,7 +3,7 @@
  */
 
 import { Bet } from "../../../models/bet";
-import { dispatchMockedEventWith, findElementWith, isVisible, mockPropsTo } from "../../../utils/testing";
+import { mockPropsTo } from "../../../utils/testing";
 import { BetsSummary } from "./wcf-vanilla-bets-summary";
 
 const DUMMY_BETS: Bet[] = [
@@ -19,91 +19,39 @@ const DUMMY_BETS: Bet[] = [
     }
 ];
 
-let addProps: Function, dispatchEvent: Function;
-let startingBetElement: Element | null | undefined;
-let betsSummaryElement: Element | null | undefined;
+let betsSummary: BetsSummary;
+let addProps: Function;
 
 describe('Bets-Summary Component', () => {
     beforeEach(() => {
         // When
-        const betsSummary = new BetsSummary();
+        betsSummary = new BetsSummary();
 
         addProps = mockPropsTo(betsSummary)
-        dispatchEvent = dispatchMockedEventWith(betsSummary)
-        startingBetElement = findElementWith(betsSummary, '.summary__starting-bet')
-        betsSummaryElement = findElementWith(betsSummary, '.summary__info')
     })
 
-    describe('Starting Bet Displaying Rules', () => {
-        it('should NOT render starting bet input when user chose no bets', () => {
-            // Given
-            addProps('bets', [])
+    it('should render correctly info when user is NOT prenium', () => {
+        // Given
+        addProps('bets', DUMMY_BETS)
+        addProps('startingbet', 100)
 
-            // Then
-            expect(isVisible(startingBetElement)).toBe(false);
-        });
+        // When
+        betsSummary.connectedCallback();
 
-        it('should render starting bet input when user chose at least one bet', () => {
-            // Given
-            addProps('bets', DUMMY_BETS)
-
-            // Then
-            expect(isVisible(startingBetElement)).toBe(true);
-        });
+        // Then
+        expect(betsSummary?.shadowRoot?.innerHTML).toMatchSnapshot();
     });
 
-    describe('Bets Summary Displaying Rules', () => {
-        it('should NOT render summary info when user chose no bets', () => {
-            // Given
-            addProps('bets', [])
+    it('should render correctly info when user is prenium', () => {
+        // Given
+        addProps('bets', DUMMY_BETS)
+        addProps('startingbet', 100)
+        addProps('isuserprenium', true)
 
-            // Then
-            expect(isVisible(betsSummaryElement)).toBe(false);
-        });
+        // When
+        betsSummary.connectedCallback();
 
-        it('should NOT render summary info when user gave a non number starting bet', () => {
-            // Given
-            addProps('bets', DUMMY_BETS)
-            dispatchEvent('keyup', 'e')
-
-            // Then
-            expect(isVisible(betsSummaryElement)).toBe(false);
-        });
-
-        it('should NOT render summary info when user delete his starting bet', () => {
-            // Given
-            addProps('bets', DUMMY_BETS)
-            dispatchEvent('keyup', '2')
-            dispatchEvent('keyup', '')
-
-            // Then
-            expect(isVisible(betsSummaryElement)).toBe(false);
-        });
-
-        it('should render summary info when user gave a starting bet superior to 0', () => {
-            // Given
-            addProps('bets', DUMMY_BETS)
-            dispatchEvent('keyup', '2')
-
-            // Then
-            expect(isVisible(betsSummaryElement)).toBe(true);
-        });
-    });
-
-    describe('Bets Summary Information', () => {
-        it('should render correctly info when bets summary is displayed and user is NOT prenium', () => {
-            addProps('bets', DUMMY_BETS)
-            dispatchEvent('keyup', 100)
-
-            expect(betsSummaryElement?.innerHTML).toMatchSnapshot();
-        });
-
-        it('should render correctly info when bets summary is displayed and user is prenium', () => {
-            addProps('bets', DUMMY_BETS)
-            addProps('isuserprenium', true)
-            dispatchEvent('keyup', 100)
-
-            expect(betsSummaryElement?.innerHTML).toMatchSnapshot();
-        });
+        // Then
+        expect(betsSummary?.shadowRoot?.innerHTML).toMatchSnapshot();
     });
 });

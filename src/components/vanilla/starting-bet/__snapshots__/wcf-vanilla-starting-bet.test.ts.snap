@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Starting-Bet Component should render the component 1`] = `
+"
+<div id=\\"starting-bet\\">
+    <h3>Votre Mise</h3>
+    <p>Choisir votre mise</p>
+    <input type=\\"number\\" value=\\"\\">
+</div>
+"
+`;
