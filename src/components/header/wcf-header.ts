@@ -22,4 +22,4 @@ export class Header extends HTMLElement {
     }
 }
 
-customElements.define('wcf-vanilla-header', Header);
+customElements.define('wcf-header', Header);

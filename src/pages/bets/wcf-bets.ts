@@ -4,9 +4,9 @@ import { User } from "../../models/user";
 const template = document.createElement('template');
 template.innerHTML = `
 <div id="bets-page">
-    <wcf-vanilla-bet-list></wcf-vanilla-bet-list>
-    <wcf-vanilla-starting-bet hidden></wcf-vanilla-starting-bet>
-    <wcf-vanilla-bets-summary hidden></wcf-vanilla-bets-summary>
+    <wcf-bet-list></wcf-bet-list>
+    <wcf-starting-bet hidden></wcf-starting-bet>
+    <wcf-bets-summary hidden></wcf-bets-summary>
 </div>
 `;
 
@@ -58,12 +58,14 @@ export class BetsPage extends HTMLElement {
     }
 
     setBetsSummaryAttribute(key: string, value: unknown) {
-        const betsSummaryElement = this.shadowRoot?.querySelector('wcf-vanilla-bets-summary');
-        betsSummaryElement?.setAttribute(key, JSON.stringify(value));
+        const betsSummaryElement = this.shadowRoot?.querySelector('wcf-bets-summary');
+
+        const stringifiedValue = typeof value === 'string' ? value : JSON.stringify(value)
+        betsSummaryElement?.setAttribute(key, stringifiedValue);
     }
 
     toggleStartingBetDisplay() {
-        const elementName = 'wcf-vanilla-starting-bet';
+        const elementName = 'wcf-starting-bet';
 
         this.bets.length
             ? this.displayElement(elementName)
@@ -71,7 +73,7 @@ export class BetsPage extends HTMLElement {
     }
 
     toggleSummaryDisplay() {
-        const elementClass = 'wcf-vanilla-bets-summary';
+        const elementClass = 'wcf-bets-summary';
 
         this.startingBet && this.startingBet > 0 && this.bets.length
             ? this.displayElement(elementClass)

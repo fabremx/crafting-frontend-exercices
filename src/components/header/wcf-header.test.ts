@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { Header } from "./wcf-vanilla-header";
+import { Header } from "./wcf-header";
 
 it('should return title header', () => {
     const header = new Header();

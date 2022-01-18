@@ -1,4 +1,4 @@
-import { BetList } from "./wcf-vanilla-bet-list"
+import { BetList } from "./wcf-bet-list"
 
 const getBetLine = (lineNumber: number) => {
     return function (betList: BetList): Element {

@@ -23,7 +23,7 @@ export class Footer extends HTMLElement {
     }
 
     static get tag() {
-        return 'wcf-vanilla-footer'
+        return 'wcf-footer'
     }
 
     static get observedAttributes() {
@@ -45,4 +45,4 @@ export class Footer extends HTMLElement {
     }
 }
 
-customElements.define('wcf-vanilla-footer', Footer);
+customElements.define('wcf-footer', Footer);

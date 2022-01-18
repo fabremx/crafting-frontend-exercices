@@ -1,6 +1,7 @@
 export function mockPropsTo(element: Element) {
     return function (key: string, value: unknown) {
-        element.setAttribute(key, JSON.stringify(value))
+        const stringifiedValue = typeof value === 'string' ? value : JSON.stringify(value)
+        element.setAttribute(key, stringifiedValue)
     }
 }
 

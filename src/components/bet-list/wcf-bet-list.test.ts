@@ -2,10 +2,10 @@
  * @jest-environment jsdom
  */
 
-import { BetList } from "./wcf-vanilla-bet-list";
-import * as betModule from "../../../business/bets/getBetList";
-import { BetInfo } from "../../../models/bet";
-import { getFirstBetLine, getFirstOddsButton, getLoaderElement, getOddsButtons, getSecondBetLine, getSecondOddsButton } from "./wcf-vanilla-bet-list.testing.util";
+import { BetList } from "./wcf-bet-list";
+import * as betModule from "../../business/bets/getBetList";
+import { BetInfo } from "../../models/bet";
+import { getFirstBetLine, getFirstOddsButton, getLoaderElement, getOddsButtons, getSecondBetLine, getSecondOddsButton } from "./wcf-bet-list.testing.util";
 
 const dummyBets: BetInfo[] = [
     {

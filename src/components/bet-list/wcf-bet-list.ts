@@ -1,5 +1,5 @@
-import { getBetList } from "../../../business/bets/getBetList";
-import { Bet, BetChoice, BetInfo } from "../../../models/bet";
+import { getBetList } from "../../business/bets/getBetList";
+import { Bet, BetChoice, BetInfo } from "../../models/bet";
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -93,4 +93,4 @@ export class BetList extends HTMLElement {
     }
 }
 
-customElements.define('wcf-vanilla-bet-list', BetList);
+customElements.define('wcf-bet-list', BetList);

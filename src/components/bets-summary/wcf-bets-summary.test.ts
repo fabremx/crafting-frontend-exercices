@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 
-import { Bet } from "../../../models/bet";
-import { mockPropsTo } from "../../../utils/testing";
-import { BetsSummary } from "./wcf-vanilla-bets-summary";
+import { Bet } from "../../models/bet";
+import { mockPropsTo } from "../../utils/testing";
+import { BetsSummary } from "./wcf-bets-summary";
 
 const DUMMY_BETS: Bet[] = [
     {

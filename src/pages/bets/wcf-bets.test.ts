@@ -6,8 +6,8 @@ import { dispatchMockedEventWith, findElementWith, isVisible } from "../../utils
 import { BetsPage } from "./wcf-bets";
 import * as betModule from "../../business/bets/getBetList";
 import { BetInfo } from "../../models/bet";
-import { BetList } from "../../components/vanilla/bet-list/wcf-vanilla-bet-list";
-import { StartingBet } from "../../components/vanilla/starting-bet/wcf-vanilla-starting-bet";
+import { BetList } from "../../components/bet-list/wcf-bet-list";
+import { StartingBet } from "../../components/starting-bet/wcf-starting-bet";
 
 let dispatchEvent: Function;
 let betListTag: Element | null | undefined;
@@ -39,9 +39,9 @@ describe('Bets Pages Component', () => {
     const betsPage = new BetsPage();
 
     beforeEach(() => {
-        betListTag = findElementWith(betsPage, 'wcf-vanilla-bet-list')
-        startingBetTag = findElementWith(betsPage, 'wcf-vanilla-starting-bet')
-        betsSummaryTag = findElementWith(betsPage, 'wcf-vanilla-bets-summary')
+        betListTag = findElementWith(betsPage, 'wcf-bet-list')
+        startingBetTag = findElementWith(betsPage, 'wcf-starting-bet')
+        betsSummaryTag = findElementWith(betsPage, 'wcf-bets-summary')
     })
 
     describe('When user did NOT select any bets', () => {

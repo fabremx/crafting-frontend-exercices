@@ -23,4 +23,4 @@ export class StartingBet extends HTMLElement {
     }
 }
 
-customElements.define('wcf-vanilla-starting-bet', StartingBet);
+customElements.define('wcf-starting-bet', StartingBet);

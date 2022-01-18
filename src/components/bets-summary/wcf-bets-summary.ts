@@ -1,6 +1,6 @@
-import { getPotentialGain } from "../../../business/bets/getPotentialGain";
-import { getSumOfOdds } from "../../../business/odds/getSumOfOdds";
-import { Bet } from "../../../models/bet";
+import { getPotentialGain } from "../../business/bets/getPotentialGain";
+import { getSumOfOdds } from "../../business/odds/getSumOfOdds";
+import { Bet } from "../../models/bet";
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -59,4 +59,4 @@ export class BetsSummary extends HTMLElement {
     }
 }
 
-customElements.define('wcf-vanilla-bets-summary', BetsSummary);
+customElements.define('wcf-bets-summary', BetsSummary);
