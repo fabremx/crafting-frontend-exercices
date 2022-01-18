@@ -19,7 +19,7 @@ export class StartingBet extends HTMLElement {
 
     emitStartingBet() {
         const startingBet = this.shadowRoot?.querySelector('input')?.value!
-        this.dispatchEvent(new CustomEvent('UPDATE_STARTING_BET', { detail: { startingBet } }))
+        window.dispatchEvent(new CustomEvent('UPDATE_STARTING_BET', { detail: { startingBet } }))
     }
 }
 

@@ -1,107 +1,92 @@
-import { getPotentialGain } from "../../business/bets/getPotentialGain";
-import { getSumOfOdds } from "../../business/odds/getSumOfOdds";
 import { Bet } from "../../models/bet";
+import { User } from "../../models/user";
 
 const template = document.createElement('template');
 template.innerHTML = `
-<div id="summary">
-    <div class="summary__starting-bet" hidden>
-        <h2>Summary</h2>
-        <p>Choisir votre mise</p>
-        <input type="number" value="" />
-    </div>
-
-    <div class="summary__info" hidden>
-        <h3>Récapitulatif</h3>
-        <p class="summary__info__bets-number"></p>
-        <p class="summary__info__sum-odds"></p>
-        <p class="summary__info__potential-gain"></p>
-    </div>
+<div id="bets-page">
+    <wcf-vanilla-bet-list></wcf-vanilla-bet-list>
+    <wcf-vanilla-starting-bet hidden></wcf-vanilla-starting-bet>
+    <wcf-vanilla-bets-summary hidden></wcf-vanilla-bets-summary>
 </div>
 `;
 
-export class BetsSummary extends HTMLElement {
+export class BetsPage extends HTMLElement {
+    private bets: Bet[] = [];
+    private startingBet: number | undefined;
+    private user: User | undefined;
+
     constructor() {
         super();
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
 
-        this.shadowRoot?.querySelector('input')!.addEventListener('keyup', this.updateStartingBetAttribute.bind(this));
+        window.addEventListener('UPDATE_BETS', ((event: Event) => this.updateBets(event as CustomEvent)).bind(this));
+        window.addEventListener('UPDATE_STARTING_BET', ((event: Event) => this.updateStartingBet(event as CustomEvent)).bind(this));
+
+        this.user = {
+            firstname: 'Jack',
+            lastname: 'Dupont',
+            age: 47,
+            hasIdentityVerified: true,
+            isPrenium: false
+        }
     }
 
     connectedCallback() {
+        this.updateIsUserPrenium()
         this.toggleStartingBetDisplay();
-    }
-
-    static get observedAttributes() {
-        return ['bets', 'isuserprenium']
-    }
-
-    attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
-        if (name !== 'bets') return
-
-        this.toggleStartingBetDisplay();
-    }
-
-    updateStartingBetAttribute() {
-        const startingBet = this.shadowRoot?.querySelector('input')?.value!
-        this.startingBet = Number(startingBet);
-
         this.toggleSummaryDisplay();
     }
 
+    updateBets(event: CustomEvent) {
+        this.bets = event.detail.bets
+
+        this.setBetsSummaryAttribute('bets', this.bets);
+        this.toggleStartingBetDisplay();
+    }
+
+    updateStartingBet(event: CustomEvent) {
+        this.startingBet = event.detail.startingBet;
+
+        this.setBetsSummaryAttribute('startingbet', this.startingBet);
+        this.toggleSummaryDisplay();
+    }
+
+    updateIsUserPrenium() {
+        this.setBetsSummaryAttribute('isuserprenium', this.user!.isPrenium);
+    }
+
+    setBetsSummaryAttribute(key: string, value: unknown) {
+        const betsSummaryElement = this.shadowRoot?.querySelector('wcf-vanilla-bets-summary');
+        betsSummaryElement?.setAttribute(key, JSON.stringify(value));
+    }
+
     toggleStartingBetDisplay() {
-        const elementClass = '.summary__starting-bet';
+        const elementName = 'wcf-vanilla-starting-bet';
 
         this.bets.length
-            ? this.displayElement(elementClass)
-            : this.hideElement(elementClass)
+            ? this.displayElement(elementName)
+            : this.hideElement(elementName)
     }
 
     toggleSummaryDisplay() {
-        const elementClass = '.summary__info';
+        const elementClass = 'wcf-vanilla-bets-summary';
 
-        this.startingBet && this.bets.length
+        this.startingBet && this.startingBet > 0 && this.bets.length
             ? this.displayElement(elementClass)
             : this.hideElement(elementClass)
     }
 
-    hideElement(className: string) {
-        const summaryElement = this.shadowRoot?.querySelector(className)!;
-        summaryElement.setAttribute('hidden', '')
+    hideElement(elementName: string) {
+        const element = this.shadowRoot?.querySelector(elementName)!;
+        element.setAttribute('hidden', '')
     }
 
-    displayElement(className: string) {
-        const summaryElement = this.shadowRoot?.querySelector(className)!;
-
-        summaryElement.removeAttribute('hidden')
-
-        this.shadowRoot!.querySelector('.summary__info__bets-number')!.textContent = `Nombre de paris joués: ${this.bets.length}`
-        this.shadowRoot!.querySelector('.summary__info__sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(this.bets)}`
-        this.shadowRoot!.querySelector('.summary__info__potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.bets, this.isUserPrenium)}`
-    }
-
-    get bets(): Bet[] {
-        const bets = this.getAttribute('bets');
-        return bets ? JSON.parse(bets) : []
-    }
-
-    get startingBet(): number {
-        const startingBet = this.getAttribute('startingbet');
-
-        return startingBet && !isNaN(Number(startingBet))
-            ? Number(startingBet)
-            : 0
-    }
-    set startingBet(value: number) {
-        this.setAttribute('startingbet', value.toString());
-    }
-
-    get isUserPrenium(): boolean {
-        const isUsrePrenium = this.getAttribute('isuserprenium');
-        return isUsrePrenium ? JSON.parse(isUsrePrenium) : false;
+    displayElement(elementName: string) {
+        const element = this.shadowRoot?.querySelector(elementName)!;
+        element.removeAttribute('hidden')
     }
 }
 
-customElements.define('wcf-vanilla-bets-summary', BetsSummary);
+customElements.define('wcf-bets', BetsPage);

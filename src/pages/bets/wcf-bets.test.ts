@@ -2,108 +2,106 @@
  * @jest-environment jsdom
  */
 
-import { Bet } from "../../models/bet";
-import { dispatchMockedEventWith, findElementWith, isVisible, mockPropsTo } from "../../utils/testing";
-import { BetsSummary } from "./wcf-bets";
+import { dispatchMockedEventWith, findElementWith, isVisible } from "../../utils/testing";
+import { BetsPage } from "./wcf-bets";
+import * as betModule from "../../business/bets/getBetList";
+import { BetInfo } from "../../models/bet";
+import { BetList } from "../../components/vanilla/bet-list/wcf-vanilla-bet-list";
+import { StartingBet } from "../../components/vanilla/starting-bet/wcf-vanilla-starting-bet";
 
-const DUMMY_BETS: Bet[] = [
+let dispatchEvent: Function;
+let betListTag: Element | null | undefined;
+let startingBetTag: Element | null | undefined;
+let betsSummaryTag: Element | null | undefined;
+
+const dummyBets: BetInfo[] = [
     {
-        gameId: 'id1',
-        selectedChoice: '1',
-        selectedOdd: 1.52,
+        gameId: '1',
+        type: 'Ice hockey',
+        adversary1: 'Rouen',
+        adversary2: 'Amiens',
+        odd1: 1.52,
+        oddDraw: 3.20,
+        odd2: 2.57
     },
     {
-        gameId: 'id2',
-        selectedChoice: 'Draw',
-        selectedOdd: 1.12,
+        gameId: '2',
+        type: 'Tennis',
+        adversary1: 'Roger Federer',
+        adversary2: 'Raphael Nadal',
+        odd1: 1.77,
+        odd2: 1.61
     }
-];
+]
+jest.spyOn(betModule, 'getBetList').mockResolvedValue(dummyBets);
 
-let addProps: Function, dispatchEvent: Function;
-let startingBetElement: Element | null | undefined;
-let betsSummaryElement: Element | null | undefined;
+describe('Bets Pages Component', () => {
+    const betsPage = new BetsPage();
 
-describe('Bets-Summary Component', () => {
     beforeEach(() => {
-        // When
-        const betsSummary = new BetsSummary();
-
-        addProps = mockPropsTo(betsSummary)
-        dispatchEvent = dispatchMockedEventWith(betsSummary)
-        startingBetElement = findElementWith(betsSummary, '.summary__starting-bet')
-        betsSummaryElement = findElementWith(betsSummary, '.summary__info')
+        betListTag = findElementWith(betsPage, 'wcf-vanilla-bet-list')
+        startingBetTag = findElementWith(betsPage, 'wcf-vanilla-starting-bet')
+        betsSummaryTag = findElementWith(betsPage, 'wcf-vanilla-bets-summary')
     })
 
-    describe('Starting Bet Displaying Rules', () => {
-        it('should NOT render starting bet input when user chose no bets', () => {
-            // Given
-            addProps('bets', [])
-
-            // Then
-            expect(isVisible(startingBetElement)).toBe(false);
+    describe('When user did NOT select any bets', () => {
+        it('should NOT render starting bet component', () => {
+            expect(isVisible(startingBetTag)).toBe(false);
         });
 
-        it('should render starting bet input when user chose at least one bet', () => {
-            // Given
-            addProps('bets', DUMMY_BETS)
-
-            // Then
-            expect(isVisible(startingBetElement)).toBe(true);
+        it('should NOT render bets summary component', () => {
+            expect(isVisible(startingBetTag)).toBe(false);
         });
     });
 
-    describe('Bets Summary Displaying Rules', () => {
-        it('should NOT render summary info when user chose no bets', () => {
-            // Given
-            addProps('bets', [])
+    describe('When user select one or many bets', () => {
+        beforeAll(async () => {
+            const betListComponent = new BetList();
+            await betListComponent.connectedCallback();
+            selectOneBet(betListComponent)
+        })
 
-            // Then
-            expect(isVisible(betsSummaryElement)).toBe(false);
+        describe('When user did NOT set starting bet', () => {
+            it('should render starting bet component', async () => {
+                expect(isVisible(startingBetTag)).toBe(true);
+            });
+
+            it('should NOT render bets list component', () => {
+                expect(isVisible(betsSummaryTag)).toBe(false);
+            });
         });
 
-        it('should NOT render summary info when user gave a non number starting bet', () => {
-            // Given
-            addProps('bets', DUMMY_BETS)
-            dispatchEvent('keyup', 'e')
+        describe('When user set starting bet', () => {
+            beforeAll(() => {
+                const startingBetComponent = new StartingBet()
+                dispatchEvent = dispatchMockedEventWith(startingBetComponent)
+            })
 
-            // Then
-            expect(isVisible(betsSummaryElement)).toBe(false);
-        });
+            it('should NOT render bets list component when user set starting bet to 0', () => {
+                setStartingBet(0)
+                expect(isVisible(betsSummaryTag)).toBe(false);
+            });
 
-        it('should NOT render summary info when user delete his starting bet', () => {
-            // Given
-            addProps('bets', DUMMY_BETS)
-            dispatchEvent('keyup', '2')
-            dispatchEvent('keyup', '')
+            it('should NOT render bets list component when user set a non number starting bet', () => {
+                setStartingBet('e')
+                expect(isVisible(betsSummaryTag)).toBe(false);
+            });
 
-            // Then
-            expect(isVisible(betsSummaryElement)).toBe(false);
-        });
-
-        it('should render summary info when user gave a starting bet superior to 0', () => {
-            // Given
-            addProps('bets', DUMMY_BETS)
-            dispatchEvent('keyup', '2')
-
-            // Then
-            expect(isVisible(betsSummaryElement)).toBe(true);
-        });
-    });
-
-    describe('Bets Summary Information', () => {
-        it('should render correctly info when bets summary is displayed and user is NOT prenium', () => {
-            addProps('bets', DUMMY_BETS)
-            dispatchEvent('keyup', 100)
-
-            expect(betsSummaryElement?.innerHTML).toMatchSnapshot();
-        });
-
-        it('should render correctly info when bets summary is displayed and user is prenium', () => {
-            addProps('bets', DUMMY_BETS)
-            addProps('isuserprenium', true)
-            dispatchEvent('keyup', 100)
-
-            expect(betsSummaryElement?.innerHTML).toMatchSnapshot();
-        });
+            it('should render bets list component when user set starting bet', () => {
+                setStartingBet(100)
+                expect(isVisible(betsSummaryTag)).toBe(true);
+            });
+        })
     });
 });
+
+function selectOneBet(element: Element) {
+    const firstBetLine = element?.shadowRoot?.querySelectorAll('.bet')[0]
+    const firstBetButton = firstBetLine?.querySelectorAll('button')[0]
+
+    firstBetButton?.click();
+}
+
+function setStartingBet(value: number | string) {
+    dispatchEvent('keyup', value.toString());
+}

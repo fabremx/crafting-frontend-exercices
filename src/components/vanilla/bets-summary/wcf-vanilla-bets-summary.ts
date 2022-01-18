@@ -13,12 +13,15 @@ template.innerHTML = `
 `;
 
 export class BetsSummary extends HTMLElement {
+    private bets: Bet[] = [];
+    private startingBet: number = 0;
+    private isUserPrenium: boolean = false;
+
     constructor() {
         super();
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
-
     }
 
     connectedCallback() {
@@ -29,28 +32,30 @@ export class BetsSummary extends HTMLElement {
         return ['bets', 'startingbet', 'isuserprenium']
     }
 
+    attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
+        switch (name) {
+            case 'bets':
+                this.bets = JSON.parse(newValue);
+                break;
+            case 'startingbet':
+                this.startingBet = Number(newValue);
+                break;
+            case 'isuserprenium':
+                this.isUserPrenium = Boolean(newValue);
+                break;
+            default:
+                break;
+        }
+
+        if (this.startingBet && this.bets.length) {
+            this.displaySummaryInfo();
+        }
+    }
+
     displaySummaryInfo() {
         this.shadowRoot!.querySelector('.bets-summary__bets-number')!.textContent = `Nombre de paris joués: ${this.bets.length}`
         this.shadowRoot!.querySelector('.bets-summary__sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(this.bets)}`
         this.shadowRoot!.querySelector('.bets-summary__potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.bets, this.isUserPrenium)}`
-    }
-
-    get bets(): Bet[] {
-        const bets = this.getAttribute('bets');
-        return bets ? JSON.parse(bets) : []
-    }
-
-    get startingBet(): number {
-        const startingBet = this.getAttribute('startingbet');
-
-        return startingBet && !isNaN(Number(startingBet))
-            ? Number(startingBet)
-            : 0
-    }
-
-    get isUserPrenium(): boolean {
-        const isUsrePrenium = this.getAttribute('isuserprenium');
-        return isUsrePrenium ? JSON.parse(isUsrePrenium) : false;
     }
 }
 
