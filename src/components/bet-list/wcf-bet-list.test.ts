@@ -5,7 +5,7 @@
 import { BetList } from "./wcf-bet-list";
 import * as betModule from "../../business/bets/getBetList";
 import { BetInfo } from "../../models/bet";
-import { getFirstBetLine, getFirstOddsButton, getLoaderElement, getOddsButtons, getSecondBetLine, getSecondOddsButton } from "./wcf-bet-list.testing.util";
+import { findElementsWith, findElementWith, isVisible } from "../../utils/testing";
 
 const dummyBets: BetInfo[] = [
     {
@@ -28,72 +28,63 @@ const dummyBets: BetInfo[] = [
 ]
 jest.spyOn(betModule, 'getBetList').mockResolvedValue(dummyBets);
 
+let betList: BetList;
+
 describe('BetList Component', () => {
-    describe('Loading bet list', () => {
-        it('should render loader when loading bet list', () => {
-            const betList = new BetList();
+    beforeAll(() => {
+        betList = new BetList();
+    });
 
-            const loaderElement = getLoaderElement(betList);
-            expect(loaderElement.getAttribute('hidden')).toBeFalsy();
-        });
+    it('should render loader when bet list is loading', () => {
+        const loaderElement = getLoaderElement();
+        expect(isVisible(loaderElement)).toBe(true);
+    });
 
-        it('should hide loader when bets are loaded', async () => {
-            const betList = new BetList();
-            await betList.connectedCallback();
-
-            const loaderElement = getLoaderElement(betList);
-            expect(loaderElement.getAttribute('hidden')).toBeTruthy();
-        });
+    it('should hide loader when bet list is loaded', async () => {
+        await betList.connectedCallback();
+        const loaderElement = getLoaderElement();
+        expect(isVisible(loaderElement)).toBe(false);
     });
 
     describe('Render correctly bet row', () => {
-        it('should render three odds on a game when draw is possible', async () => {
-            const betList = new BetList();
+        beforeAll(async () => {
+            betList = new BetList();
             await betList.connectedCallback();
+        });
 
-            const firstBetLine = getFirstBetLine(betList)
-            const oddsButtons = getOddsButtons(firstBetLine);
-            const firstOddsButton = oddsButtons[0];
-            const secondOddsButton = oddsButtons[1]
-            const thirdOddsButton = oddsButtons[2]
+        it('should render three odds button on a game when draw is possible', async () => {
+            const firstBetLine = getBetLine(1)
+            const betOddsButtons = getBetOddsButtons(firstBetLine)
 
-            expect(oddsButtons?.length).toBe(3);
-            expect(firstOddsButton.innerHTML).toBe('Rouen - 1.52');
-            expect(secondOddsButton.innerHTML).toBe('Draw - 3.20');
-            expect(thirdOddsButton.innerHTML).toBe('Amiens - 2.57');
+            expect(betOddsButtons?.length).toBe(3);
+            expect(betOddsButtons[0].innerHTML).toBe('Rouen - 1.52');
+            expect(betOddsButtons[1].innerHTML).toBe('Draw - 3.20');
+            expect(betOddsButtons[2].innerHTML).toBe('Amiens - 2.57');
         });
 
         it('should render two odds on a game when draw is NOT possible', async () => {
-            const betList = new BetList();
-            await betList.connectedCallback();
+            const secondBetLine = getBetLine(2)
+            const betOddsButtons = getBetOddsButtons(secondBetLine)
 
-            const secondBetLine = getSecondBetLine(betList)
-            const oddsButtons = getOddsButtons(secondBetLine);
-            const firstOddsButton = oddsButtons[0];
-            const secondOddsButton = oddsButtons[1]
-
-            expect(oddsButtons?.length).toBe(2);
-            expect(firstOddsButton.innerHTML).toBe('Roger Federer - 1.77');
-            expect(secondOddsButton.innerHTML).toBe('Raphael Nadal - 1.61');
+            expect(betOddsButtons?.length).toBe(2);
+            expect(betOddsButtons[0].innerHTML).toBe('Roger Federer - 1.77');
+            expect(betOddsButtons[1].innerHTML).toBe('Raphael Nadal - 1.61');
         });
     });
 
     describe('Update bet on click', () => {
-        it('should return updated bets when user bets on a new game', async () => {
+        beforeAll(() => {
             window.dispatchEvent = jest.fn();
+        });
 
-            const betList = new BetList();
+        beforeEach(async () => {
+            betList = new BetList();
             await betList.connectedCallback();
+        });
 
-            // Select odd 1 on first bet
-            const firstBetLine = getFirstBetLine(betList)
-            const odd1Button = getFirstOddsButton(firstBetLine);
-            odd1Button?.click();
-
-            // Select odd 2 on second bet
-            const secondBetLine = getSecondBetLine(betList)
-            const odd2Button = getSecondOddsButton(secondBetLine);
-            odd2Button?.click();
+        it('should return updated bets when user bets on a new game', async () => {
+            clickOn({ line: 1, button: 1 });
+            clickOn({ line: 2, button: 2 });
 
             expect(betList.selectedBets).toEqual([{
                 gameId: '1',
@@ -108,23 +99,14 @@ describe('BetList Component', () => {
         });
 
         it('should update bet when user bets a different odd on a game already bet', async () => {
-            window.dispatchEvent = jest.fn();
-
-            const betList = new BetList();
-            await betList.connectedCallback();
-
-            const firstBetLine = getFirstBetLine(betList)
-            const odd1Button = getFirstOddsButton(firstBetLine);
-            const drawButton = getSecondOddsButton(firstBetLine);
-
-            odd1Button?.click();
+            clickOn({ line: 1, button: 1 });
             expect(betList.selectedBets).toEqual([{
                 gameId: '1',
                 selectedChoice: '1',
                 selectedOdd: 1.52,
             }])
 
-            drawButton?.click();
+            clickOn({ line: 1, button: 2 });
             expect(betList.selectedBets).toEqual([{
                 gameId: '1',
                 selectedChoice: 'Draw',
@@ -133,3 +115,26 @@ describe('BetList Component', () => {
         });
     });
 });
+
+/** 
+ * Utilities
+ */
+
+const getBetLine = (lineNumber: number) => {
+    return findElementsWith(betList, '.bet')![lineNumber - 1]!
+}
+
+function getBetOddsButtons(betLine: Element): NodeListOf<HTMLButtonElement> {
+    return betLine.querySelectorAll('button')!
+}
+
+function getLoaderElement() {
+    return findElementWith(betList, '.loader')
+}
+
+function clickOn({ line, button }: { line: number, button: number }) {
+    const lineElement = getBetLine(line);
+    const buttonElement = lineElement.querySelectorAll('button')[button - 1]
+
+    buttonElement.click()
+}
