@@ -1,15 +1,10 @@
+import css from './wcf-header.scss';
+
 const template = document.createElement('template');
 template.innerHTML = `
-<style>
-    #header {
-        border: 1px solid black;
-        padding: 10px;
-        margin-bottom: 20px;
-    }
-</style>
-
+<style>${css}</style>
 <div id="header">
-    <h3>Header Title</h3>
+    <h3>Web Components Bets Application</h3>
 </div>
 `;
 

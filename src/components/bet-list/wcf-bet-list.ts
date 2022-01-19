@@ -1,18 +1,19 @@
+import css from './wcf-bet-list.scss';
 import { getBetList } from "../../business/bets/getBetList";
 import { Bet, BetChoice, BetInfo } from "../../models/bet";
+import loaderIcon from '../../assets/loader.gif'
+import betIcon from '../../assets/bet.png'
 
 const template = document.createElement('template');
 template.innerHTML = `
-<style>
-    #header {
-        border: 1px solid black;
-        padding: 10px;
-        margin-bottom: 20px;
-    }
-</style>
+<style>${css}</style>
 
-<div id="betList">
-    <div class="loader">Loading...</div>
+<div class="loader">
+    <img src="${loaderIcon}" alt="loader" />
+</div>
+
+<div class="bet-list" hidden>
+    <h3>Liste des paris - Football</h3>
 </div>
 `;
 
@@ -34,31 +35,44 @@ export class BetList extends HTMLElement {
     }
 
     hideLoader() {
-        this.shadowRoot?.querySelector('.loader')?.setAttribute('hidden', 'true')
+        this.shadowRoot!.querySelector<HTMLElement>('.loader')!.style.display = 'none';
     }
 
     displayBetList(betList: BetInfo[]) {
-        const list = document.createElement('div');
-        list.classList.add('betList')
+        const list = this.shadowRoot!.querySelector('.bet-list')!;
+        list.removeAttribute('hidden')
 
         betList.forEach((bet: BetInfo) => {
             const betElement = document.createElement('div');
-            betElement.classList.add('bet')
+            betElement.classList.add('bet-list__item', 'bet')
             betElement.innerHTML = `
-                <img src="null" />
-                <div class="adversaries">
-                    <p>${bet.adversary1} VS ${bet.adversary2}</p>
+                <div class="bet__teams">
+                    <img src="${betIcon}" alt="Sport icon" />
+                    <p>
+                        <span class="bet__teams--name">${bet.adversary1}</span> - 
+                        <span class="bet__teams--name">${bet.adversary2}</span>
+                    </p>
                 </div>
-                <div class="odds">
-                    <button>${bet.adversary1} - ${bet.odd1.toFixed(2)}</button>
-                    ${bet.oddDraw ? `<button>Draw - ${bet.oddDraw.toFixed(2)}</button>` : ''}
-                    <button>${bet.adversary2} - ${bet.odd2.toFixed(2)}</button>
+                <div class="bet__odds">
+                    <button>
+                        <span class="bet__odds--name">${bet.adversary1}</span>
+                        <span class="bet__odds--number">${bet.odd1.toFixed(2)}</span>
+                    </button>
+                    ${bet.oddDraw ? `
+                    <button>
+                        <span class="bet__odds--name">Draw</span>
+                        <span class="bet__odds--number">${bet.oddDraw.toFixed(2)}</span>
+                   </button>` : ''}
+                    <button>
+                        <span class="bet__odds--name">${bet.adversary2}</span>
+                        <span class="bet__odds--number">${bet.odd2.toFixed(2)}</span>
+                    </button>
                 </div>
             `
 
             list.appendChild(betElement)
 
-            const buttons = betElement.querySelectorAll('.odds button');
+            const buttons = betElement.querySelectorAll('.bet__odds button');
             buttons[0].addEventListener('click', () => this.selectBet(bet, '1'));
 
             if (buttons.length === 3) {
@@ -68,7 +82,7 @@ export class BetList extends HTMLElement {
                 buttons[1].addEventListener('click', () => this.selectBet(bet, '2'));
             }
 
-            this.shadowRoot?.querySelector('#betList')?.appendChild(list)
+            this.shadowRoot?.appendChild(list)
         }, this)
     }
 

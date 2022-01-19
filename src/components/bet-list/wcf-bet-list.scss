@@ -1,0 +1,61 @@
+@import '../../shared/styles/index.scss';
+
+.loader {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    img {
+        width: 150px;
+    }
+}
+
+.bet-list {
+    @extend %main-wrapper;
+}
+
+button {
+    @extend %button;
+}
+
+.bet-list__item {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    background: $bg-grey;
+}
+
+.bet {
+    padding: 5px 10px;
+}
+
+.bet__teams {
+    display: flex;
+    align-items: center;
+
+    img {
+        @extend %small-icon;
+        margin: 0 4px;
+    }
+
+    &--name {
+        font-weight: $text-bold;
+        margin: 0 8px;
+    }
+}
+
+.bet__odds {
+    &--name {
+        display: block;
+        width: 100%;
+        margin: 5px 0;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    &--number {
+        font-weight: $text-bold;
+    }
+}

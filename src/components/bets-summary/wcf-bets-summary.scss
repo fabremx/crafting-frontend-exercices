@@ -1,0 +1,22 @@
+@import '../../shared/styles/index.scss';
+
+.bets-summary {
+    @extend %main-wrapper;
+    @extend %separator;
+
+    h3 {
+        @extend %medium-title;
+    }
+
+    &__info {
+        @extend %content-wrapper;
+
+        p {
+            @extend %medium-text;
+        }
+    }
+}
+
+.summary__value {
+    font-weight: $text-bold;
+}

@@ -1,0 +1,27 @@
+@import '../../shared/styles/index.scss';
+
+.starting-bet {
+    @extend %main-wrapper;
+    @extend %separator;
+
+    h3 {
+        @extend %medium-title;
+    }
+
+    p {
+        @extend %medium-text;
+        margin: 0;
+    }
+
+    &__input {
+        @extend %content-wrapper;
+
+        display: flex;
+        align-items: center;
+
+        input {
+            @extend %input-text;
+            margin-left: 20px;
+        }
+    }
+}

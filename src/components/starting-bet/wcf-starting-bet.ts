@@ -1,9 +1,15 @@
+import css from './wcf-starting-bet.scss';
+
 const template = document.createElement('template');
 template.innerHTML = `
-<div id="starting-bet">
+<style>${css}</style>
+
+<div class="starting-bet">
     <h3>Votre Mise</h3>
-    <p>Choisir votre mise</p>
-    <input type="number" value="" />
+    <div class="starting-bet__input">
+        <p>Choisir votre mise</p>
+        <input type="number" value="" />
+    </div>
 </div>
 `;
 

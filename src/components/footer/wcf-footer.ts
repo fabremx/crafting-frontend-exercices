@@ -1,15 +1,11 @@
+import css from './wcf-footer.scss';
+
 const template = document.createElement('template');
 template.innerHTML = `
-<style>
-    #footer {
-        border: 1px solid black;
-        padding: 10px;
-        margin-top: 20px;
-    }
-</style>
+<style>${css}</style>
 
 <div id="footer">
-    <h3>Footer Title</h3>
+    <h3>Besoin d'aide ?</h3>
     <p>Contact | Plan</p>
 </div>
 `;

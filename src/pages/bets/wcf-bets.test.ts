@@ -1,6 +1,3 @@
-/**
- * @jest-environment jsdom
- */
 
 import { dispatchMockedEventWith, findElementWith, isVisible } from "../../utils/testing";
 import { BetsPage } from "./wcf-bets";

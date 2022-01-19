@@ -20,21 +20,21 @@ export function mockFetch(endpoint: string): Promise<GameInfo[] | OddsInfo[]> {
 const gameList: GameInfo[] = [
     {
         id: '1',
-        type: 'Ice hockey',
-        adversary1: 'Rouen',
-        adversary2: 'Amiens'
+        type: 'football',
+        adversary1: 'Nice',
+        adversary2: 'FC Lorient'
     },
     {
         id: '2',
-        type: 'Football',
-        adversary1: 'PSG',
+        type: 'football',
+        adversary1: 'Paris SG',
         adversary2: 'Lyon'
     },
     {
         id: '3',
-        type: 'Tennis',
-        adversary1: 'Roger Federer',
-        adversary2: 'Raphael Nadal'
+        type: 'football',
+        adversary1: 'Marseille',
+        adversary2: 'Montpellier'
     },
 ];
 
@@ -42,21 +42,22 @@ const oddsList: OddsInfo[] = [
     {
         id: 'e54rcds78',
         gameId: '1',
-        odd1: 1.52,
-        oddDraw: 3.20,
+        odd1: 1.24,
+        oddDraw: 2.18,
         odd2: 2.57
     },
     {
         id: 'vc14sz85',
         gameId: '2',
         odd1: 1.12,
-        oddDraw: 4.50,
+        oddDraw: 2.50,
         odd2: 3.62
     },
     {
         id: 'eaws4dc36',
         gameId: '3',
         odd1: 1.77,
-        odd2: 1.61
+        oddDraw: 2.51,
+        odd2: 2.90
     },
 ];

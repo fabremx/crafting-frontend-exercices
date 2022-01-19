@@ -1,14 +1,18 @@
+import css from './wcf-bets-summary.scss';
 import { getPotentialGain } from "../../business/bets/getPotentialGain";
 import { getSumOfOdds } from "../../business/odds/getSumOfOdds";
 import { Bet } from "../../models/bet";
 
 const template = document.createElement('template');
 template.innerHTML = `
-<div id="bets-summary">
-    <h3>Récapitulatif des Paris</h3>
-    <p class="bets-summary__bets-number"></p>
-    <p class="bets-summary__sum-odds"></p>
-    <p class="bets-summary__potential-gain"></p>
+<style>${css}</style>
+<div class="bets-summary">
+    <h3>Récapitulatif de vos paris</h3>
+    <div class="bets-summary__info summary">
+        <p class="bets-summary__info--bets-number"></p>
+        <p class="bets-summary__info--sum-odds"></p>
+        <p class="bets-summary__info--potential-gain"></p>
+    </div>
 </div>
 `;
 
@@ -53,9 +57,9 @@ export class BetsSummary extends HTMLElement {
     }
 
     displaySummaryInfo() {
-        this.shadowRoot!.querySelector('.bets-summary__bets-number')!.textContent = `Nombre de paris joués: ${this.bets.length}`
-        this.shadowRoot!.querySelector('.bets-summary__sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(this.bets)}`
-        this.shadowRoot!.querySelector('.bets-summary__potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.bets, this.isUserPrenium)}`
+        this.shadowRoot!.querySelector('.bets-summary__info--bets-number')!.textContent = `Nombre de paris joués: ${this.bets.length}`
+        this.shadowRoot!.querySelector('.bets-summary__info--sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(this.bets)}`
+        this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.bets, this.isUserPrenium)}`
     }
 }
 

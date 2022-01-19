@@ -1,0 +1,8 @@
+@import '../../shared/styles/index.scss';
+
+#header {
+    @extend %extended-wrapper;
+    
+    margin-bottom: 15px;
+    background: $bg-red;
+}
