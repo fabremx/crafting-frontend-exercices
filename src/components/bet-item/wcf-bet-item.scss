@@ -1,0 +1,43 @@
+@import '../../shared/styles/index.scss';
+
+button {
+    @extend %bet-button;
+}
+
+.bet-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 5px 10px;
+    background: $bg-grey;
+}
+
+.bet-item__teams {
+    display: flex;
+    align-items: center;
+
+    img {
+        @extend %small-icon;
+        margin: 0 4px;
+    }
+
+    &--name {
+        font-weight: $text-bold;
+        margin: 0 8px;
+    }
+}
+
+.bet-item__odds {
+    &--name {
+        display: block;
+        width: 100%;
+        margin: 5px 0;
+        text-align: center;
+        font-size: $small-text;
+    }
+
+    &--number {
+        font-weight: $text-bold;
+    }
+}

@@ -1,20 +1,17 @@
-/**
- * @jest-environment jsdom
- */
-
 import { Bet } from "../../models/bet";
+import { CHOICE_1, CHOICE_DRAW } from "../../shared/constants/oddsChoice";
 import { mockPropsTo } from "../../utils/testing";
 import { BetsSummary } from "./wcf-bets-summary";
 
 const DUMMY_BETS: Bet[] = [
     {
         gameId: 'id1',
-        selectedChoice: '1',
+        selectedChoice: CHOICE_1,
         selectedOdd: 1.52,
     },
     {
         gameId: 'id2',
-        selectedChoice: 'Draw',
+        selectedChoice: CHOICE_DRAW,
         selectedOdd: 1.12,
     }
 ];

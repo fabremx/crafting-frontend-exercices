@@ -7,8 +7,8 @@ const template = document.createElement('template');
 template.innerHTML = `
 <style>${css}</style>
 <div class="bets-summary">
-    <h3>Récapitulatif de vos paris</h3>
-    <div class="bets-summary__info summary">
+    <h3 class="bets-summary__title">Récapitulatif de vos paris</h3>
+    <div class="bets-summary__info">
         <p class="bets-summary__info--bets-number"></p>
         <p class="bets-summary__info--sum-odds"></p>
         <p class="bets-summary__info--potential-gain"></p>

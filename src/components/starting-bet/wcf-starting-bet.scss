@@ -3,25 +3,25 @@
 .starting-bet {
     @extend %main-wrapper;
     @extend %separator;
+}
 
-    h3 {
-        @extend %medium-title;
-    }
+.starting-bet__title {
+    @extend %medium-title;
+}
+
+.starting-bet__input {
+    @extend %content-wrapper;
+
+    display: flex;
+    align-items: center;
 
     p {
-        @extend %medium-text;
         margin: 0;
+        font-size: $medium-text;
     }
 
-    &__input {
-        @extend %content-wrapper;
-
-        display: flex;
-        align-items: center;
-
-        input {
-            @extend %input-text;
-            margin-left: 20px;
-        }
+    input {
+        @extend %input-text;
+        margin-left: 20px;
     }
 }

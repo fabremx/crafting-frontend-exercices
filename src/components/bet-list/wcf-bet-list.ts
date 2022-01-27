@@ -2,7 +2,6 @@ import css from './wcf-bet-list.scss';
 import { getBetList } from "../../business/bets/getBetList";
 import { Bet, BetChoice, BetInfo } from "../../models/bet";
 import loaderIcon from '../../assets/loader.gif'
-import betIcon from '../../assets/bet.png'
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -25,6 +24,11 @@ export class BetList extends HTMLElement {
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
+
+        window.addEventListener('CLICK_BET', ((event: Event) => {
+            const { betInfo, choice } = (event as CustomEvent).detail;
+            this.selectBet(betInfo, choice);
+        }).bind(this));
     }
 
     async connectedCallback() {
@@ -39,55 +43,12 @@ export class BetList extends HTMLElement {
     }
 
     displayBetList(betList: BetInfo[]) {
-        const list = this.shadowRoot!.querySelector('.bet-list')!;
-        list.removeAttribute('hidden')
+        const betListElement = this.shadowRoot!.querySelector('.bet-list')!;
 
+        betListElement.removeAttribute('hidden');
         betList.forEach((bet: BetInfo) => {
-            const betElement = document.createElement('div');
-            betElement.classList.add('bet-list__item', 'bet')
-            betElement.innerHTML = `
-                <div class="bet__teams">
-                    <img src="${betIcon}" alt="Sport icon" />
-                    <p>
-                        <span class="bet__teams--name">${bet.adversary1}</span> - 
-                        <span class="bet__teams--name">${bet.adversary2}</span>
-                    </p>
-                </div>
-                <div class="bet__odds">
-                    <button>
-                        <span class="bet__odds--name">${bet.adversary1}</span>
-                        <span class="bet__odds--number">${bet.odd1.toFixed(2)}</span>
-                    </button>
-                    ${bet.oddDraw ? `
-                    <button>
-                        <span class="bet__odds--name">Draw</span>
-                        <span class="bet__odds--number">${bet.oddDraw.toFixed(2)}</span>
-                   </button>` : ''}
-                    <button>
-                        <span class="bet__odds--name">${bet.adversary2}</span>
-                        <span class="bet__odds--number">${bet.odd2.toFixed(2)}</span>
-                    </button>
-                </div>
-            `
-
-            list.appendChild(betElement)
-
-            const buttons = betElement.querySelectorAll('.bet__odds button');
-            buttons[0].addEventListener('click', () => this.selectBet(bet, '1'));
-
-            if (buttons.length === 3) {
-                buttons[1].addEventListener('click', () => this.selectBet(bet, 'Draw'));
-                buttons[2].addEventListener('click', () => this.selectBet(bet, '2'));
-            } else {
-                buttons[1].addEventListener('click', () => this.selectBet(bet, '2'));
-            }
-
-            this.shadowRoot?.appendChild(list)
-        }, this)
-    }
-
-    get selectedBets(): Bet[] {
-        return this.bets;
+            betListElement.insertAdjacentHTML('beforeend', `<wcf-bet-item bet='${JSON.stringify(bet)}'></wcf-bet-item>`);
+        });
     }
 
     selectBet(betInfo: BetInfo, choice: BetChoice) {

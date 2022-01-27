@@ -3,20 +3,16 @@
 .bets-summary {
     @extend %main-wrapper;
     @extend %separator;
-
-    h3 {
-        @extend %medium-title;
-    }
-
-    &__info {
-        @extend %content-wrapper;
-
-        p {
-            @extend %medium-text;
-        }
-    }
 }
 
-.summary__value {
-    font-weight: $text-bold;
+.bets-summary__title {
+    @extend %medium-title;
+}
+
+.bets-summary__info {
+    @extend %content-wrapper;
+
+    p {
+        font-size: $medium-text;
+    }
 }

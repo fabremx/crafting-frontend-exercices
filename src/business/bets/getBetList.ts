@@ -16,7 +16,7 @@ export const getBetList = async (): Promise<BetInfo[]> => {
             adversary1: game.adversary1,
             adversary2: game.adversary2,
             odd1: oddInfo.odd1,
-            oddDraw: oddInfo.oddDraw,
+            odddraw: oddInfo.odddraw,
             odd2: oddInfo.odd2
         }
     })

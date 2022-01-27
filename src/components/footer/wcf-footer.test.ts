@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import { Footer } from "./wcf-footer";
 
 it('should return footer when user is connected', () => {

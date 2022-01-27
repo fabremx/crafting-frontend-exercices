@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-
 import { dispatchMockedEventWith } from "../../utils/testing";
 import { StartingBet } from "./wcf-starting-bet";
 

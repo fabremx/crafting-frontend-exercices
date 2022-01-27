@@ -1,12 +1,19 @@
+import css from './wcf-bets.scss'
 import { Bet } from "../../models/bet";
 import { User } from "../../models/user";
 
 const template = document.createElement('template');
 template.innerHTML = `
+<style>${css}</style>
+
 <div id="bets-page">
     <wcf-bet-list></wcf-bet-list>
     <wcf-starting-bet hidden></wcf-starting-bet>
     <wcf-bets-summary hidden></wcf-bets-summary>
+
+    <div class="bet-page__validation">
+        <button hidden>Valider le(s) paris</button>
+    <div>
 </div>
 `;
 
@@ -65,19 +72,24 @@ export class BetsPage extends HTMLElement {
     }
 
     toggleStartingBetDisplay() {
-        const elementName = 'wcf-starting-bet';
+        const startingBetElement = 'wcf-starting-bet';
 
         this.bets.length
-            ? this.displayElement(elementName)
-            : this.hideElement(elementName)
+            ? this.displayElement(startingBetElement)
+            : this.hideElement(startingBetElement)
     }
 
     toggleSummaryDisplay() {
-        const elementClass = 'wcf-bets-summary';
+        const summaryElement = 'wcf-bets-summary';
+        const buttonElement = 'button';
 
-        this.startingBet && this.startingBet > 0 && this.bets.length
-            ? this.displayElement(elementClass)
-            : this.hideElement(elementClass)
+        if (this.startingBet && this.startingBet > 0 && this.bets.length) {
+            this.displayElement(summaryElement)
+            this.displayElement(buttonElement)
+        } else {
+            this.hideElement(summaryElement)
+            this.hideElement(buttonElement)
+        }
     }
 
     hideElement(elementName: string) {

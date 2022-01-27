@@ -14,20 +14,21 @@ let betsSummaryTag: Element | null | undefined;
 const dummyBets: BetInfo[] = [
     {
         gameId: '1',
-        type: 'Ice hockey',
-        adversary1: 'Rouen',
-        adversary2: 'Amiens',
+        type: 'football',
+        adversary1: 'Paris SG',
+        adversary2: 'Lyon',
         odd1: 1.52,
-        oddDraw: 3.20,
+        odddraw: 2.20,
         odd2: 2.57
     },
     {
         gameId: '2',
-        type: 'Tennis',
-        adversary1: 'Roger Federer',
-        adversary2: 'Raphael Nadal',
+        type: 'football',
+        adversary1: 'Marseille',
+        adversary2: 'Montpellier',
         odd1: 1.77,
-        odd2: 1.61
+        odddraw: 2.20,
+        odd2: 2.61
     }
 ]
 jest.spyOn(betModule, 'getBetList').mockResolvedValue(dummyBets);

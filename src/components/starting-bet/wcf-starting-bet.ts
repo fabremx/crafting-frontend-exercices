@@ -5,7 +5,7 @@ template.innerHTML = `
 <style>${css}</style>
 
 <div class="starting-bet">
-    <h3>Votre Mise</h3>
+    <h3 class="starting-bet__title">Votre Mise</h3>
     <div class="starting-bet__input">
         <p>Choisir votre mise</p>
         <input type="number" value="" />
