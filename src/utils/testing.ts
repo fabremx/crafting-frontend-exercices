@@ -25,7 +25,10 @@ export function findElementsWith(element: Element, key: string): NodeListOf<Elem
 export function isVisible(element: Element | null | undefined): boolean {
     if (!element) return false;
 
-    return !element.hasAttribute('hidden');
+    return (
+        !element.hasAttribute('hidden') &&
+        (element as HTMLElement).style.display !== 'none'
+    );
 }
 
 export const getElementsNumber = (lineNumber: number) => {

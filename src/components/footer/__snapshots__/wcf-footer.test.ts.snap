@@ -7,7 +7,7 @@ exports[`should return footer when user is NOT connected 1`] = `
   
     
   <h3>
-    Footer Title
+    Besoin d'aide ?
   </h3>
   
     
@@ -27,7 +27,7 @@ exports[`should return footer when user is connected 1`] = `
   
     
   <h3>
-    Footer Title
+    Besoin d'aide ?
   </h3>
   
     

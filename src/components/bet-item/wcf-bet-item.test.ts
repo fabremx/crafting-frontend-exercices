@@ -14,10 +14,12 @@ const BET: BetInfo = {
 };
 
 let betItem: BetItem = new BetItem();
+betItem.setAttribute('bet', JSON.stringify(BET))
+
+const spyDispatchEvent = jest.spyOn(window, 'dispatchEvent')
 
 describe('BetItem Component', () => {
     it('should correctly render bet line', () => {
-        betItem.setAttribute('bet', JSON.stringify(BET))
         expect(betItem?.shadowRoot?.querySelector('.bet-item')).toMatchSnapshot()
     });
 
@@ -25,11 +27,19 @@ describe('BetItem Component', () => {
         // Click on Draw
         clickOnButtonNumber(2);
 
-        window.addEventListener('CLICK_BET', ((event: any) => {
-            const { betInfo, choice } = event.detail;
-            expect(betInfo).toEqual({})
-            expect(choice).toBe(CHOICE_DRAW)
-        }));
+        const expectedBetInfo = (spyDispatchEvent.mock.calls[0][0] as CustomEvent).detail.betInfo;
+        const expectedChoice = (spyDispatchEvent.mock.calls[0][0] as CustomEvent).detail.choice;
+
+        expect(expectedBetInfo).toEqual({
+            type: 'football',
+            adversary1: 'Paris SG',
+            adversary2: 'Lyon',
+            gameId: '2',
+            odd1: 1.12,
+            odddraw: 2.5,
+            odd2: 3.62
+        })
+        expect(expectedChoice).toBe(CHOICE_DRAW)
     });
 });
 

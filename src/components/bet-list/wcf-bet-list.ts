@@ -2,6 +2,7 @@ import css from './wcf-bet-list.scss';
 import { getBetList } from "../../business/bets/getBetList";
 import { Bet, BetChoice, BetInfo } from "../../models/bet";
 import loaderIcon from '../../assets/loader.gif'
+import { updateSelectedBets } from '../../business/bets/updateSelectedBets';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -52,19 +53,10 @@ export class BetList extends HTMLElement {
     }
 
     selectBet(betInfo: BetInfo, choice: BetChoice) {
-        const existingBetIndex = this.bets.findIndex((bet: Bet) => bet.gameId === betInfo.gameId);
+        const newBets = updateSelectedBets(this.bets, betInfo, choice);
+        this.bets = newBets
 
-        const bet = {
-            gameId: betInfo.gameId,
-            selectedChoice: choice,
-            selectedOdd: betInfo[`odd${choice}`]!
-        }
-
-        existingBetIndex >= 0
-            ? this.bets[existingBetIndex] = bet
-            : this.bets.push(bet);
-
-        window.dispatchEvent(new CustomEvent('UPDATE_BETS', { detail: { bets: this.bets } }))
+        window.dispatchEvent(new CustomEvent('UPDATE_BETS', { detail: { bets: newBets } }))
     }
 }
 

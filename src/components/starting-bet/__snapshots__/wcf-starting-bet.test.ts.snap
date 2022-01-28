@@ -2,10 +2,14 @@
 
 exports[`Starting-Bet Component should render the component 1`] = `
 "
-<div id=\\"starting-bet\\">
-    <h3>Votre Mise</h3>
-    <p>Choisir votre mise</p>
-    <input type=\\"number\\" value=\\"\\">
+<style>[object Object]</style>
+
+<div class=\\"starting-bet\\">
+    <h3 class=\\"starting-bet__title\\">Votre Mise</h3>
+    <div class=\\"starting-bet__input\\">
+        <p>Choisir votre mise</p>
+        <input type=\\"number\\" value=\\"\\">
+    </div>
 </div>
 "
 `;

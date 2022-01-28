@@ -2,22 +2,28 @@
 
 exports[`Bets-Summary Component should render correctly info when user is NOT prenium 1`] = `
 "
-<div id=\\"bets-summary\\">
-    <h3>Récapitulatif des Paris</h3>
-    <p class=\\"bets-summary__bets-number\\">Nombre de paris joués: 2</p>
-    <p class=\\"bets-summary__sum-odds\\">Côte(s) cummulée(s): 1.7</p>
-    <p class=\\"bets-summary__potential-gain\\">Potentiel gain: 170</p>
+<style>[object Object]</style>
+<div class=\\"bets-summary\\">
+    <h3 class=\\"bets-summary__title\\">Récapitulatif de vos paris</h3>
+    <div class=\\"bets-summary__info\\">
+        <p class=\\"bets-summary__info--bets-number\\">Nombre de paris joués: 2</p>
+        <p class=\\"bets-summary__info--sum-odds\\">Côte(s) cummulée(s): 1.7</p>
+        <p class=\\"bets-summary__info--potential-gain\\">Potentiel gain: 170</p>
+    </div>
 </div>
 "
 `;
 
 exports[`Bets-Summary Component should render correctly info when user is prenium 1`] = `
 "
-<div id=\\"bets-summary\\">
-    <h3>Récapitulatif des Paris</h3>
-    <p class=\\"bets-summary__bets-number\\">Nombre de paris joués: 2</p>
-    <p class=\\"bets-summary__sum-odds\\">Côte(s) cummulée(s): 1.7</p>
-    <p class=\\"bets-summary__potential-gain\\">Potentiel gain: 187</p>
+<style>[object Object]</style>
+<div class=\\"bets-summary\\">
+    <h3 class=\\"bets-summary__title\\">Récapitulatif de vos paris</h3>
+    <div class=\\"bets-summary__info\\">
+        <p class=\\"bets-summary__info--bets-number\\">Nombre de paris joués: 2</p>
+        <p class=\\"bets-summary__info--sum-odds\\">Côte(s) cummulée(s): 1.7</p>
+        <p class=\\"bets-summary__info--potential-gain\\">Potentiel gain: 187</p>
+    </div>
 </div>
 "
 `;
