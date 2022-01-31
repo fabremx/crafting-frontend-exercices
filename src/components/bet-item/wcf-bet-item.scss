@@ -1,4 +1,4 @@
-@import '../../shared/styles/index.scss';
+@import '../../shared/styles.scss';
 
 button {
     @extend %bet-button;
@@ -18,7 +18,7 @@ button {
     align-items: center;
 
     img {
-        @extend %small-icon;
+        width: 35px;
         margin: 0 4px;
     }
 

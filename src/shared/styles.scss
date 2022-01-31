@@ -1,0 +1,31 @@
+$bg-red: #970006;
+$bg-dark-red: #7a0005;
+$bg-yellow: #fc0;
+$bg-dark-yellow: #e6b800;
+$bg-grey: #F7F8FA;
+$bg-dark-grey: #c7c7c7;
+$bg-black: #111;
+$bg-white: #FFFFFF;
+
+$text-bold: 600;
+
+$small-text: 10px;
+$medium-text: 13px;
+
+%bet-button {
+    width: 100px;
+    padding: 1px 0 6px;
+    border: none;
+    border-radius: 4px;
+    background: $bg-yellow;
+
+    &:hover {
+        background: $bg-dark-yellow;
+        cursor: pointer;
+    }
+
+    &.selected {
+        background: $bg-black;
+        color: $bg-dark-yellow
+    }
+}
