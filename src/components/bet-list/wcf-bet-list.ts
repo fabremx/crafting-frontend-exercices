@@ -1,5 +1,5 @@
 import css from './wcf-bet-list.scss';
-import { getBetList } from "../../business/bets/getBetList";
+import { getBetList } from "../../api/getBetList";
 import { Bet, BetChoice, BetInfo } from "../../models/bet";
 import loaderIcon from '../../assets/loader.gif'
 import { updateSelectedBets } from '../../business/bets/updateSelectedBets';

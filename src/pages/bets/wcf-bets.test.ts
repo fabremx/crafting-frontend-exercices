@@ -1,7 +1,7 @@
 
 import { dispatchMockedEventWith, findElementWith, isVisible } from "../../utils/testing";
 import { BetsPage } from "./wcf-bets";
-import * as betModule from "../../business/bets/getBetList";
+import * as apiModule from "../../api/getBetList";
 import { BetInfo } from "../../models/bet";
 import { BetList } from "../../components/bet-list/wcf-bet-list";
 import { StartingBet } from "../../components/starting-bet/wcf-starting-bet";
@@ -32,7 +32,7 @@ const dummyBets: BetInfo[] = [
         odd2: 2.61
     }
 ]
-jest.spyOn(betModule, 'getBetList').mockResolvedValue(dummyBets);
+jest.spyOn(apiModule, 'getBetList').mockResolvedValue(dummyBets);
 
 describe.skip('Bets Pages Component', () => {
     const betsPage = new BetsPage();

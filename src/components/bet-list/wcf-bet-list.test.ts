@@ -1,5 +1,5 @@
 import { BetList } from "./wcf-bet-list";
-import * as betModule from "../../business/bets/getBetList";
+import * as apiModule from "../../api/getBetList";
 import { BetInfo } from "../../models/bet";
 import { findElementWith, isVisible } from "../../utils/testing";
 
@@ -24,7 +24,7 @@ const dummyBets: BetInfo[] = [
     }
 ]
 
-jest.spyOn(betModule, 'getBetList').mockResolvedValue(dummyBets);
+jest.spyOn(apiModule, 'getBetList').mockResolvedValue(dummyBets);
 
 describe('BetList Component', () => {
     it('should render loader when bet list is loading', () => {
