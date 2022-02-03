@@ -4,7 +4,7 @@ const template = document.createElement('template');
 template.innerHTML = `
 <style>${css}</style>
 <div id="header">
-    <h3>Web Components Bets Application</h3>
+    <h3 class="header__title">Web Components Bets Application</h3>
 </div>
 `;
 
