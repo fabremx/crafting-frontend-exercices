@@ -40,5 +40,3 @@ export class Footer extends HTMLElement {
             : footerText?.append(' | Connexion')
     }
 }
-
-customElements.define('wcf-footer', Footer);

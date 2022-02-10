@@ -28,5 +28,3 @@ export class StartingBet extends HTMLElement {
         window.dispatchEvent(new CustomEvent('UPDATE_STARTING_BET', { detail: { startingBet } }))
     }
 }
-
-customElements.define('wcf-starting-bet', StartingBet);

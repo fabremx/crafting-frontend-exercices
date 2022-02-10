@@ -101,5 +101,3 @@ export class BetItem extends HTMLElement {
         window.dispatchEvent(new CustomEvent('CLICK_BET', { detail: { betInfo, choice } }))
     }
 }
-
-customElements.define('wcf-bet-item', BetItem);

@@ -103,4 +103,3 @@ export class BetsPage extends HTMLElement {
     }
 }
 
-customElements.define('wcf-bets', BetsPage);

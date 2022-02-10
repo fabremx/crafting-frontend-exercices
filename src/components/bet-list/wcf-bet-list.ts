@@ -59,5 +59,3 @@ export class BetList extends HTMLElement {
         window.dispatchEvent(new CustomEvent('UPDATE_BETS', { detail: { bets: newBets } }))
     }
 }
-
-customElements.define('wcf-bet-list', BetList);

@@ -62,5 +62,3 @@ export class BetsSummary extends HTMLElement {
         this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.bets, this.isUserPrenium)}`
     }
 }
-
-customElements.define('wcf-bets-summary', BetsSummary);
