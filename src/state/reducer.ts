@@ -1,4 +1,7 @@
-import { ApplicationState } from "../models/applicationState";
+import { AnyAction } from "redux";
+import { updateSelectedBets } from "../business/bets/updateSelectedBets";
+import { UPDATE_SELECTED_BET } from "./actions";
+import { ApplicationState } from "./applicationState";
 
 export const initialApplicationState: ApplicationState = {
     gameInfos: [
@@ -57,7 +60,11 @@ export const initialApplicationState: ApplicationState = {
         }
     ]
 };
-export const reducer = (state: ApplicationState = initialApplicationState) => {
-
+export const reducer = (state: ApplicationState = initialApplicationState, action: AnyAction): ApplicationState => {
+    switch (action.type) {
+        case UPDATE_SELECTED_BET:
+            const  { betInfo, choice } = action.payload;
+            return {...state, selectedBets: updateSelectedBets(state.selectedBets, betInfo, choice)};
+    }
     return state;
 }

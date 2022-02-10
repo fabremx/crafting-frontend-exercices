@@ -18,18 +18,11 @@ template.innerHTML = `
 `;
 
 export class BetList extends HTMLElement {
-    private bets: Bet[] = [];
-
     constructor() {
         super();
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
-
-        window.addEventListener('CLICK_BET', ((event: Event) => {
-            const { betInfo, choice } = (event as CustomEvent).detail;
-            this.selectBet(betInfo, choice);
-        }).bind(this));
     }
 
     async connectedCallback() {
@@ -50,12 +43,5 @@ export class BetList extends HTMLElement {
         betList.forEach((bet: BetInfo) => {
             betListElement.insertAdjacentHTML('beforeend', `<wcf-bet-item bet='${JSON.stringify(bet)}'></wcf-bet-item>`);
         });
-    }
-
-    selectBet(betInfo: BetInfo, choice: BetChoice) {
-        const newBets = updateSelectedBets(this.bets, betInfo, choice);
-        this.bets = newBets
-
-        window.dispatchEvent(new CustomEvent('UPDATE_BETS', { detail: { bets: newBets } }))
     }
 }

@@ -1,6 +1,7 @@
 import css from './wcf-bets.scss'
 import { Bet } from "../../models/bet";
 import { User } from "../../models/user";
+import { reduxStore } from '../../state/store';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -28,7 +29,7 @@ export class BetsPage extends HTMLElement {
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
 
-        window.addEventListener('UPDATE_BETS', ((event: Event) => this.updateBets(event as CustomEvent)).bind(this));
+        reduxStore.subscribe(this.updateBets.bind(this));
         window.addEventListener('UPDATE_STARTING_BET', ((event: Event) => this.updateStartingBet(event as CustomEvent)).bind(this));
 
         this.user = {
@@ -46,8 +47,9 @@ export class BetsPage extends HTMLElement {
         this.toggleSummaryDisplay();
     }
 
-    updateBets(event: CustomEvent) {
-        this.bets = event.detail.bets
+    updateBets() {
+        const state = reduxStore.getState();
+        this.bets = state.selectedBets;
 
         this.setBetsSummaryAttribute('bets', this.bets);
         this.toggleStartingBetDisplay();
