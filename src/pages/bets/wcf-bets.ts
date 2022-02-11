@@ -2,6 +2,8 @@ import css from './wcf-bets.scss'
 import { Bet } from "../../models/bet";
 import { User } from "../../models/user";
 import { reduxStore } from '../../state/store';
+import { selectSelectedBets, selectStartingBet } from '../../state/selectors';
+import { CustomHTMLElement } from '../../utils/customHTMLElement';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -18,7 +20,7 @@ template.innerHTML = `
 </div>
 `;
 
-export class BetsPage extends HTMLElement {
+export class BetsPage extends CustomHTMLElement {
     constructor() {
         super();
 
@@ -29,29 +31,11 @@ export class BetsPage extends HTMLElement {
     }
 
     handleApplicationStateChange() {
-        const { startingBet, selectedBets } = reduxStore.getState();
-        const isDisplay = startingBet > 0 && selectedBets.length > 0;
-        this.toggleDisplay(isDisplay);
-    }
+        const startingBet = selectStartingBet();
+        const selectedBets = selectSelectedBets();
 
-    toggleDisplay(isDisplay: boolean) {
-        const buttonElement = 'button';
-        
-        if (isDisplay) {
-            this.displayElement(buttonElement)
-        } else {
-            this.hideElement(buttonElement)
-        }
-    }
-
-    hideElement(elementName: string) {
-        const element = this.shadowRoot?.querySelector(elementName)!;
-        element.setAttribute('hidden', '')
-    }
-
-    displayElement(elementName: string) {
-        const element = this.shadowRoot?.querySelector(elementName)!;
-        element.removeAttribute('hidden')
+        const shouldDisplay = startingBet > 0 && selectedBets.length > 0;
+        this.toggleDisplay('button', shouldDisplay);
     }
 }
 

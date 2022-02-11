@@ -4,6 +4,7 @@ import { BetInfo } from "../../models/bet";
 import loaderIcon from '../../assets/loader.gif'
 import { reduxStore } from '../../state/store';
 import { doUpdateBetInfos } from '../../state/actions';
+import { selectBetInfos } from '../../state/selectors';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -36,7 +37,7 @@ export class BetList extends HTMLElement {
     }
 
     handleApplicationStateChange() {
-        const { betInfos } = reduxStore.getState();
+        const betInfos = selectBetInfos()
 
         if (betInfos !== this.betInfos) {
             this.betInfos = betInfos;

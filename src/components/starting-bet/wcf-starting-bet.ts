@@ -1,5 +1,7 @@
 import { doUpdateStartingBet } from '../../state/actions';
+import { selectSelectedBets } from '../../state/selectors';
 import { reduxStore } from '../../state/store';
+import { CustomHTMLElement } from '../../utils/customHTMLElement';
 import css from './wcf-starting-bet.scss';
 
 const template = document.createElement('template');
@@ -15,7 +17,7 @@ template.innerHTML = `
 </div>
 `;
 
-export class StartingBet extends HTMLElement {
+export class StartingBet extends CustomHTMLElement {
     constructor() {
         super();
 
@@ -27,20 +29,14 @@ export class StartingBet extends HTMLElement {
     }
 
     handleApplicationStateChange() {
-        const { selectedBets } = reduxStore.getState();
+        const selectedBets = selectSelectedBets();
 
         if (!selectedBets.length) return;
-        this.displayElement();
+        this.displayElement('.starting-bet');
     }
 
     emitStartingBet() {
         const startingBet = Number(this.shadowRoot?.querySelector('input')?.value!) || 0;
         reduxStore.dispatch(doUpdateStartingBet(startingBet));
-    }
-
-    displayElement() {
-        const summaryElement = '.starting-bet';
-        const element = this.shadowRoot?.querySelector(summaryElement)!;
-        element.removeAttribute('hidden')
     }
 }

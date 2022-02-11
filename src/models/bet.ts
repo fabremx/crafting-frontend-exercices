@@ -2,7 +2,7 @@ import { GameInfo } from "./game";
 import { OddsInfo } from "./odds";
 
 export type BetInfo = Omit<GameInfo & OddsInfo, 'id'> & {
-    [key: string]: number;
+    [key: string]: number | string;
 };
 
 export type BetChoice = '1' | 'draw' | '2';

@@ -85,6 +85,7 @@ export class BetItem extends HTMLElement {
 
     selectClickedButton(clickedButton: Element) {
         const buttons = this.shadowRoot!.querySelectorAll('.bet-item__odds button');
+
         buttons.forEach((button: Element) => {
             if (button === clickedButton) {
                 button.classList.add('selected')

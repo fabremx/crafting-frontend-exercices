@@ -3,6 +3,8 @@ import { getPotentialGain } from "../../business/bets/getPotentialGain";
 import { getSumOfOdds } from "../../business/odds/getSumOfOdds";
 import { reduxStore } from '../../state/store';
 import { Bet } from "../../models/bet";
+import { selectSelectedBets, selectStartingBet } from '../../state/selectors';
+import { CustomHTMLElement } from '../../utils/customHTMLElement';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -17,7 +19,7 @@ template.innerHTML = `
 </div>
 `;
 
-export class BetsSummary extends HTMLElement {
+export class BetsSummary extends CustomHTMLElement {
     constructor() {
         super();
 
@@ -28,37 +30,17 @@ export class BetsSummary extends HTMLElement {
     }
 
     handleApplicationStateChange() {
-        const { startingBet, selectedBets } = reduxStore.getState();
+        const startingBet = selectStartingBet();
+        const selectedBets = selectSelectedBets();
 
-        const isDisplay = startingBet > 0 && selectedBets.length > 0;
-
-        this.toggleSummaryDisplay(isDisplay);
+        const shouldDisplay = startingBet > 0 && selectedBets.length > 0;
+        this.toggleDisplay('.bets-summary', shouldDisplay);
         this.updateSummaryInfo(selectedBets, startingBet);
-    }
-
-    toggleSummaryDisplay(isDisplay: boolean) {
-        const summaryElement = '.bets-summary';
-
-        if (isDisplay) {
-            this.displayElement(summaryElement);
-        } else {
-            this.hideElement(summaryElement);
-        }
     }
     
     updateSummaryInfo(selectedBets: Bet[], startingBet: number) {
         this.shadowRoot!.querySelector('.bets-summary__info--bets-number')!.textContent = `Nombre de paris joués: ${selectedBets.length}`
         this.shadowRoot!.querySelector('.bets-summary__info--sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(selectedBets)}`
         this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(startingBet, selectedBets)}`
-    }
-
-    hideElement(summaryElement: string) {
-        const element = this.shadowRoot?.querySelector(summaryElement)!;
-        element.setAttribute('hidden', '')
-    }
-
-    displayElement(summaryElement: string) {
-        const element = this.shadowRoot?.querySelector(summaryElement)!;
-        element.removeAttribute('hidden')
     }
 }

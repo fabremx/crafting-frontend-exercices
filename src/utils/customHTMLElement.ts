@@ -1,0 +1,19 @@
+export class CustomHTMLElement extends HTMLElement {
+    toggleDisplay(elementSelector: string, shouldDisplay: boolean) {        
+        if (shouldDisplay) {
+            this.displayElement(elementSelector)
+        } else {
+            this.hideElement(elementSelector)
+        }
+    }
+    
+    displayElement(elementName: string) {
+        const element = this.shadowRoot?.querySelector(elementName)!;
+        element.removeAttribute('hidden')
+    }
+
+    hideElement(elementName: string) {
+        const element = this.shadowRoot?.querySelector(elementName)!;
+        element.setAttribute('hidden', '')
+    }
+}
