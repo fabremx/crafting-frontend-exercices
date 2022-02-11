@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Bets-Summary Component should render correctly info when user is NOT prenium 1`] = `
+exports[`Bets-Summary Component should render correctly info when user is NOT premium 1`] = `
 "
 <style>[object Object]</style>
 <div class=\\"bets-summary\\">
@@ -14,7 +14,7 @@ exports[`Bets-Summary Component should render correctly info when user is NOT pr
 "
 `;
 
-exports[`Bets-Summary Component should render correctly info when user is prenium 1`] = `
+exports[`Bets-Summary Component should render correctly info when user is premium 1`] = `
 "
 <style>[object Object]</style>
 <div class=\\"bets-summary\\">

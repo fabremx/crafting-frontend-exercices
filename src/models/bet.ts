@@ -1,11 +1,13 @@
 import { GameInfo } from "./game";
 import { OddsInfo } from "./odds";
 
-export type BetInfo = Omit<GameInfo & OddsInfo, 'id'>;
+export type BetInfo = Omit<GameInfo & OddsInfo, 'id'> & {
+    [key: string]: number | string;
+};
 
 export type BetChoice = '1' | 'draw' | '2';
 export type Bet = {
-    gameId: string,
-    selectedChoice: BetChoice,
-    selectedOdd: number
+    gameId: string;
+    selectedChoice: BetChoice;
+    selectedOdd: number;
 }

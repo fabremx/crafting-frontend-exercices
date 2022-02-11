@@ -16,5 +16,3 @@ export class Header extends HTMLElement {
             .appendChild(template.content.cloneNode(true));
     }
 }
-
-customElements.define('wcf-header', Header);

@@ -1,7 +1,9 @@
 import css from './wcf-bet-item.scss';
-import { BetInfo } from "../../models/bet";
+import { BetChoice, BetInfo } from "../../models/bet";
 import betIcon from '../../assets/bet.png'
 import { CHOICE_1, CHOICE_2, CHOICE_DRAW } from '../../shared/constants/oddsChoice';
+import { reduxStore } from '../../state/store';
+import { doUpdateSelectedBet, UPDATE_SELECTED_BET } from '../../state/actions';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -83,6 +85,7 @@ export class BetItem extends HTMLElement {
 
     selectClickedButton(clickedButton: Element) {
         const buttons = this.shadowRoot!.querySelectorAll('.bet-item__odds button');
+
         buttons.forEach((button: Element) => {
             if (button === clickedButton) {
                 button.classList.add('selected')
@@ -92,14 +95,12 @@ export class BetItem extends HTMLElement {
         })
     }
 
-    handleSelectBet(buttonElement: Element, choice: string) {
+    handleSelectBet(buttonElement: Element, choice: BetChoice) {
         this.selectClickedButton(buttonElement);
         this.sentSelectedBet(this.bet, choice)
     }
 
-    sentSelectedBet(betInfo: BetInfo, choice: string) {
-        window.dispatchEvent(new CustomEvent('CLICK_BET', { detail: { betInfo, choice } }))
+    sentSelectedBet(betInfo: BetInfo, choice: BetChoice) {
+        reduxStore.dispatch(doUpdateSelectedBet(betInfo, choice));
     }
 }
-
-customElements.define('wcf-bet-item', BetItem);

@@ -1,12 +1,15 @@
 import css from './wcf-bets-summary.scss';
 import { getPotentialGain } from "../../business/bets/getPotentialGain";
 import { getSumOfOdds } from "../../business/odds/getSumOfOdds";
+import { reduxStore } from '../../state/store';
 import { Bet } from "../../models/bet";
+import { selectSelectedBets, selectStartingBet } from '../../state/selectors';
+import { CustomHTMLElement } from '../../utils/customHTMLElement';
 
 const template = document.createElement('template');
 template.innerHTML = `
 <style>${css}</style>
-<div class="bets-summary">
+<div class="bets-summary" hidden>
     <h3 class="bets-summary__title">Récapitulatif de vos paris</h3>
     <div class="bets-summary__info">
         <p class="bets-summary__info--bets-number"></p>
@@ -16,51 +19,28 @@ template.innerHTML = `
 </div>
 `;
 
-export class BetsSummary extends HTMLElement {
-    private bets: Bet[] = [];
-    private startingBet: number = 0;
-    private isUserPrenium: boolean = false;
-
+export class BetsSummary extends CustomHTMLElement {
     constructor() {
         super();
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
+
+        reduxStore.subscribe(this.handleApplicationStateChange.bind(this));
     }
 
-    connectedCallback() {
-        this.displaySummaryInfo()
+    handleApplicationStateChange() {
+        const startingBet = selectStartingBet();
+        const selectedBets = selectSelectedBets();
+
+        const shouldDisplay = startingBet > 0 && selectedBets.length > 0;
+        this.toggleDisplay('.bets-summary', shouldDisplay);
+        this.updateSummaryInfo(selectedBets, startingBet);
     }
-
-    static get observedAttributes() {
-        return ['bets', 'startingbet', 'isuserprenium']
-    }
-
-    attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
-        switch (name) {
-            case 'bets':
-                this.bets = JSON.parse(newValue);
-                break;
-            case 'startingbet':
-                this.startingBet = Number(newValue);
-                break;
-            case 'isuserprenium':
-                this.isUserPrenium = Boolean(newValue);
-                break;
-            default:
-                break;
-        }
-
-        if (this.startingBet && this.bets.length) {
-            this.displaySummaryInfo();
-        }
-    }
-
-    displaySummaryInfo() {
-        this.shadowRoot!.querySelector('.bets-summary__info--bets-number')!.textContent = `Nombre de paris joués: ${this.bets.length}`
-        this.shadowRoot!.querySelector('.bets-summary__info--sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(this.bets)}`
-        this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.bets, this.isUserPrenium)}`
+    
+    updateSummaryInfo(selectedBets: Bet[], startingBet: number) {
+        this.shadowRoot!.querySelector('.bets-summary__info--bets-number')!.textContent = `Nombre de paris joués: ${selectedBets.length}`
+        this.shadowRoot!.querySelector('.bets-summary__info--sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(selectedBets)}`
+        this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(startingBet, selectedBets)}`
     }
 }
-
-customElements.define('wcf-bets-summary', BetsSummary);
