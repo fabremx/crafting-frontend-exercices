@@ -1,7 +1,7 @@
-import { GameInfo, OddsInfo, Bet } from '../models';
+import { Bet, BetInfo } from '../models';
 
 export type ApplicationState = {
-    gameInfos: GameInfo[];
-    oddsInfo: OddsInfo[];
+    betInfos: BetInfo[];
     selectedBets: Bet[];
+    startingBet: number;
 }

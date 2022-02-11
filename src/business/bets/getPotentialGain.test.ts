@@ -26,13 +26,13 @@ describe('getPotentialGain', () => {
         expect(getPotentialGain(EMPTY_STARTING_BET, FILLED_BETS)).toBe(0)
     });
 
-    it('should return a potential gain to 170 when user select bets and is NOT prenium', () => {
+    it('should return a potential gain to 170 when user select bets and is NOT premium', () => {
         expect(getPotentialGain(POSITIVE_STARTING_BET, FILLED_BETS)).toBe(170)
     });
 
-    it('should return a potential gain to 187 when user select bets and is prenium', () => {
-        const isUserPrenium = true;
+    it('should return a potential gain to 187 when user select bets and is premium', () => {
+        const isUserPremium = true;
 
-        expect(getPotentialGain(POSITIVE_STARTING_BET, FILLED_BETS, isUserPrenium)).toBe(187)
+        expect(getPotentialGain(POSITIVE_STARTING_BET, FILLED_BETS, isUserPremium)).toBe(187)
     });
 });

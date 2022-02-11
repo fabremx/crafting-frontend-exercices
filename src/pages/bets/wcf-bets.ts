@@ -9,8 +9,8 @@ template.innerHTML = `
 
 <div id="bets-page">
     <wcf-bet-list></wcf-bet-list>
-    <wcf-starting-bet hidden></wcf-starting-bet>
-    <wcf-bets-summary hidden></wcf-bets-summary>
+    <wcf-starting-bet></wcf-starting-bet>
+    <wcf-bets-summary></wcf-bets-summary>
 
     <div class="bet-page__validation">
         <button hidden>Valider le(s) paris</button>
@@ -19,77 +19,27 @@ template.innerHTML = `
 `;
 
 export class BetsPage extends HTMLElement {
-    private bets: Bet[] = [];
-    private startingBet: number | undefined;
-    private user: User | undefined;
-
     constructor() {
         super();
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
 
-        reduxStore.subscribe(this.updateBets.bind(this));
-        window.addEventListener('UPDATE_STARTING_BET', ((event: Event) => this.updateStartingBet(event as CustomEvent)).bind(this));
-
-        this.user = {
-            firstname: 'Jack',
-            lastname: 'Dupont',
-            age: 47,
-            hasIdentityVerified: true,
-            isPrenium: false
-        }
+        reduxStore.subscribe(this.handleApplicationStateChange.bind(this));
     }
 
-    connectedCallback() {
-        this.updateIsUserPrenium()
-        this.toggleStartingBetDisplay();
-        this.toggleSummaryDisplay();
+    handleApplicationStateChange() {
+        const { startingBet, selectedBets } = reduxStore.getState();
+        const isDisplay = startingBet > 0 && selectedBets.length > 0;
+        this.toggleDisplay(isDisplay);
     }
 
-    updateBets() {
-        const state = reduxStore.getState();
-        this.bets = state.selectedBets;
-
-        this.setBetsSummaryAttribute('bets', this.bets);
-        this.toggleStartingBetDisplay();
-    }
-
-    updateStartingBet(event: CustomEvent) {
-        this.startingBet = event.detail.startingBet;
-
-        this.setBetsSummaryAttribute('startingbet', this.startingBet);
-        this.toggleSummaryDisplay();
-    }
-
-    updateIsUserPrenium() {
-        this.setBetsSummaryAttribute('isuserprenium', this.user!.isPrenium);
-    }
-
-    setBetsSummaryAttribute(key: string, value: unknown) {
-        const betsSummaryElement = this.shadowRoot?.querySelector('wcf-bets-summary');
-
-        const stringifiedValue = typeof value === 'string' ? value : JSON.stringify(value)
-        betsSummaryElement?.setAttribute(key, stringifiedValue);
-    }
-
-    toggleStartingBetDisplay() {
-        const startingBetElement = 'wcf-starting-bet';
-
-        this.bets.length
-            ? this.displayElement(startingBetElement)
-            : this.hideElement(startingBetElement)
-    }
-
-    toggleSummaryDisplay() {
-        const summaryElement = 'wcf-bets-summary';
+    toggleDisplay(isDisplay: boolean) {
         const buttonElement = 'button';
-
-        if (this.startingBet && this.startingBet > 0 && this.bets.length) {
-            this.displayElement(summaryElement)
+        
+        if (isDisplay) {
             this.displayElement(buttonElement)
         } else {
-            this.hideElement(summaryElement)
             this.hideElement(buttonElement)
         }
     }

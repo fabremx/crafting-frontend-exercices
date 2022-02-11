@@ -1,8 +1,9 @@
 import css from './wcf-bet-list.scss';
 import { getBetList } from "../../api/getBetList";
-import { Bet, BetChoice, BetInfo } from "../../models/bet";
+import { BetInfo } from "../../models/bet";
 import loaderIcon from '../../assets/loader.gif'
-import { updateSelectedBets } from '../../business/bets/updateSelectedBets';
+import { reduxStore } from '../../state/store';
+import { doUpdateBetInfos } from '../../state/actions';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -14,34 +15,48 @@ template.innerHTML = `
 
 <div class="bet-list" hidden>
     <h3>Liste des paris - Football</h3>
+    <div class="bet-list-element"></div>
 </div>
 `;
 
 export class BetList extends HTMLElement {
+    private betInfos: BetInfo[] = [];
+
     constructor() {
         super();
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
+
+        reduxStore.subscribe(this.handleApplicationStateChange.bind(this));
     }
 
     async connectedCallback() {
-        const betList: BetInfo[] = await getBetList();
+        reduxStore.dispatch(doUpdateBetInfos(await getBetList()));
+    }
+
+    handleApplicationStateChange() {
+        const { betInfos } = reduxStore.getState();
+
+        if (betInfos !== this.betInfos) {
+            this.betInfos = betInfos;
+            this.displayBetList();
+        };
 
         this.hideLoader();
-        this.displayBetList(betList);
     }
 
     hideLoader() {
         this.shadowRoot!.querySelector<HTMLElement>('.loader')!.style.display = 'none';
     }
 
-    displayBetList(betList: BetInfo[]) {
+    displayBetList() {
         const betListElement = this.shadowRoot!.querySelector('.bet-list')!;
 
         betListElement.removeAttribute('hidden');
-        betList.forEach((bet: BetInfo) => {
-            betListElement.insertAdjacentHTML('beforeend', `<wcf-bet-item bet='${JSON.stringify(bet)}'></wcf-bet-item>`);
-        });
+        const betItems = this.betInfos.reduce(
+            (acc: string, bet: BetInfo) => `${acc}<wcf-bet-item bet='${JSON.stringify(bet)}'></wcf-bet-item>`,
+        '');
+        betListElement.innerHTML = betItems;
     }
 }

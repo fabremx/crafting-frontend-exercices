@@ -1,12 +1,13 @@
 import css from './wcf-bets-summary.scss';
 import { getPotentialGain } from "../../business/bets/getPotentialGain";
 import { getSumOfOdds } from "../../business/odds/getSumOfOdds";
+import { reduxStore } from '../../state/store';
 import { Bet } from "../../models/bet";
 
 const template = document.createElement('template');
 template.innerHTML = `
 <style>${css}</style>
-<div class="bets-summary">
+<div class="bets-summary" hidden>
     <h3 class="bets-summary__title">Récapitulatif de vos paris</h3>
     <div class="bets-summary__info">
         <p class="bets-summary__info--bets-number"></p>
@@ -17,48 +18,47 @@ template.innerHTML = `
 `;
 
 export class BetsSummary extends HTMLElement {
-    private bets: Bet[] = [];
-    private startingBet: number = 0;
-    private isUserPrenium: boolean = false;
-
     constructor() {
         super();
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
+
+        reduxStore.subscribe(this.handleApplicationStateChange.bind(this));
     }
 
-    connectedCallback() {
-        this.displaySummaryInfo()
+    handleApplicationStateChange() {
+        const { startingBet, selectedBets } = reduxStore.getState();
+
+        const isDisplay = startingBet > 0 && selectedBets.length > 0;
+
+        this.toggleSummaryDisplay(isDisplay);
+        this.updateSummaryInfo(selectedBets, startingBet);
     }
 
-    static get observedAttributes() {
-        return ['bets', 'startingbet', 'isuserprenium']
-    }
+    toggleSummaryDisplay(isDisplay: boolean) {
+        const summaryElement = '.bets-summary';
 
-    attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
-        switch (name) {
-            case 'bets':
-                this.bets = JSON.parse(newValue);
-                break;
-            case 'startingbet':
-                this.startingBet = Number(newValue);
-                break;
-            case 'isuserprenium':
-                this.isUserPrenium = Boolean(newValue);
-                break;
-            default:
-                break;
-        }
-
-        if (this.startingBet && this.bets.length) {
-            this.displaySummaryInfo();
+        if (isDisplay) {
+            this.displayElement(summaryElement);
+        } else {
+            this.hideElement(summaryElement);
         }
     }
+    
+    updateSummaryInfo(selectedBets: Bet[], startingBet: number) {
+        this.shadowRoot!.querySelector('.bets-summary__info--bets-number')!.textContent = `Nombre de paris joués: ${selectedBets.length}`
+        this.shadowRoot!.querySelector('.bets-summary__info--sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(selectedBets)}`
+        this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(startingBet, selectedBets)}`
+    }
 
-    displaySummaryInfo() {
-        this.shadowRoot!.querySelector('.bets-summary__info--bets-number')!.textContent = `Nombre de paris joués: ${this.bets.length}`
-        this.shadowRoot!.querySelector('.bets-summary__info--sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(this.bets)}`
-        this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.bets, this.isUserPrenium)}`
+    hideElement(summaryElement: string) {
+        const element = this.shadowRoot?.querySelector(summaryElement)!;
+        element.setAttribute('hidden', '')
+    }
+
+    displayElement(summaryElement: string) {
+        const element = this.shadowRoot?.querySelector(summaryElement)!;
+        element.removeAttribute('hidden')
     }
 }

@@ -3,5 +3,5 @@ export type User = {
     lastname: string;
     age: number;
     hasIdentityVerified: boolean;
-    isPrenium: boolean;
+    isPremium: boolean;
 }
