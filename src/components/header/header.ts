@@ -1,4 +1,4 @@
-import css from './wcf-header.scss';
+import css from './header.scss';
 
 const template = document.createElement('template');
 template.innerHTML = `

@@ -1,4 +1,4 @@
-import { Header } from "./wcf-header";
+import { Header } from "./header";
 
 it('should return title header', () => {
     const header = new Header();

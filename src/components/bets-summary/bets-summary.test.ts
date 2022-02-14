@@ -1,12 +1,12 @@
 import { Bet } from "../../models/bet";
-import { CHOICE_1, CHOICE_DRAW } from "../../shared/constants/oddsChoice";
+import { CHOICE_LEFT, CHOICE_DRAW } from "../../shared/constants/oddsChoice";
 import { mockPropsTo } from "../../utils/testing";
-import { BetsSummary } from "./wcf-bets-summary";
+import { BetsSummary } from "./bets-summary";
 
 const DUMMY_BETS: Bet[] = [
     {
         gameId: 'id1',
-        selectedChoice: CHOICE_1,
+        selectedChoice: CHOICE_LEFT,
         selectedOdd: 1.52,
     },
     {
@@ -27,7 +27,7 @@ describe('Bets-Summary Component', () => {
         addProps = mockPropsTo(betsSummary)
     })
 
-    it('should render correctly info when user is NOT prenium', () => {
+    it('should render correctly info when user is NOT premium', () => {
         // Given
         addProps('bets', DUMMY_BETS)
         addProps('startingbet', 100)
@@ -39,11 +39,11 @@ describe('Bets-Summary Component', () => {
         expect(betsSummary?.shadowRoot?.innerHTML).toMatchSnapshot();
     });
 
-    it('should render correctly info when user is prenium', () => {
+    it('should render correctly info when user is premium', () => {
         // Given
         addProps('bets', DUMMY_BETS)
         addProps('startingbet', 100)
-        addProps('isuserprenium', true)
+        addProps('isuserpremium', true)
 
         // When
         betsSummary.connectedCallback();

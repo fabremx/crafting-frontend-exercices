@@ -1,7 +1,7 @@
 import { BetInfo } from "../../models/bet";
 import { CHOICE_DRAW } from "../../shared/constants/oddsChoice";
 import { findElementWith } from "../../utils/testing";
-import { BetItem } from "./wcf-bet-item";
+import { BetItem } from "./bet-item";
 
 const BET: BetInfo = {
     type: 'football',

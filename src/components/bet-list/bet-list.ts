@@ -1,4 +1,4 @@
-import css from './wcf-bet-list.scss';
+import css from './bet-list.scss';
 import { getBetList } from "../../api/getBetList";
 import { Bet, BetChoice, BetInfo } from "../../models/bet";
 import loaderIcon from '../../assets/loader.gif'

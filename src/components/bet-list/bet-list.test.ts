@@ -1,4 +1,4 @@
-import { BetList } from "./wcf-bet-list";
+import { BetList } from "./bet-list";
 import * as apiModule from "../../api/getBetList";
 import { BetInfo } from "../../models/bet";
 import { findElementWith, isVisible } from "../../utils/testing";

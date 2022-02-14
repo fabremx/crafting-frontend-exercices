@@ -1,6 +1,5 @@
-import css from './wcf-bets-summary.scss';
+import css from './bets-summary.scss';
 import { getPotentialGain } from "../../business/bets/getPotentialGain";
-import { getSumOfOdds } from "../../business/odds/getSumOfOdds";
 import { Bet } from "../../models/bet";
 
 const template = document.createElement('template');
@@ -10,7 +9,6 @@ template.innerHTML = `
     <h3 class="bets-summary__title">Récapitulatif de vos paris</h3>
     <div class="bets-summary__info">
         <p class="bets-summary__info--bets-number"></p>
-        <p class="bets-summary__info--sum-odds"></p>
         <p class="bets-summary__info--potential-gain"></p>
     </div>
 </div>
@@ -19,7 +17,7 @@ template.innerHTML = `
 export class BetsSummary extends HTMLElement {
     private bets: Bet[] = [];
     private startingBet: number = 0;
-    private isUserPrenium: boolean = false;
+    private isUserPremium: boolean = false;
 
     constructor() {
         super();
@@ -33,7 +31,7 @@ export class BetsSummary extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['bets', 'startingbet', 'isuserprenium']
+        return ['bets', 'startingbet', 'isuserpremium']
     }
 
     attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
@@ -44,8 +42,8 @@ export class BetsSummary extends HTMLElement {
             case 'startingbet':
                 this.startingBet = Number(newValue);
                 break;
-            case 'isuserprenium':
-                this.isUserPrenium = Boolean(newValue);
+            case 'isuserpremium':
+                this.isUserPremium = Boolean(newValue);
                 break;
             default:
                 break;
@@ -58,8 +56,7 @@ export class BetsSummary extends HTMLElement {
 
     displaySummaryInfo() {
         this.shadowRoot!.querySelector('.bets-summary__info--bets-number')!.textContent = `Nombre de paris joués: ${this.bets.length}`
-        this.shadowRoot!.querySelector('.bets-summary__info--sum-odds')!.textContent = `Côte(s) cummulée(s): ${getSumOfOdds(this.bets)}`
-        this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.bets, this.isUserPrenium)}`
+        this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.bets, this.isUserPremium)}`
     }
 }
 

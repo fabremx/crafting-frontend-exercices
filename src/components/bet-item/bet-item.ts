@@ -1,7 +1,7 @@
-import css from './wcf-bet-item.scss';
+import css from './bet-item.scss';
 import { BetInfo } from "../../models/bet";
 import betIcon from '../../assets/bet.png'
-import { CHOICE_1, CHOICE_2, CHOICE_DRAW } from '../../shared/constants/oddsChoice';
+import { CHOICE_LEFT, CHOICE_RIGHT, CHOICE_DRAW } from '../../shared/constants/oddsChoice';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -43,9 +43,9 @@ export class BetItem extends HTMLElement {
             .appendChild(template.content.cloneNode(true));
 
         const buttons = this.shadowRoot!.querySelectorAll('.bet-item__odds button');
-        buttons[0].addEventListener('click', () => this.handleSelectBet(buttons[0], CHOICE_1));
+        buttons[0].addEventListener('click', () => this.handleSelectBet(buttons[0], CHOICE_LEFT));
         buttons[1].addEventListener('click', () => this.handleSelectBet(buttons[1], CHOICE_DRAW));
-        buttons[2].addEventListener('click', () => this.handleSelectBet(buttons[2], CHOICE_2));
+        buttons[2].addEventListener('click', () => this.handleSelectBet(buttons[2], CHOICE_RIGHT));
     }
 
     static get observedAttributes() {

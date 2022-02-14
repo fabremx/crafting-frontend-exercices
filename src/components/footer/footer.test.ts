@@ -1,4 +1,4 @@
-import { Footer } from "./wcf-footer";
+import { Footer } from "./footer";
 
 it('should return footer when user is connected', () => {
     const footer = new Footer();

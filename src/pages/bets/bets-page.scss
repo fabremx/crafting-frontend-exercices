@@ -1,5 +1,10 @@
 @import '../../shared/styles/index.scss';
 
+.bets-page {
+    // Substract footer height + header height
+    min-height: calc(100% - 218px);
+}
+
 .bet-page__validation {
     @extend %main-wrapper;
     text-align: right;

@@ -1,5 +1,5 @@
 import { Bet, BetInfo } from "../../models/bet";
-import { CHOICE_2, CHOICE_DRAW } from "../../shared/constants/oddsChoice";
+import { CHOICE_RIGHT, CHOICE_DRAW } from "../../shared/constants/oddsChoice";
 import { updateSelectedBets } from "./updateSelectedBets";
 
 const BET_INFO_1 = {
@@ -30,7 +30,7 @@ describe('updateSelectedBets', () => {
     it('should add a new bet when user choose a unexisting bet', () => {
         const selectedBetInfo: BetInfo = BET_INFO_2;
 
-        const bets = updateSelectedBets(CURRENT_BETS, selectedBetInfo, CHOICE_2);
+        const bets = updateSelectedBets(CURRENT_BETS, selectedBetInfo, CHOICE_RIGHT);
 
         expect(bets).toEqual([
             {
@@ -40,7 +40,7 @@ describe('updateSelectedBets', () => {
             },
             {
                 gameId: '2',
-                selectedChoice: CHOICE_2,
+                selectedChoice: CHOICE_RIGHT,
                 selectedOdd: 3.62,
             },
         ])
@@ -49,11 +49,11 @@ describe('updateSelectedBets', () => {
     it('should update a bet choice when user select a new choice on existing bet', () => {
         const selectedBetInfo: BetInfo = BET_INFO_1;
 
-        const bets = updateSelectedBets(CURRENT_BETS, selectedBetInfo, CHOICE_2);
+        const bets = updateSelectedBets(CURRENT_BETS, selectedBetInfo, CHOICE_RIGHT);
 
         expect(bets).toEqual([{
             gameId: '1',
-            selectedChoice: CHOICE_2,
+            selectedChoice: CHOICE_RIGHT,
             selectedOdd: 2.57,
         }])
     });

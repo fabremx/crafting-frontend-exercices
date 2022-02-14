@@ -1,4 +1,4 @@
-import css from './wcf-bets.scss'
+import css from './bets-page.scss'
 import { Bet } from "../../models/bet";
 import { User } from "../../models/user";
 
@@ -6,7 +6,7 @@ const template = document.createElement('template');
 template.innerHTML = `
 <style>${css}</style>
 
-<div id="bets-page">
+<div class="bets-page">
     <wcf-bet-list></wcf-bet-list>
     <wcf-starting-bet hidden></wcf-starting-bet>
     <wcf-bets-summary hidden></wcf-bets-summary>
@@ -20,7 +20,12 @@ template.innerHTML = `
 export class BetsPage extends HTMLElement {
     private bets: Bet[] = [];
     private startingBet: number | undefined;
-    private user: User | undefined;
+    private user: User = {
+        firstname: 'Jack',
+        lastname: 'Dupont',
+        age: 47,
+        isPremium: false
+    };
 
     constructor() {
         super();
@@ -30,18 +35,10 @@ export class BetsPage extends HTMLElement {
 
         window.addEventListener('UPDATE_BETS', ((event: Event) => this.updateBets(event as CustomEvent)).bind(this));
         window.addEventListener('UPDATE_STARTING_BET', ((event: Event) => this.updateStartingBet(event as CustomEvent)).bind(this));
-
-        this.user = {
-            firstname: 'Jack',
-            lastname: 'Dupont',
-            age: 47,
-            hasIdentityVerified: true,
-            isPrenium: false
-        }
     }
 
     connectedCallback() {
-        this.updateIsUserPrenium()
+        this.updateIsUserPremium()
         this.toggleStartingBetDisplay();
         this.toggleSummaryDisplay();
     }
@@ -60,8 +57,8 @@ export class BetsPage extends HTMLElement {
         this.toggleSummaryDisplay();
     }
 
-    updateIsUserPrenium() {
-        this.setBetsSummaryAttribute('isuserprenium', this.user!.isPrenium);
+    updateIsUserPremium() {
+        this.setBetsSummaryAttribute('isuserpremium', this.user!.isPremium);
     }
 
     setBetsSummaryAttribute(key: string, value: unknown) {
@@ -103,4 +100,4 @@ export class BetsPage extends HTMLElement {
     }
 }
 
-customElements.define('wcf-bets', BetsPage);
+customElements.define('wcf-bets-page', BetsPage);

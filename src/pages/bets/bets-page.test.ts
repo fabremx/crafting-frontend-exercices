@@ -1,10 +1,10 @@
 
 import { dispatchMockedEventWith, findElementWith, isVisible } from "../../utils/testing";
-import { BetsPage } from "./wcf-bets";
+import { BetsPage } from "./bets-page";
 import * as apiModule from "../../api/getBetList";
 import { BetInfo } from "../../models/bet";
-import { BetList } from "../../components/bet-list/wcf-bet-list";
-import { StartingBet } from "../../components/starting-bet/wcf-starting-bet";
+import { BetList } from "../../components/bet-list/bet-list";
+import { StartingBet } from "../../components/starting-bet/starting-bet";
 
 let dispatchEvent: Function;
 let betListTag: Element | null | undefined;

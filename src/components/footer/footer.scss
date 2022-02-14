@@ -2,8 +2,5 @@
 
 #footer {
     @extend %extended-wrapper;
-    
-    position: absolute;
-    bottom: 0;
     background: $bg-black;
 }

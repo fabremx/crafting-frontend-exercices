@@ -1,4 +1,4 @@
-import css from './wcf-starting-bet.scss';
+import css from './starting-bet.scss';
 
 const template = document.createElement('template');
 template.innerHTML = `
