@@ -1,4 +1,4 @@
-import css from './wcf-bet-item.scss';
+import css from './bet-item.scss';
 import betIcon from '../../assets/bet.png'
 
 const template = document.createElement('template');

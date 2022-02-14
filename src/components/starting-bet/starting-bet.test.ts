@@ -1,4 +1,4 @@
-import { StartingBet } from "./wcf-starting-bet";
+import { StartingBet } from "./starting-bet";
 
 let dispatchEvent: Function;
 let startingBet: StartingBet;
