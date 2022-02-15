@@ -1,4 +1,4 @@
-import css from './wcf-header.scss';
+import css from './header.scss';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -16,3 +16,5 @@ export class Header extends HTMLElement {
             .appendChild(template.content.cloneNode(true));
     }
 }
+
+customElements.define('wcf-header', Header);

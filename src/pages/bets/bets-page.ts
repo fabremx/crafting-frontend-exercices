@@ -1,6 +1,4 @@
-import css from './wcf-bets.scss'
-import { Bet } from "../../models/bet";
-import { User } from "../../models/user";
+import css from './bets-page.scss'
 import { reduxStore } from '../../state/store';
 import { selectSelectedBets, selectStartingBet } from '../../state/selectors';
 import { CustomHTMLElement } from '../../utils/customHTMLElement';
@@ -39,3 +37,4 @@ export class BetsPage extends CustomHTMLElement {
     }
 }
 
+customElements.define('wcf-bets', BetsPage);

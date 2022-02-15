@@ -1,4 +1,4 @@
-import css from './wcf-footer.scss';
+import css from './footer.scss';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -40,3 +40,5 @@ export class Footer extends HTMLElement {
             : footerText?.append(' | Connexion')
     }
 }
+
+customElements.define('wcf-footer', Footer);

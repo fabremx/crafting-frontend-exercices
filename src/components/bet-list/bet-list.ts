@@ -1,4 +1,4 @@
-import css from './wcf-bet-list.scss';
+import css from './bet-list.scss';
 import { getBetList } from "../../api/getBetList";
 import { BetInfo } from "../../models/bet";
 import loaderIcon from '../../assets/loader.gif'
@@ -57,7 +57,9 @@ export class BetList extends HTMLElement {
         betListElement.removeAttribute('hidden');
         const betItems = this.betInfos.reduce(
             (acc: string, bet: BetInfo) => `${acc}<wcf-bet-item bet='${JSON.stringify(bet)}'></wcf-bet-item>`,
-        '');
+            '');
         betListElement.innerHTML = betItems;
     }
 }
+
+customElements.define('wcf-bet-list', BetList);

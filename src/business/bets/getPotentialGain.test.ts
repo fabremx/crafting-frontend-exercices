@@ -1,11 +1,11 @@
 import { Bet } from "../../models/bet";
-import { CHOICE_1, CHOICE_DRAW } from "../../shared/constants/oddsChoice";
+import { CHOICE_LEFT, CHOICE_DRAW } from "../../shared/constants/oddsChoice";
 import { getPotentialGain } from "./getPotentialGain";
 
 const EMPTY_BETS: Bet[] = [];
 const FILLED_BETS: Bet[] = [{
     gameId: 'id1',
-    selectedChoice: CHOICE_1,
+    selectedChoice: CHOICE_LEFT,
     selectedOdd: 1.52,
 },
 {

@@ -1,12 +1,18 @@
 import { AnyAction } from "redux";
 import { updateSelectedBets } from "../business/bets/updateSelectedBets";
-import { UPDATE_BET_INFOS, UPDATE_SELECTED_BET, UPDATE_STARTING_BET } from "./actions";
+import { UPDATE_BET_INFOS, UPDATE_SELECTED_BET, UPDATE_STARTING_BET, UPDATE_USER } from "./actions";
 import { ApplicationState } from "./applicationState";
 
 export const initialApplicationState: ApplicationState = {
     betInfos: [],
     selectedBets: [],
-    startingBet: 0
+    startingBet: 0,
+    user: {
+        firstname: 'Jack',
+        lastname: 'Dupont',
+        age: 47,
+        isPremium: false
+    }
 };
 export const reducer = (state: ApplicationState = initialApplicationState, action: AnyAction): ApplicationState => {
     switch (action.type) {
@@ -19,6 +25,9 @@ export const reducer = (state: ApplicationState = initialApplicationState, actio
         case UPDATE_BET_INFOS:
             const { betInfos } = action.payload;
             return { ...state, betInfos };
+        case UPDATE_USER:
+            const { user } = action.payload;
+            return { ...state, user };
     }
     return state;
 }

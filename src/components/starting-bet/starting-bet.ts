@@ -2,7 +2,7 @@ import { doUpdateStartingBet } from '../../state/actions';
 import { selectSelectedBets } from '../../state/selectors';
 import { reduxStore } from '../../state/store';
 import { CustomHTMLElement } from '../../utils/customHTMLElement';
-import css from './wcf-starting-bet.scss';
+import css from './starting-bet.scss';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -23,7 +23,7 @@ export class StartingBet extends CustomHTMLElement {
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
-        
+
         reduxStore.subscribe(this.handleApplicationStateChange.bind(this));
         this.shadowRoot?.querySelector('input')!.addEventListener('keyup', this.emitStartingBet.bind(this));
     }
@@ -40,3 +40,5 @@ export class StartingBet extends CustomHTMLElement {
         reduxStore.dispatch(doUpdateStartingBet(startingBet));
     }
 }
+
+customElements.define('wcf-starting-bet', StartingBet);

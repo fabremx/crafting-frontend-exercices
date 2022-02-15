@@ -1,7 +1,9 @@
 import { BetInfo } from "../../models/bet";
 import { CHOICE_DRAW } from "../../shared/constants/oddsChoice";
+import { doUpdateSelectedBet } from "../../state/actions";
+import { reduxStore } from "../../state/store";
 import { findElementWith } from "../../utils/testing";
-import { BetItem } from "./wcf-bet-item";
+import { BetItem } from "./bet-item";
 
 const BET: BetInfo = {
     type: 'football',
@@ -16,7 +18,7 @@ const BET: BetInfo = {
 let betItem: BetItem = new BetItem();
 betItem.setAttribute('bet', JSON.stringify(BET))
 
-const spyDispatchEvent = jest.spyOn(window, 'dispatchEvent')
+reduxStore.dispatch = jest.fn()
 
 describe('BetItem Component', () => {
     it('should correctly render bet line', () => {
@@ -27,19 +29,7 @@ describe('BetItem Component', () => {
         // Click on Draw
         clickOnButtonNumber(2);
 
-        const expectedBetInfo = (spyDispatchEvent.mock.calls[0][0] as CustomEvent).detail.betInfo;
-        const expectedChoice = (spyDispatchEvent.mock.calls[0][0] as CustomEvent).detail.choice;
-
-        expect(expectedBetInfo).toEqual({
-            type: 'football',
-            adversary1: 'Paris SG',
-            adversary2: 'Lyon',
-            gameId: '2',
-            odd1: 1.12,
-            odddraw: 2.5,
-            odd2: 3.62
-        })
-        expect(expectedChoice).toBe(CHOICE_DRAW)
+        expect(reduxStore.dispatch).toHaveBeenCalledWith(doUpdateSelectedBet(BET, CHOICE_DRAW))
     });
 });
 
