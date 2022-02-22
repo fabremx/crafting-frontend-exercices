@@ -6,11 +6,6 @@ export const selectSelectedBets = (): Bet[] => {
     return selectedBets;
 }
 
-export const selectStartingBet = (): number => {
-    const { startingBet } = reduxStore.getState();
-    return startingBet;
-}
-
 export const selectUser = (): User => {
     const { user } = reduxStore.getState();
     return user;

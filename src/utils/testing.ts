@@ -1,3 +1,10 @@
+export function mockPropsTo(element: Element) {
+    return function (key: string, value: unknown) {
+        const stringifiedValue = typeof value === 'string' ? value : JSON.stringify(value)
+        element.setAttribute(key, stringifiedValue)
+    }
+}
+
 export function dispatchMockedEventWith(element: Element) {
     return function (key: string, value: number | string) {
         const inputElement = element.shadowRoot?.querySelector('input')!;

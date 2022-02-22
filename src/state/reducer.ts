@@ -5,7 +5,6 @@ import { ApplicationState } from "./applicationState";
 
 export const initialApplicationState: ApplicationState = {
     selectedBets: [],
-    startingBet: 0,
     user: {
         firstname: 'Jack',
         lastname: 'Dupont',
@@ -18,9 +17,6 @@ export const reducer = (state: ApplicationState = initialApplicationState, actio
         case UPDATE_SELECTED_BET:
             const { betInfo, choice } = action.payload;
             return { ...state, selectedBets: updateSelectedBets(state.selectedBets, betInfo, choice) };
-        case UPDATE_STARTING_BET:
-            const { startingBet } = action.payload;
-            return { ...state, startingBet };
         case UPDATE_USER:
             const { user } = action.payload;
             return { ...state, user };

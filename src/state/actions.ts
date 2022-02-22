@@ -9,11 +9,6 @@ export const doUpdateSelectedBet = (betInfo: BetInfo, choice: BetChoice) => ({
     payload: { betInfo, choice }
 })
 
-export const doUpdateStartingBet = (startingBet: number) => ({
-    type: UPDATE_STARTING_BET,
-    payload: { startingBet }
-})
-
 export const doUpdateUser = (user: User) => ({
     type: UPDATE_USER,
     payload: { user }

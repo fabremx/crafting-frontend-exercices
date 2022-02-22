@@ -1,8 +1,9 @@
 import { CHOICE_LEFT } from "../../shared/constants/oddsChoice";
 import { BetsSummary } from "./bets-summary";
-import { doUpdateSelectedBet, doUpdateStartingBet, doUpdateUser } from "../../state/actions";
+import { doUpdateSelectedBet, doUpdateUser } from "../../state/actions";
 import { User, BetInfo } from "../../models";
 import { reduxStore } from '../../state/store';
+import { mockPropsTo } from "../../utils/testing";
 
 const DUMMY_USER: Omit<User, 'isPremium'> = {
     firstname: 'Claude',
@@ -20,14 +21,17 @@ const DUMMY_BET_INFO: BetInfo = {
 }
 
 let betsSummary: BetsSummary;
+let addProps: Function;
 
 describe('Bets-Summary Component', () => {
     beforeEach(() => {
         // When
         betsSummary = new BetsSummary();
 
+        addProps = mockPropsTo(betsSummary)
+        addProps('startingbet', 100)
+
         reduxStore.dispatch(doUpdateSelectedBet(DUMMY_BET_INFO, CHOICE_LEFT))
-        reduxStore.dispatch(doUpdateStartingBet(100))
     })
 
     it('should render correctly info when user is NOT premium', async () => {

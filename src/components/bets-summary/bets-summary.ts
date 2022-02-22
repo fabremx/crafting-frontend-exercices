@@ -2,7 +2,7 @@ import css from './bets-summary.scss';
 import { getPotentialGain } from "../../business/bets/getPotentialGain";
 import { reduxStore } from '../../state/store';
 import { Bet } from "../../models/bet";
-import { selectSelectedBets, selectStartingBet, selectUser } from '../../state/selectors';
+import { selectSelectedBets, selectUser } from '../../state/selectors';
 import { CustomHTMLElement } from '../../utils/customHTMLElement';
 
 const template = document.createElement('template');
@@ -18,6 +18,10 @@ template.innerHTML = `
 `;
 
 export class BetsSummary extends CustomHTMLElement {
+    private selectedBets: Bet[] = [];
+    private startingBet: number = 0;
+    private isUserPremium: boolean = false;
+
     constructor() {
         super();
 
@@ -27,19 +31,36 @@ export class BetsSummary extends CustomHTMLElement {
         reduxStore.subscribe(this.handleApplicationStateChange.bind(this));
     }
 
-    handleApplicationStateChange() {
-        const startingBet = selectStartingBet();
-        const selectedBets = selectSelectedBets();
-        const user = selectUser();
-
-        const shouldDisplay = startingBet > 0 && selectedBets.length > 0;
-        this.toggleDisplay('.bets-summary', shouldDisplay);
-        this.updateSummaryInfo(selectedBets, startingBet, user.isPremium);
+    static get observedAttributes() {
+        return ['startingbet']
     }
 
-    updateSummaryInfo(selectedBets: Bet[], startingBet: number, isPremium: boolean) {
-        this.shadowRoot!.querySelector('.bets-summary__info--bets-number')!.textContent = `Nombre de paris joués: ${selectedBets.length}`
-        this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(startingBet, selectedBets, isPremium)}`
+    attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
+        switch (name) {
+            case 'startingbet':
+                this.startingBet = Number(newValue);
+                break;
+        }
+
+        this.handleDisplay();
+    }
+
+    handleApplicationStateChange() {
+        this.selectedBets = selectSelectedBets();
+        this.isUserPremium = selectUser().isPremium;
+
+        this.handleDisplay();
+    }
+
+    handleDisplay() {
+        const shouldDisplay = this.startingBet > 0 && this.selectedBets.length > 0;
+        this.toggleDisplay('.bets-summary', shouldDisplay);
+        this.updateSummaryInfo();
+    }
+
+    updateSummaryInfo() {
+        this.shadowRoot!.querySelector('.bets-summary__info--bets-number')!.textContent = `Nombre de paris joués: ${this.selectedBets.length}`
+        this.shadowRoot!.querySelector('.bets-summary__info--potential-gain')!.textContent = `Potentiel gain: ${getPotentialGain(this.startingBet, this.selectedBets, this.isUserPremium)}`
     }
 }
 

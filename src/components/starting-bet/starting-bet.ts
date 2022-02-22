@@ -1,4 +1,3 @@
-import { doUpdateStartingBet } from '../../state/actions';
 import { selectSelectedBets } from '../../state/selectors';
 import { reduxStore } from '../../state/store';
 import { CustomHTMLElement } from '../../utils/customHTMLElement';
@@ -37,7 +36,7 @@ export class StartingBet extends CustomHTMLElement {
 
     emitStartingBet() {
         const startingBet = Number(this.shadowRoot?.querySelector('input')?.value!) || 0;
-        reduxStore.dispatch(doUpdateStartingBet(startingBet));
+        window.dispatchEvent(new CustomEvent('UPDATE_STARTING_BET', { detail: { startingBet } }))
     }
 }
 

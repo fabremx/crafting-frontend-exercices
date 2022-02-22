@@ -1,7 +1,8 @@
 import css from './bets-page.scss'
 import { reduxStore } from '../../state/store';
-import { selectSelectedBets, selectStartingBet } from '../../state/selectors';
+import { selectSelectedBets } from '../../state/selectors';
 import { CustomHTMLElement } from '../../utils/customHTMLElement';
+import { Bet } from '../../models';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -19,6 +20,9 @@ template.innerHTML = `
 `;
 
 export class BetsPage extends CustomHTMLElement {
+    private selectedBets: Bet[] = [];
+    private startingBet: number | undefined;
+
     constructor() {
         super();
 
@@ -26,14 +30,32 @@ export class BetsPage extends CustomHTMLElement {
             .appendChild(template.content.cloneNode(true));
 
         reduxStore.subscribe(this.handleApplicationStateChange.bind(this));
+        window.addEventListener('UPDATE_STARTING_BET', ((event: Event) => this.updateStartingBet(event as CustomEvent)).bind(this));
     }
 
     handleApplicationStateChange() {
-        const startingBet = selectStartingBet();
-        const selectedBets = selectSelectedBets();
+        this.selectedBets = selectSelectedBets();
 
-        const shouldDisplay = startingBet > 0 && selectedBets.length > 0;
+        this.handleDisplay();
+    }
+
+    updateStartingBet(event: CustomEvent) {
+        this.startingBet = event.detail.startingBet;
+
+        this.setBetsSummaryAttribute('startingbet', this.startingBet);
+        this.handleDisplay();
+    }
+
+    handleDisplay() {
+        const shouldDisplay = Boolean(this.startingBet && this.selectedBets.length);
         this.toggleDisplay('button', shouldDisplay);
+    }
+
+    setBetsSummaryAttribute(key: string, value: unknown) {
+        const betsSummaryElement = this.shadowRoot?.querySelector('wcf-bets-summary');
+
+        const stringifiedValue = typeof value === 'string' ? value : JSON.stringify(value)
+        betsSummaryElement?.setAttribute(key, stringifiedValue);
     }
 }
 
