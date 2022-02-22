@@ -1,10 +1,9 @@
 import { AnyAction } from "redux";
 import { updateSelectedBets } from "../business/bets/updateSelectedBets";
-import { UPDATE_BET_INFOS, UPDATE_SELECTED_BET, UPDATE_STARTING_BET, UPDATE_USER } from "./actions";
+import { UPDATE_SELECTED_BET, UPDATE_STARTING_BET, UPDATE_USER } from "./actions";
 import { ApplicationState } from "./applicationState";
 
 export const initialApplicationState: ApplicationState = {
-    betInfos: [],
     selectedBets: [],
     startingBet: 0,
     user: {
@@ -22,9 +21,6 @@ export const reducer = (state: ApplicationState = initialApplicationState, actio
         case UPDATE_STARTING_BET:
             const { startingBet } = action.payload;
             return { ...state, startingBet };
-        case UPDATE_BET_INFOS:
-            const { betInfos } = action.payload;
-            return { ...state, betInfos };
         case UPDATE_USER:
             const { user } = action.payload;
             return { ...state, user };
