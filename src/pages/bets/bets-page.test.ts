@@ -1,105 +1,115 @@
+import puppeteer from 'puppeteer';
 
-import { dispatchMockedEventWith, findElementWith, isVisible } from "../../utils/testing";
-import { BetsPage } from "./bets-page";
-import * as apiModule from "../../api/getBetList";
-import { BetInfo } from "../../models/bet";
-import { BetList } from "../../components/bet-list/bet-list";
-import { StartingBet } from "../../components/starting-bet/starting-bet";
+const BET_LIST_IDENTIFIER = '.bet-list';
+const BET_ITEM_IDENTIFIER = '.bet-item';
+const STARTING_BET_IDENTIFIER = '.starting-bet';
+const BETS_SUMMARY_IDENTIFIER = '.bets-summary';
+const VALIDATION_BUTTON_IDENTIFIER = '.bet-page__validation button';
 
-let dispatchEvent: Function;
-let betListTag: Element | null | undefined;
-let startingBetTag: Element | null | undefined;
-let betsSummaryTag: Element | null | undefined;
-let validationButton: Element | null | undefined;
+describe('Bets Page', () => {
+    let browser: puppeteer.Browser;
+    let page: puppeteer.Page;
 
-const dummyBets: BetInfo[] = [
-    {
-        gameId: '1',
-        type: 'football',
-        adversary1: 'Paris SG',
-        adversary2: 'Lyon',
-        odd1: 1.52,
-        odddraw: 2.20,
-        odd2: 2.57
-    },
-    {
-        gameId: '2',
-        type: 'football',
-        adversary1: 'Marseille',
-        adversary2: 'Montpellier',
-        odd1: 1.77,
-        odddraw: 2.20,
-        odd2: 2.61
-    }
-]
-jest.spyOn(apiModule, 'getBetList').mockResolvedValue(dummyBets);
+    beforeEach(async () => {
+        browser = await puppeteer.launch()
+        page = await browser.newPage();
 
-describe.skip('Bets Pages Component', () => {
-    const betsPage = new BetsPage();
-
-    beforeEach(() => {
-        betListTag = findElementWith(betsPage, 'wcf-bet-list')
-        startingBetTag = findElementWith(betsPage, 'wcf-starting-bet')
-        betsSummaryTag = findElementWith(betsPage, 'wcf-bets-summary')
-        validationButton = findElementWith(betsPage, '.bet-page__validation')
+        await page.goto('http://localhost:3000');
+        await page.waitForTimeout(2000);
     })
 
-    describe('When user did NOT select any bets', () => {
-        it('should NOT render starting bet component', () => {
-            expect(isVisible(startingBetTag)).toBe(false);
-        });
-
-        it('should NOT render bets summary component', () => {
-            expect(isVisible(startingBetTag)).toBe(false);
-        });
+    afterEach(async () => {
+        await browser.close();
     });
 
-    describe('When user select one or many bets', () => {
-        beforeAll(async () => {
-            const betListComponent = new BetList();
-            await betListComponent.connectedCallback();
-            selectOneBet(betListComponent)
-        })
+    it('should render only the bets list block when user load bets page', async () => {
+        const isBetListDisplayed = await isBlockDisplayed(page, BET_LIST_IDENTIFIER);
+        const isStartingBetDisplayed = await isBlockDisplayed(page, STARTING_BET_IDENTIFIER);
+        const isBetsSummaryDisplayed = await isBlockDisplayed(page, BETS_SUMMARY_IDENTIFIER);
 
-        it('should render corrects component when user did NOT set starting bet', async () => {
-            expect(isVisible(startingBetTag)).toBe(true);
-            expect(isVisible(betsSummaryTag)).toBe(false);
-        });
+        expect(isBetListDisplayed).toBe(true)
+        expect(isStartingBetDisplayed).toBe(false)
+        expect(isBetsSummaryDisplayed).toBe(false)
+    });
 
-        describe('When user set starting bet', () => {
-            beforeAll(() => {
-                const startingBetComponent = new StartingBet()
-                dispatchEvent = dispatchMockedEventWith(startingBetComponent)
-            })
+    it('should render the starting bet block when user select at least one bet', async () => {
+        const button = await selectBetButton(page, { line: 1, button: 1 });
+        await button?.click();
 
-            it('should NOT render bets list component when user set starting bet to 0', () => {
-                setStartingBet(0)
-                expect(isVisible(betsSummaryTag)).toBe(false);
-                expect(isVisible(validationButton)).toBe(false);
-            });
+        const isStartingBetDisplayed = await isBlockDisplayed(page, STARTING_BET_IDENTIFIER);
+        expect(isStartingBetDisplayed).toBe(true)
+    });
 
-            it('should NOT render bets list component when user set a non number starting bet', () => {
-                setStartingBet('e')
-                expect(isVisible(betsSummaryTag)).toBe(false);
-                expect(isVisible(validationButton)).toBe(false);
-            });
+    it('should render the bets summary block when user select at least one bet AND enter a valid starting bet', async () => {
+        const button = await selectBetButton(page, { line: 1, button: 1 });
+        await button?.click();
 
-            it('should render bets list component when user set starting bet', () => {
-                setStartingBet(100)
-                expect(isVisible(betsSummaryTag)).toBe(true);
-                expect(isVisible(validationButton)).toBe(true);
-            });
-        })
+        const input = await selectStartingBetInput(page)
+        await input?.type('100');
+
+        const isBetsSummaryDisplayed = await isBlockDisplayed(page, BETS_SUMMARY_IDENTIFIER);
+        expect(isBetsSummaryDisplayed).toBe(true)
+    });
+
+    it('should NOT render the bets summary block when user select at least one bet AND enter a NOT valid starting bet', async () => {
+        const button = await selectBetButton(page, { line: 1, button: 1 });
+        await button?.click();
+
+        const input = await selectStartingBetInput(page)
+        await input?.type('dioretgnb');
+
+        const isBetsSummaryDisplayed = await isBlockDisplayed(page, BETS_SUMMARY_IDENTIFIER);
+        expect(isBetsSummaryDisplayed).toBe(false)
+    });
+
+    it('should hide the bets summary block when user delete his existing starting bet', async () => {
+        const button = await selectBetButton(page, { line: 1, button: 1 });
+        await button?.click();
+
+        const input = await selectStartingBetInput(page)
+        await input?.type('1');
+        await input?.press('Backspace')
+
+        const isBetsSummaryDisplayed = await await isBlockDisplayed(page, BETS_SUMMARY_IDENTIFIER);
+        expect(isBetsSummaryDisplayed).toBe(false)
+    });
+
+    it('should display correct bets information when user select 2 bets (odds 1.24 and 2.50) with 100 € as starting bet', async () => {
+        const firstLineButton = await selectBetButton(page, { line: 1, button: 1 });
+        const SecondLineButton = await selectBetButton(page, { line: 2, button: 1 });
+        await firstLineButton?.click();
+        await SecondLineButton?.click();
+
+        const input = await selectStartingBetInput(page)
+        await input?.type('100');
+
+        const summaryContent = await page.$eval(`pierce/${BETS_SUMMARY_IDENTIFIER}`, (e) => e.textContent);
+        expect(summaryContent).toContain('Nombre de paris joués: 2');
+        expect(summaryContent).toContain('Potentiel gain: 138');
+    });
+
+    it('should display validation button when user select at least one bet AND set a starting bet', async () => {
+        const button = await selectBetButton(page, { line: 1, button: 1 });
+        await button?.click();
+
+        const input = await selectStartingBetInput(page)
+        await input?.type('100');
+
+        const isValidationButtonDisplayed = await isBlockDisplayed(page, VALIDATION_BUTTON_IDENTIFIER);
+        expect(isValidationButtonDisplayed).toBe(true)
     });
 });
 
-function selectOneBet(element: Element) {
-    const firstBetLine = element?.shadowRoot?.querySelectorAll('.bet')[0]
-    const firstBetButton = firstBetLine?.querySelectorAll('button')[0]
-
-    firstBetButton?.click();
+function isBlockDisplayed(page: puppeteer.Page, blockIdentifier: string) {
+    return page.$eval(`pierce/${blockIdentifier}`, (e) => !e.hasAttribute('hidden'));
 }
 
-function setStartingBet(value: number | string) {
-    dispatchEvent('keyup', value.toString());
+async function selectBetButton(page: puppeteer.Page, { line, button }: { line: number; button: number }) {
+    const betItems = await page.$$(`pierce/${BET_ITEM_IDENTIFIER}`);
+    const buttons = await betItems[line - 1].$$('button');
+    return buttons[button - 1];
+}
+
+function selectStartingBetInput(page: puppeteer.Page) {
+    return page.$(`pierce/${STARTING_BET_IDENTIFIER} input`);
 }
