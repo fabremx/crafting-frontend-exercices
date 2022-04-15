@@ -13,7 +13,7 @@ template.innerHTML = `
 
 <div class="bet-list" hidden>
     <h3>Liste des paris - Football</h3>
-    <div class="bet-list-element"></div>
+    <div class="bet-list__container"></div>
 </div>
 `;
 
@@ -38,12 +38,13 @@ export class BetList extends HTMLElement {
 
     displayBetList(betInfos: BetInfo[]) {
         const betListElement = this.shadowRoot!.querySelector('.bet-list')!;
+        const betListContainerElement = this.shadowRoot!.querySelector('.bet-list__container')!;
 
         betListElement.removeAttribute('hidden');
         const betItems = betInfos.reduce(
             (acc: string, bet: BetInfo) => `${acc}<wcf-bet-item bet='${JSON.stringify(bet)}'></wcf-bet-item>`,
             '');
-        betListElement.innerHTML = betItems;
+        betListContainerElement.innerHTML = betItems;
     }
 }
 
