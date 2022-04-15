@@ -1,4 +1,4 @@
-export type OddsInfo = {
+export type BackendOddsInfo = {
     id: string;
     gameId: string;
     odd1: number;

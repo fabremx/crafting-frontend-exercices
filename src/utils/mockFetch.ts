@@ -1,7 +1,7 @@
-import { GameInfo } from "../models/game";
-import { OddsInfo } from "../models/odds";
+import { BackendGameInfo } from "../models/game";
+import { BackendOddsInfo } from "../models/odds";
 
-export function mockFetch(endpoint: string): Promise<GameInfo[] | OddsInfo[]> {
+export function mockFetch(endpoint: string): Promise<BackendGameInfo[] | BackendOddsInfo[]> {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             if (endpoint.includes('games')) {
@@ -17,7 +17,7 @@ export function mockFetch(endpoint: string): Promise<GameInfo[] | OddsInfo[]> {
     })
 }
 
-const gameList: GameInfo[] = [
+const gameList: BackendGameInfo[] = [
     {
         id: '1',
         type: 'football',
@@ -38,7 +38,7 @@ const gameList: GameInfo[] = [
     },
 ];
 
-const oddsList: OddsInfo[] = [
+const oddsList: BackendOddsInfo[] = [
     {
         id: 'e54rcds78',
         gameId: '1',
