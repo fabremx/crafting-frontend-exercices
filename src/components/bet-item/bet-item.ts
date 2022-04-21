@@ -1,6 +1,6 @@
 import css from './bet-item.scss';
-import betIcon from '../../assets/bet.png'
-import { BetInfo } from '../../models/bet';
+import betIcon from '../../../assets/bet.png'
+import { BetInfo } from '../../models';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -86,6 +86,10 @@ export class BetItem extends HTMLElement {
         })
     }
 
+    /**
+     * Function should be called when user select a odds
+     * @param buttonElement Element
+     */
     handleSelectBet(buttonElement: Element) {
         this.selectClickedButton(buttonElement);
     }

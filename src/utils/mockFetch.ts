@@ -1,6 +1,14 @@
-import { BackendGameInfo } from "../models/game";
-import { BackendOddsInfo } from "../models/odds";
+/**
+ * DO NOT TOUCH THIS FILE
+ */
 
+import { BackendGameInfo } from "../models";
+import { BackendOddsInfo } from "../models";
+
+/**
+ * Allow you to simulate a fake API call
+ * @param endpoint 'games' or 'odds'
+ */
 export function mockFetch(endpoint: string): Promise<BackendGameInfo[] | BackendOddsInfo[]> {
     return new Promise((resolve, reject) => {
         setTimeout(() => {

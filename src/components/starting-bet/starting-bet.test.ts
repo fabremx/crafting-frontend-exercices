@@ -28,7 +28,7 @@ describe('Starting-Bet Component', () => {
     });
 });
 
-function dispatchMockedEventWith(element: Element) {
+function dispatchMockedEventWith(element: Element): Function {
     return function (key: string, value: number | string) {
         const inputElement = element.shadowRoot?.querySelector('input')!;
         inputElement.value = value.toString();
