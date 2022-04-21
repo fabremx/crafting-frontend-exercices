@@ -1,5 +1,6 @@
 import css from './bet-item.scss';
 import betIcon from '../../assets/bet.png'
+import { BetInfo } from '../../models/bet';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -32,7 +33,7 @@ template.innerHTML = `
 `;
 
 export class BetItem extends HTMLElement {
-    private _bet: any | undefined;
+    private _bet: BetInfo | undefined;
 
     constructor() {
         super();
