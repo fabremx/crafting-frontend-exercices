@@ -69,7 +69,7 @@ describe('Bets Page', () => {
         await input?.type('1');
         await input?.press('Backspace')
 
-        const isBetsSummaryDisplayed = await await isBlockDisplayed(page, BETS_SUMMARY_IDENTIFIER);
+        const isBetsSummaryDisplayed = await isBlockDisplayed(page, BETS_SUMMARY_IDENTIFIER);
         expect(isBetsSummaryDisplayed).toBe(false)
     });
 
