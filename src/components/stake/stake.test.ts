@@ -1,21 +1,21 @@
-import { StartingBet } from "./starting-bet";
+import { Stake } from "./stake";
 
 let dispatchEvent: Function;
-let startingBet: StartingBet;
+let stake: Stake;
 
 const spyDispatchEvent = jest.spyOn(window, 'dispatchEvent')
 
-describe('Starting-Bet Component', () => {
+describe('Stake Component', () => {
     beforeEach(() => {
-        startingBet = new StartingBet();
-        dispatchEvent = dispatchMockedEventWith(startingBet);
+        stake = new Stake();
+        dispatchEvent = dispatchMockedEventWith(stake);
     });
 
     it('should render correctly the component', () => {
-        expect(startingBet?.shadowRoot?.innerHTML).toMatchSnapshot();
+        expect(stake?.shadowRoot?.innerHTML).toMatchSnapshot();
     });
 
-    it('should emit new starting bet event when user choose a starting bet', () => {
+    it('should emit new stake event when user choose a stake', () => {
         // Given
         const userInput = "2"
 
@@ -23,8 +23,8 @@ describe('Starting-Bet Component', () => {
         dispatchEvent('keyup', userInput);
 
         // Then
-        const expectedStartingBet = (spyDispatchEvent.mock.calls[0][0] as CustomEvent).detail.startingBet;
-        expect(expectedStartingBet).toBe(userInput)
+        const expectedStake = (spyDispatchEvent.mock.calls[0][0] as CustomEvent).detail.stake;
+        expect(expectedStake).toBe(userInput)
     });
 });
 
