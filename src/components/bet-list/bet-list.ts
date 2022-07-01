@@ -17,9 +17,9 @@ export class BetList extends HTMLElement {
         const betListElement = this.shadowRoot!.querySelector('.bet-list')!;
 
         betList.forEach((bet: any) => {
-            betListElement.insertAdjacentHTML('beforeend', `<wcf-bet-item bet='${JSON.stringify(bet)}'></wcf-bet-item>`);
+            betListElement.insertAdjacentHTML('beforeend', `<arl-bet-item bet='${JSON.stringify(bet)}'></arl-bet-item>`);
         });
     }
 }
 
-customElements.define('wcf-bet-list', BetList);
+customElements.define('arl-bet-list', BetList);

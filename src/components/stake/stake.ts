@@ -25,4 +25,4 @@ export class Stake extends HTMLElement {
     }
 }
 
-customElements.define('wcf-stake', Stake);
+customElements.define('arl-stake', Stake);

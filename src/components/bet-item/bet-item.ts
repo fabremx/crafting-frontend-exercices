@@ -105,4 +105,4 @@ export class BetItem extends HTMLElement {
     }
 }
 
-customElements.define('wcf-bet-item', BetItem);
+customElements.define('arl-bet-item', BetItem);
