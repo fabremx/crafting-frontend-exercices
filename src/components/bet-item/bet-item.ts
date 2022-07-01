@@ -1,6 +1,6 @@
 import css from './bet-item.scss';
 import betIcon from '../../../assets/bet.png'
-import { BetInfo } from '../../models';
+import { GameOdds } from '../../models';
 
 const CHOICE_LEFT = '1';
 const CHOICE_DRAW = 'draw';
@@ -37,7 +37,7 @@ template.innerHTML = `
 `;
 
 export class BetItem extends HTMLElement {
-    private _bet: BetInfo | undefined;
+    private _bet: GameOdds | undefined;
 
     constructor() {
         super();
@@ -100,7 +100,7 @@ export class BetItem extends HTMLElement {
         this.sentSelectedBet(this.bet, choice)
     }
 
-    sentSelectedBet(betInfo: BetInfo, choice: string) {
+    sentSelectedBet(betInfo: GameOdds, choice: string) {
         window.dispatchEvent(new CustomEvent('CLICK_BET', { detail: { betInfo, choice } }))
     }
 }

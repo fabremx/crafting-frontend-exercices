@@ -2,14 +2,14 @@
  * DO NOT TOUCH THIS FILE
  */
 
-import { BackendGameInfo } from "../models";
-import { BackendOddsInfo } from "../models";
+import { GameApiResponse } from "../models";
+import { OddsApiResponse } from "../models";
 
 /**
  * Allow you to simulate a fake API call
  * @param endpoint 'games' or 'odds'
  */
-export function mockFetch(endpoint: string): Promise<BackendGameInfo[] | BackendOddsInfo[]> {
+export function mockFetch(endpoint: string): Promise<GameApiResponse[] | OddsApiResponse[]> {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             if (endpoint.includes('games')) {
@@ -25,47 +25,44 @@ export function mockFetch(endpoint: string): Promise<BackendGameInfo[] | Backend
     })
 }
 
-const gameList: BackendGameInfo[] = [
+const gameList: GameApiResponse[] = [
     {
         id: '1',
-        type: 'football',
-        adversary1: 'Nice',
-        adversary2: 'FC Lorient'
+        team1: 'Nice',
+        team2: 'FC Lorient'
     },
     {
         id: '2',
-        type: 'football',
-        adversary1: 'Paris SG',
-        adversary2: 'Lyon'
+        team1: 'Paris SG',
+        team2: 'Lyon'
     },
     {
         id: '3',
-        type: 'football',
-        adversary1: 'Marseille',
-        adversary2: 'Montpellier'
+        team1: 'Marseille',
+        team2: 'Montpellier'
     },
 ];
 
-const oddsList: BackendOddsInfo[] = [
+const oddsList: OddsApiResponse[] = [
     {
         id: 'e54rcds78',
         gameId: '1',
-        odd1: 1.24,
-        oddDraw: 2.18,
-        odd2: 2.57
+        oddsTeam1: 1.24,
+        oddsDraw: 2.18,
+        oddsTeam2: 2.57
     },
     {
         id: 'vc14sz85',
         gameId: '2',
-        odd1: 1.12,
-        oddDraw: 2.50,
-        odd2: 3.62
+        oddsTeam1: 1.12,
+        oddsDraw: 2.50,
+        oddsTeam2: 3.62
     },
     {
         id: 'eaws4dc36',
         gameId: '3',
-        odd1: 1.77,
-        oddDraw: 2.51,
-        odd2: 2.90
+        oddsTeam1: 1.77,
+        oddsDraw: 2.51,
+        oddsTeam2: 2.90
     },
 ];
