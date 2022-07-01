@@ -2,6 +2,10 @@ import css from './bet-item.scss';
 import betIcon from '../../../assets/bet.png'
 import { BetInfo } from '../../models';
 
+const CHOICE_LEFT = '1';
+const CHOICE_DRAW = 'draw';
+const CHOICE_RIGHT = '2';
+
 const template = document.createElement('template');
 template.innerHTML = `
 <style>${css}</style>
@@ -40,6 +44,11 @@ export class BetItem extends HTMLElement {
 
         this.attachShadow({ mode: 'open' })
             .appendChild(template.content.cloneNode(true));
+
+        const buttons = this.shadowRoot!.querySelectorAll('.bet-item__odds button');
+        buttons[0].addEventListener('click', () => this.handleSelectBet(buttons[0], CHOICE_LEFT));
+        buttons[1].addEventListener('click', () => this.handleSelectBet(buttons[1], CHOICE_DRAW));
+        buttons[2].addEventListener('click', () => this.handleSelectBet(buttons[2], CHOICE_RIGHT));
     }
 
     static get observedAttributes() {
@@ -86,12 +95,13 @@ export class BetItem extends HTMLElement {
         })
     }
 
-    /**
-     * Function should be called when user select a odds
-     * @param buttonElement Element
-     */
-    handleSelectBet(buttonElement: Element) {
+    handleSelectBet(buttonElement: Element, choice: string) {
         this.selectClickedButton(buttonElement);
+        this.sentSelectedBet(this.bet, choice)
+    }
+
+    sentSelectedBet(betInfo: BetInfo, choice: string) {
+        window.dispatchEvent(new CustomEvent('CLICK_BET', { detail: { betInfo, choice } }))
     }
 }
 

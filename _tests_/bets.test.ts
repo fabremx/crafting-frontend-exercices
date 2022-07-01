@@ -6,7 +6,7 @@ import puppeteer from 'puppeteer';
  * before launching tests
  */
 
-describe('Bets Page', () => {
+describe.skip('Bets Page', () => {
     let browser: puppeteer.Browser;
     let page: puppeteer.Page;
 
