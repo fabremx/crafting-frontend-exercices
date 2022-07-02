@@ -50,3 +50,49 @@ const myComponent = new MyComponent();
 // myComponent is a HTMLElement you can access to the DOM with classical js methods
 myComponent.shadowRoot.querySelector(...)
 ```
+
+## How to pass data to our components ?
+
+```HTML
+<!-- /!\ attributes must be in lowercase --> 
+<arl-footer is-user-connected="false"></arl-footer>​
+```
+
+```js
+class MyComponent extends HTMLElement {
+    ...
+
+     static get observedAttributes() {
+        return ['is-user-connected']
+    }
+
+    attributeChangedCallback(attributeName: string, _oldValue: string, newValue: string) {
+        // catch any attributes changes
+    }
+}
+```
+
+## Step 2 - Helpers
+
+code to render dynamic text ("Connexion" or "Déconnexion")
+
+```html
+<!-- Create empty p balise -->
+<p></p>
+```
+
+```ts
+appendText(isUserConnected: string) {
+        const footerText = this.shadowRoot?.querySelector('#footer p');
+
+        isUserConnected === 'true'
+            ? footerText!.textContent = 'Contact | Plan | Log out'
+            : footerText!.textContent = 'Contact | Plan | Log in';
+    }
+```
+
+How to do snapshot test with Jest ?
+
+```js
+expect(...).toMatchSnapshot();
+```
