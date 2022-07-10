@@ -1,17 +1,24 @@
-const template = document.createElement('template');
-template.innerHTML = `
-<div id="footer">
-    <h3>Need help ?</h3>
-    <p></p>
-</div>
-`;
+import { CustomHTMLElement } from '../../utils'
 
-export class Footer extends HTMLElement {
+const template = document.createElement('template')
+
+function createTemplate(text: string): string {
+    return `
+    <div id="footer">
+        <h3>Besoin d'aide ?</h3>
+        <p>${text}</p>
+    </div>
+    `
+}
+
+export class Footer extends CustomHTMLElement {
     constructor() {
-        super();
+        super()
 
         this.attachShadow({ mode: 'open' })
-            .appendChild(template.content.cloneNode(true));
+            .appendChild(template.content.cloneNode(true))
+
+        this.render()
     }
 
     static get observedAttributes() {
@@ -19,18 +26,21 @@ export class Footer extends HTMLElement {
     }
 
     attributeChangedCallback(attributeName: string, _oldValue: string, newValue: string) {
-        if (attributeName !== 'is-user-connected') return;
+        if (attributeName !== 'is-user-connected') {
+            return
+        }
 
-        this.appendText(newValue)
+        this.render(newValue)
     }
 
-    appendText(isUserConnected: string) {
-        const footerText = this.shadowRoot?.querySelector('#footer p');
+    render(isUserConnected?: string) {
+        const footerText = (isUserConnected === 'true')
+            ? 'Contact | Plan | Deconnexion'
+            : 'Contact | Plan | Connexion'
 
-        isUserConnected === 'true'
-            ? footerText!.textContent = 'Contact | Plan | Log out'
-            : footerText!.textContent = 'Contact | Plan | Log in';
+        const newTemplate = createTemplate(footerText)
+        this.renderComponent(newTemplate)
     }
 }
 
-customElements.define('arl-footer', Footer);
+customElements.define('arl-footer', Footer)

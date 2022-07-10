@@ -4,4 +4,5 @@ export type OddsApiResponse = {
     oddsTeam1: number;
     oddsDraw: number;
     oddsTeam2: number;
+    bookmakerName: string;
 }

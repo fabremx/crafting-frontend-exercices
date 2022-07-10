@@ -1,2 +1,2 @@
-export * from './gameApiResponse';
-export * from './oddsApiResponse';
+export * from './gameApiResponse'
+export * from './oddsApiResponse'

@@ -1,2 +1,3 @@
-export * from './gameOdds';
-export * from './api';
+export * from './games'
+export * from './api'
+export * from './bets'
