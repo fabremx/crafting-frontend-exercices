@@ -1,4 +1,4 @@
-import { formatAttributeValue, render } from '../../utils'
+import { stringify, render } from '../../utils'
 import { BettingItem } from './betting-item'
 
 let bettingItem: HTMLElement
@@ -14,7 +14,7 @@ const DUMMY_GAME_ODDS = {
 describe('BettingItem Component', () => {
   beforeEach(() => {
     bettingItem = render(BettingItem)
-    bettingItem.setAttribute('game-odds', formatAttributeValue(DUMMY_GAME_ODDS))
+    bettingItem.setAttribute('game-odds', stringify(DUMMY_GAME_ODDS))
   })
 
   it('should render component with unselected odds buttons', () => {

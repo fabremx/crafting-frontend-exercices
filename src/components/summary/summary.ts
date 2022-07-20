@@ -1,7 +1,7 @@
 import css from './summary.scss'
 import { BetSlip } from '../../models'
 import { getPotentialGains } from '../../business'
-import { CustomHTMLElement } from '../../utils'
+import { CustomHTMLElement, parse } from '../../utils'
 
 const template = document.createElement('template')
 
@@ -41,10 +41,10 @@ export class Summary extends CustomHTMLElement {
   attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
     switch (name) {
       case 'bets-slip':
-        this.betsSlip = JSON.parse(newValue)
+        this.betsSlip = parse(newValue) as BetSlip[]
         break
       case 'stake':
-        this.stake = Number(newValue)
+        this.stake = parse(newValue) as number
         break
       default:
         break

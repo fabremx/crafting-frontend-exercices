@@ -12,6 +12,14 @@ export function render(element: any): HTMLElement | CustomHTMLElement {
     return instance
 }
 
-export function formatAttributeValue(value: unknown): string {
+export function stringify(value: unknown): string {
     return typeof value === 'string' ? value : JSON.stringify(value)
+}
+
+export function parse(value: string): unknown {
+    try {
+        return JSON.parse(value)
+    } catch (e) {
+        return !isNaN(Number(value)) ? Number(value) : value
+    }
 }

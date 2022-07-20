@@ -1,6 +1,6 @@
 import { BetSlip } from '../../models'
 import { DRAW, TEAM_1_WINS } from '../../shared'
-import { formatAttributeValue, render } from '../../utils'
+import { stringify, render } from '../../utils'
 import { Summary } from './summary'
 
 const DUMMY_BETS_SLIP: BetSlip[] = [
@@ -23,8 +23,8 @@ describe('Bets-Summary Component', () => {
         const betsSummary = render(Summary)
 
         // When
-        betsSummary.setAttribute('bets-slip', formatAttributeValue(DUMMY_BETS_SLIP))
-        betsSummary.setAttribute('stake', formatAttributeValue(DUMMY_STAKE))
+        betsSummary.setAttribute('bets-slip', stringify(DUMMY_BETS_SLIP))
+        betsSummary.setAttribute('stake', stringify(DUMMY_STAKE))
 
         // Then
         expect(betsSummary?.shadowRoot?.innerHTML).toMatchSnapshot()

@@ -1,7 +1,7 @@
 import css from './betting-page.scss'
 import { BetSlip } from '../models'
 import { UPDATE_BETS_SLIP, UPDATE_STAKE } from '../shared'
-import { CustomHTMLElement, formatAttributeValue } from '../utils'
+import { CustomHTMLElement, stringify } from '../utils'
 
 import '../components/betting-list/betting-list'
 import '../components/stake/stake'
@@ -44,14 +44,14 @@ export class BettingPage extends CustomHTMLElement {
     updateBetsSlip(event: CustomEvent) {
         this.betsSlip = event.detail.betsSlip
 
-        this.setSummaryAttribute('bets-slip', formatAttributeValue(this.betsSlip))
+        this.setSummaryAttribute('bets-slip', stringify(this.betsSlip))
         this.toggleStakeRender()
     }
 
     updateStake(event: CustomEvent) {
         this.stake = event.detail.stake
 
-        this.setSummaryAttribute('stake', formatAttributeValue(this.stake))
+        this.setSummaryAttribute('stake', stringify(this.stake))
         this.toggleSummaryRender()
     }
 
@@ -69,7 +69,7 @@ export class BettingPage extends CustomHTMLElement {
 
     setSummaryAttribute(key: string, value: unknown) {
         const betsSummaryElement = this.shadowRoot?.querySelector('arl-summary') as HTMLElement
-        betsSummaryElement.setAttribute(key, formatAttributeValue(value))
+        betsSummaryElement.setAttribute(key, stringify(value))
     }
 }
 
