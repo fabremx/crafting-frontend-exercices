@@ -1,3 +1,4 @@
+import css from './betting-list.scss'
 import { updateSelectedBets } from '../../business/updateSelectedBets'
 import { BetChoice, BetSlip, GameOdds } from '../../models'
 import { fetchGameOdds } from '../../services/fetchGameOdds'
@@ -10,6 +11,8 @@ const template = document.createElement('template')
 
 function createTemplate(gameOddsList: GameOdds[]) {
   return `
+    <style>${css}</style>
+
     <div class="betting-list">
         <h3>Liste des paris - Football</h3>
         ${gameOddsList

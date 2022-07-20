@@ -1,9 +1,12 @@
+import css from './app.scss'
 import './src/components/header/header'
 import './src/components/footer/footer'
 import './src/pages/betting-page'
 
 const template = document.createElement('template')
 template.innerHTML = `
+<style>${css}</style>
+
 <div class="app">
     <arl-header></arl-header>
     <arl-betting-page></arl-betting-page>

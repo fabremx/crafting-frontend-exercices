@@ -1,3 +1,4 @@
+import css from './summary.scss'
 import { BetSlip } from '../../models'
 import { getPotentialGains } from '../../business'
 import { CustomHTMLElement } from '../../utils'
@@ -6,6 +7,8 @@ const template = document.createElement('template')
 
 function createTemplate(betSlipNumber: number, potentialGains: number) {
   return `
+    <style>${css}</style>
+
     <div class="summary">
         <h3 class="summary__title">Récapitulatif de vos paris</h3>
         <div class="summary__info">

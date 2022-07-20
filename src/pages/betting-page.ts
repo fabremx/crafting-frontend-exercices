@@ -1,3 +1,4 @@
+import css from './betting-page.scss'
 import { BetSlip } from '../models'
 import { UPDATE_BETS_SLIP, UPDATE_STAKE } from '../shared'
 import { CustomHTMLElement, formatAttributeValue } from '../utils'
@@ -8,6 +9,8 @@ import '../components/summary/summary'
 
 const template = document.createElement('template')
 template.innerHTML = `
+<style>${css}</style>
+
 <div class="betting-page">
     <arl-betting-list></arl-betting-list>
     <arl-stake hidden data-test="test"></arl-stake>
