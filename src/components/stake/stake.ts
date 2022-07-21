@@ -1,10 +1,7 @@
-import css from './stake.scss'
 import { UPDATE_STAKE } from '../../shared'
 
 const template = document.createElement('template')
 template.innerHTML = `
-<style>${css}</style>
-
 <div class="stake">
     <h3 class="stake__title">Votre Mise</h3>
     <div class="stake__input">

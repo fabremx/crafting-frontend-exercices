@@ -1,11 +1,11 @@
 import { CustomHTMLElement } from './customHTMLElement'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function render(element: any): HTMLElement | CustomHTMLElement {
+export async function render(element: any): Promise<HTMLElement | CustomHTMLElement> {
     const instance = new element()
 
     if (typeof instance.connectedCallback == 'function') {
-        instance.connectedCallback()
+        await instance.connectedCallback()
         return instance
     }
 

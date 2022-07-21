@@ -7,8 +7,8 @@ let stake: HTMLElement
 const spyDispatchEvent = jest.spyOn(window, 'dispatchEvent')
 
 describe('Stake Component', () => {
-    beforeEach(() => {
-        stake = render(Stake)
+    beforeEach(async () => {
+        stake = await render(Stake)
         dispatchEvent = dispatchMockedEventWith(stake)
     })
 

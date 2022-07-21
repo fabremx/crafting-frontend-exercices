@@ -1,26 +1,21 @@
-import css from './summary.scss'
-import { BetSlip } from '../../models'
-import { getPotentialGains } from '../../business'
 import { CustomHTMLElement, parse } from '../../utils'
 
 const template = document.createElement('template')
 
-function createTemplate(betSlipNumber: number, potentialGains: number) {
+function createTemplate() {
   return `
-    <style>${css}</style>
-
     <div class="summary">
         <h3 class="summary__title">Récapitulatif de vos paris</h3>
         <div class="summary__info">
-            <p class="summary__info--bets-slip">Nombre de paris joués: ${betSlipNumber}</p>
-            <p class="summary__info--potential-gains">Potentiel gain: ${potentialGains} €</p>
+            <p class="summary__info--bets-slip">Nombre de paris joués: </p>
+            <p class="summary__info--potential-gains">Potentiel gain: €</p>
         </div>
     </div>
     `
 }
 
 export class Summary extends CustomHTMLElement {
-  private betsSlip: BetSlip[] = []
+  private betsSlip: unknown[] = []
   private stake = 0
 
   constructor() {
@@ -41,7 +36,7 @@ export class Summary extends CustomHTMLElement {
   attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
     switch (name) {
       case 'bets-slip':
-        this.betsSlip = parse(newValue) as BetSlip[]
+        this.betsSlip = parse(newValue) as unknown[]
         break
       case 'stake':
         this.stake = parse(newValue) as number
@@ -56,10 +51,7 @@ export class Summary extends CustomHTMLElement {
   }
 
   render() {
-    const betSlipNumber = this.betsSlip.length
-    const potentialGains = getPotentialGains(this.stake, this.betsSlip)
-
-    const newTemplate = createTemplate(betSlipNumber, potentialGains)
+    const newTemplate = createTemplate()
     this.renderComponent(newTemplate)
   }
 }
