@@ -1,13 +1,11 @@
-import './src/components/header/header'
-
 const template = document.createElement('template')
 template.innerHTML = `
-<div class="app">
-    <arl-header></arl-header>
+<div id="header">
+    <h3 class="header__title">Bets - Paris Sportif en ligne</h3>
 </div>
 `
 
-export class App extends HTMLElement {
+export class Header extends HTMLElement {
     constructor() {
         super()
 
@@ -16,4 +14,4 @@ export class App extends HTMLElement {
     }
 }
 
-customElements.define('arl-app', App)
+customElements.define('arl-header', Header)
