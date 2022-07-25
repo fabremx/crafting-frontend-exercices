@@ -1,16 +1,19 @@
+import { GameOdds } from '../../models'
 import { SELECT_BET_CHOICE, UPDATE_BETS_SLIP } from '../../shared'
-import { CustomHTMLElement } from '../../utils'
+import { CustomHTMLElement, stringify } from '../../utils'
 
 import '../betting-item/betting-item'
 
 const template = document.createElement('template')
 
-function createTemplate() {
+function createTemplate(gameOddsList: GameOdds[]) {
   return `
     <div class="betting-list">
         <h3>Liste des paris - Football</h3>
-        <arl-betting-item></arl-betting-item>
-        <arl-betting-item></arl-betting-item>
+        ${gameOddsList
+      .map((gameOdds: GameOdds) => `<arl-betting-item game-odds='${stringify(gameOdds)}'></arl-betting-item>`)
+      .join('')
+    }
     </div>
   `
 }
@@ -29,7 +32,25 @@ export class BettingList extends CustomHTMLElement {
   }
 
   render() {
-    const newTemplate = createTemplate()
+    const dummyGameOddsList: GameOdds[] = [
+      {
+        gameId: 'gameId1',
+        team1: 'team1',
+        team2: 'team2',
+        oddsTeam1: 1,
+        oddsDraw: 2,
+        oddsTeam2: 3,
+      },
+      {
+        gameId: 'gameId2',
+        team1: 'team3',
+        team2: 'team4',
+        oddsTeam1: 4,
+        oddsDraw: 5,
+        oddsTeam2: 6,
+      }
+    ]
+    const newTemplate = createTemplate(dummyGameOddsList)
     this.renderComponent(newTemplate)
   }
 
