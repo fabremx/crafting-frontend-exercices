@@ -1,11 +1,21 @@
-import { render } from '../../utils'
+import { GameOdds } from '../../models'
+import { stringify, render } from '../../utils'
 import { BettingItem } from './betting-item'
 
 let bettingItem: HTMLElement
+const DUMMY_GAME_ODDS: GameOdds = {
+  gameId: 'gameId',
+  team1: 'team1',
+  team2: 'team2',
+  oddsTeam1: 1,
+  oddsDraw: 2,
+  oddsTeam2: 3,
+}
 
 describe('BettingItem Component', () => {
   beforeEach(async () => {
     bettingItem = await render(BettingItem)
+    bettingItem.setAttribute('game-odds', stringify(DUMMY_GAME_ODDS))
   })
 
   it('should render component with unselected odds buttons', () => {
@@ -38,6 +48,6 @@ describe('BettingItem Component', () => {
     firstOddsButton.click()
 
     const expectedBetChoice = (spyDispatchEvent.mock.calls[0][0] as CustomEvent).detail
-    expect(expectedBetChoice).toEqual('dummyData')
+    expect(expectedBetChoice).toEqual({ gameOdds: DUMMY_GAME_ODDS, betChoice: 'TEAM_1_WINS' })
   })
 })

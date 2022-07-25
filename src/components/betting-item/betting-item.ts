@@ -1,14 +1,14 @@
 import css from './betting-item.scss'
 import betIcon from '../../../assets/bet.png'
-import { BetChoice } from '../../models'
+import { BetChoice, GameOdds } from '../../models'
 import {
   DRAW, SELECT_BET_CHOICE, TEAM_1_WINS, TEAM_2_WINS,
 } from '../../shared'
-import { CustomHTMLElement } from '../../utils'
+import { CustomHTMLElement, parse } from '../../utils'
 
 const template = document.createElement('template')
 
-function createTemplate() {
+function createTemplate(gameOdds: GameOdds | undefined) {
   return `
     <style>${css}</style>
 
@@ -16,23 +16,23 @@ function createTemplate() {
         <div class="betting-item__teams">
             <img src="${betIcon}" alt="Sport icon" />
             <p>
-                <span class="betting-item__teams--name">team 1</span> - 
-                <span class="betting-item__teams--name">team 2</span>
+                <span class="betting-item__teams--name">${gameOdds?.team1}</span> - 
+                <span class="betting-item__teams--name">${gameOdds?.team2}</span>
             </p>
         </div>
     
         <div class="betting-item__odds">
             <button>
-                <span class="betting-item__odds--name">team 1</span>
-                <span class="betting-item__odds--number">1.20</span>
+                <span class="betting-item__odds--name">${gameOdds?.team1}</span>
+                <span class="betting-item__odds--number">${gameOdds?.oddsTeam1}</span>
             </button>
             <button>
                 <span class="betting-item__odds--name">Draw</span>
-                <span class="betting-item__odds--number">2.42</span>
+                <span class="betting-item__odds--number">${gameOdds?.oddsDraw}</span>
             </button>
             <button>
-                <span class="betting-item__odds--name">team 2</span>
-                <span class="betting-item__odds--number">1.78</span>
+                <span class="betting-item__odds--name">${gameOdds?.team2}</span>
+                <span class="betting-item__odds--number">${gameOdds?.oddsTeam2}</span>
             </button>
         </div>
     </div>
@@ -40,6 +40,8 @@ function createTemplate() {
 }
 
 export class BettingItem extends CustomHTMLElement {
+  gameOdds: GameOdds | undefined;
+
   constructor() {
     super()
 
@@ -51,8 +53,19 @@ export class BettingItem extends CustomHTMLElement {
     this.render()
   }
 
+  static get observedAttributes() {
+    return ['game-odds']
+  }
+
+  attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
+    if (name !== 'game-odds') { return }
+
+    this.gameOdds = parse(newValue) as GameOdds
+    this.render()
+  }
+
   render() {
-    const newTemplate = createTemplate()
+    const newTemplate = createTemplate(this.gameOdds)
     this.renderComponent(newTemplate)
     this.addEventToButtons()
   }
@@ -78,9 +91,9 @@ export class BettingItem extends CustomHTMLElement {
       : button.classList.remove('selected')))
   }
 
-  handleSelectBet(buttonElement: Element, _betChoice: BetChoice) {
+  handleSelectBet(buttonElement: Element, betChoice: BetChoice) {
     this.selectClickedButton(buttonElement)
-    window.dispatchEvent(new CustomEvent('dummyEventName', { detail: 'dummyData' }));
+    window.dispatchEvent(new CustomEvent(SELECT_BET_CHOICE, { detail: { gameOdds: this.gameOdds, betChoice } }))
   }
 }
 
