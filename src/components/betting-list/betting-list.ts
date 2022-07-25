@@ -1,4 +1,5 @@
 import { GameOdds } from '../../models'
+import { fetchGameOdds } from '../../services'
 import { SELECT_BET_CHOICE, UPDATE_BETS_SLIP } from '../../shared'
 import { CustomHTMLElement, stringify } from '../../utils'
 
@@ -28,29 +29,13 @@ export class BettingList extends CustomHTMLElement {
 
   async connectedCallback() {
     window.addEventListener(SELECT_BET_CHOICE, this.onSelectBetChoice.bind(this))
-    this.render()
+
+    const gameOddsList: GameOdds[] = await fetchGameOdds()
+    this.render(gameOddsList)
   }
 
-  render() {
-    const dummyGameOddsList: GameOdds[] = [
-      {
-        gameId: 'gameId1',
-        team1: 'team1',
-        team2: 'team2',
-        oddsTeam1: 1,
-        oddsDraw: 2,
-        oddsTeam2: 3,
-      },
-      {
-        gameId: 'gameId2',
-        team1: 'team3',
-        team2: 'team4',
-        oddsTeam1: 4,
-        oddsDraw: 5,
-        oddsTeam2: 6,
-      }
-    ]
-    const newTemplate = createTemplate(dummyGameOddsList)
+  render(gameOddsList: GameOdds[]) {
+    const newTemplate = createTemplate(gameOddsList)
     this.renderComponent(newTemplate)
   }
 
