@@ -1,9 +1,11 @@
 import { UPDATE_BETS_SLIP, UPDATE_STAKE } from '../shared'
 import { CustomHTMLElement, stringify } from '../utils'
 
+import '../components/betting-list/betting-list'
+
 const template = document.createElement('template')
 template.innerHTML = `<div class="betting-page">
-    <p>Yeah, it works !!</p>
+    <arl-betting-list></arl-betting-list>
 </div>`
 
 export class BettingPage extends CustomHTMLElement {
