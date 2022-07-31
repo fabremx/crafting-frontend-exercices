@@ -2,7 +2,7 @@ import css from './betting-item.scss'
 import betIcon from '../../../assets/bet.png'
 import { BetChoice } from '../../models'
 import {
-  DRAW, TEAM_1_WINS, TEAM_2_WINS,
+  DRAW, SELECT_BET_CHOICE, TEAM_1_WINS, TEAM_2_WINS,
 } from '../../shared'
 import { CustomHTMLElement } from '../../utils'
 
