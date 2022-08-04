@@ -1,9 +1,10 @@
-import { CustomHTMLElement, parse } from '../../utils'
+import {CustomHTMLElement, parse} from '../../utils'
+import {BetSlip} from '../../models'
 
 const template = document.createElement('template')
 
 function createTemplate() {
-  return `
+    return `
     <div class="summary">
         <h3 class="summary__title">Récapitulatif de vos paris</h3>
         <div class="summary__info">
@@ -15,45 +16,45 @@ function createTemplate() {
 }
 
 export class Summary extends CustomHTMLElement {
-  private betsSlip: unknown[] = []
-  private stake = 0
+    private betsSlip: BetSlip[] = []
+    private stake = 0
 
-  constructor() {
-    super()
+    constructor() {
+        super()
 
-    this.attachShadow({ mode: 'open' })
-      .appendChild(template.content.cloneNode(true))
-  }
-
-  connectedCallback() {
-    this.render()
-  }
-
-  static get observedAttributes() {
-    return ['bets-slip', 'stake']
-  }
-
-  attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
-    switch (name) {
-      case 'bets-slip':
-        this.betsSlip = parse(newValue) as unknown[]
-        break
-      case 'stake':
-        this.stake = parse(newValue) as number
-        break
-      default:
-        break
+        this.attachShadow({mode: 'open'})
+            .appendChild(template.content.cloneNode(true))
     }
 
-    if (this.stake && this.betsSlip.length) {
-      this.render()
+    connectedCallback() {
+        this.render()
     }
-  }
 
-  render() {
-    const newTemplate = createTemplate()
-    this.renderComponent(newTemplate)
-  }
+    static get observedAttributes() {
+        return ['bets-slip', 'stake']
+    }
+
+    attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
+        switch (name) {
+            case 'bets-slip':
+                this.betsSlip = parse(newValue) as BetSlip[]
+                break
+            case 'stake':
+                this.stake = parse(newValue) as number
+                break
+            default:
+                break
+        }
+
+        if (this.stake && this.betsSlip.length) {
+            this.render()
+        }
+    }
+
+    render() {
+        const newTemplate = createTemplate()
+        this.renderComponent(newTemplate)
+    }
 }
 
 customElements.define('arl-summary', Summary)
