@@ -1,5 +1,7 @@
-import { Browser, BrowserContext, chromium, Page } from 'playwright'
+import { Browser, BrowserContext, Page, chromium } from 'playwright'
 import { gamesMockRoute, oddsMockRoute } from '../_mocks_/apiMock'
+
+import { BettingPage } from './Betting-page'
 
 const MOCKED_GAMES_RESPONSE = {
     games: [{
@@ -28,6 +30,7 @@ describe('Betting list', () => {
     let browser: Browser
     let context: BrowserContext
     let page: Page
+    let bettingPage: BettingPage
 
     beforeAll(async () => {
         browser = await chromium.launch({
@@ -40,12 +43,13 @@ describe('Betting list', () => {
     beforeEach(async () => {
         context = await browser.newContext()
         page = await context.newPage()
+        bettingPage = new BettingPage(page)
 
         await gamesMockRoute(page, MOCKED_GAMES_RESPONSE)
         await oddsMockRoute(page, MOCKED_ODDS_RESPONSE)
 
-        await page.goto('http://localhost:3000')
-        await page.waitForSelector('.betting-item', { timeout: 10000 })
+        await bettingPage.goto()
+        await bettingPage.getStarted()
     })
 
     afterAll(async () => {
@@ -53,7 +57,7 @@ describe('Betting list', () => {
     })
 
     it('should render 1 game odds lines when backend retrieves 1 game odds', async () => {
-        const bettingListNumber = await page.locator('.betting-item').count()
+        const bettingListNumber = await bettingPage.getBettingListCount()
         expect(bettingListNumber).toBe(1)
     })
 })

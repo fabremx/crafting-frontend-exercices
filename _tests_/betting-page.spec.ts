@@ -1,5 +1,7 @@
-import { Browser, BrowserContext, chromium, Locator, Page } from 'playwright'
+import { Browser, BrowserContext, Locator, Page, chromium } from 'playwright'
 import { gamesMockRoute, oddsMockRoute } from '../_mocks_/apiMock'
+
+import { BettingPage } from './Betting-page'
 
 const MOCKED_GAMES_RESPONSE = {
     games: [{
@@ -41,16 +43,14 @@ const MOCKED_ODDS_RESPONSE = {
     }]
 }
 
-const BETTING_ITEM_IDENTIFIER = '.betting-item'
 const STAKE_IDENTIFIER = 'arl-stake'
-const STAKE_CONTENT_IDENTIFIER = '.stake'
 const SUMMARY_IDENTIFIER = 'arl-summary'
-const SUMMARY_CONTENT_IDENTIFIER = '.summary'
 
 describe('Betting page', () => {
     let browser: Browser
     let context: BrowserContext
     let page: Page
+    let bettingPage: BettingPage
 
     beforeAll(async () => {
         browser = await chromium.launch({
@@ -63,12 +63,14 @@ describe('Betting page', () => {
     beforeEach(async () => {
         context = await browser.newContext()
         page = await context.newPage()
+        bettingPage = new BettingPage(page)
 
         await gamesMockRoute(page, MOCKED_GAMES_RESPONSE)
         await oddsMockRoute(page, MOCKED_ODDS_RESPONSE)
 
-        await page.goto('http://localhost:3000')
-        await page.waitForSelector('.betting-item', { timeout: 10000 })
+        await bettingPage.goto()
+        await bettingPage.getStarted()
+        
     })
 
     afterAll(async () => {
@@ -76,9 +78,9 @@ describe('Betting page', () => {
     })
 
     it('should render only the betting list when user loads page', async () => {
-        const isBettingListDisplayed = await isBlockDisplayed(page, 'arl-betting-list')
-        const isStakeDisplayed = await isBlockDisplayed(page, 'arl-stake')
-        const isSummaryDisplayed = await isBlockDisplayed(page, 'arl-summary')
+        const isBettingListDisplayed = await bettingPage.isBlockDisplayed('arl-betting-list')
+        const isStakeDisplayed = await bettingPage.isBlockDisplayed('arl-stake')
+        const isSummaryDisplayed = await bettingPage.isBlockDisplayed('arl-summary')
 
         expect(isBettingListDisplayed).toBeTruthy()
         expect(isStakeDisplayed).toBeFalsy()
@@ -86,71 +88,58 @@ describe('Betting page', () => {
     })
 
     it('should render stake when user selects at least one bet slip', async () => {
-        const button = await getBettingItemButton(page, { line: 1, button: 1 })
+        const button = await bettingPage.getBettingItemButton({ line: 1, button: 1 })
         await button.click()
 
-        const isStartingBetDisplayed = await isBlockDisplayed(page, STAKE_IDENTIFIER)
+        const isStartingBetDisplayed = await bettingPage.isBlockDisplayed(STAKE_IDENTIFIER)
         expect(isStartingBetDisplayed).toBeTruthy()
     })
 
     it('should render summary when user selects at least one bet slip AND enter a valid stake', async () => {
-        const button = await getBettingItemButton(page, { line: 1, button: 1 })
+        const button = await bettingPage.getBettingItemButton({ line: 1, button: 1 })
         await button.click()
 
-        const input = await getStakeInput(page)
+        const input = await bettingPage.getStakeInput()
         await input?.type('100')
 
-        const isSummaryDisplayed = await isBlockDisplayed(page, SUMMARY_IDENTIFIER)
+        const isSummaryDisplayed = await bettingPage.isBlockDisplayed(SUMMARY_IDENTIFIER)
         expect(isSummaryDisplayed).toBeTruthy()
     })
 
     it('should NOT render summary when user selects at least one bet slip AND enter a NOT valid stake', async () => {
-        const button = await getBettingItemButton(page, { line: 1, button: 1 })
+        const button = await bettingPage.getBettingItemButton({ line: 1, button: 1 })
         await button?.click()
 
-        const input = await getStakeInput(page)
+        const input = await bettingPage.getStakeInput()
         await input?.type('dioretgnb')
 
-        const isSummaryDisplayed = await isBlockDisplayed(page, SUMMARY_IDENTIFIER)
+        const isSummaryDisplayed = await bettingPage.isBlockDisplayed(SUMMARY_IDENTIFIER)
         expect(isSummaryDisplayed).toBe(false)
     })
 
     it('should hide summary when user delete his existing stake', async () => {
-        const button = await getBettingItemButton(page, { line: 1, button: 1 })
+        const button = await bettingPage.getBettingItemButton({ line: 1, button: 1 })
         await button?.click()
 
-        const input = await getStakeInput(page)
+        const input = await bettingPage.getStakeInput()
         await input?.type('1')
         await input?.press('Backspace')
 
-        const isSummaryDisplayed = await isBlockDisplayed(page, SUMMARY_IDENTIFIER)
+        const isSummaryDisplayed = await bettingPage.isBlockDisplayed(SUMMARY_IDENTIFIER)
         expect(isSummaryDisplayed).toBe(false)
     })
 
     it('should render correct bets information when user select 2 bets slip (odds 1.24 and 2.50) with 100 € as stake', async () => {
-        const firstLineButton = await getBettingItemButton(page, { line: 1, button: 1 })
-        const SecondLineButton = await getBettingItemButton(page, { line: 2, button: 1 })
+        const firstLineButton = await bettingPage.getBettingItemButton({ line: 1, button: 1 })
+        const SecondLineButton = await bettingPage.getBettingItemButton({ line: 2, button: 1 })
         await firstLineButton?.click()
         await SecondLineButton?.click()
 
-        const input = await getStakeInput(page)
+        const input = await bettingPage.getStakeInput()
         await input?.type('100')
 
-        const summaryContent = await page.locator(SUMMARY_CONTENT_IDENTIFIER).textContent()
+        const summaryContent = await bettingPage.getSummaryContent()
         expect(summaryContent).toContain('Nombre de paris joués: 2')
         expect(summaryContent).toContain('Potentiel gain: 252 €')
     })
 })
-
-async function isBlockDisplayed(page: Page, blockIdentifier: string): Promise<boolean> {
-    return await page.locator(blockIdentifier).getAttribute('hidden') === null
-}
-
-async function getBettingItemButton(page: Page, { line, button }: { line: number; button: number }): Promise<Locator> {
-    const gameOdds = await page.locator(BETTING_ITEM_IDENTIFIER).nth(line - 1)
-    return await gameOdds.locator('button').nth(button - 1)
-}
-
-async function getStakeInput(page: Page): Promise<Locator> {
-    return await page.locator(`${STAKE_CONTENT_IDENTIFIER} input`)
-}
