@@ -1,7 +1,8 @@
-import css from './app.scss'
 import './src/components/header/header'
 import './src/components/footer/footer'
 import './src/pages/betting-page'
+
+import css from './app.scss'
 
 const template = document.createElement('template')
 template.innerHTML = `
