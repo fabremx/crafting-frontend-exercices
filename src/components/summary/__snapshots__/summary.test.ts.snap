@@ -2,6 +2,8 @@
 
 exports[`Bets-Summary Component should render correctly summary when user made bets slip with 100€ stake 1`] = `
 "
+    <style>[object Object]</style>
+
     <div class=\\"summary\\">
         <h3 class=\\"summary__title\\">Récapitulatif de vos paris</h3>
         <div class=\\"summary__info\\">

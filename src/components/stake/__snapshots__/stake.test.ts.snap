@@ -2,6 +2,8 @@
 
 exports[`Stake Component should render correctly the component 1`] = `
 "
+<style>[object Object]</style>
+
 <div class=\\"stake\\">
     <h3 class=\\"stake__title\\">Votre Mise</h3>
     <div class=\\"stake__input\\">

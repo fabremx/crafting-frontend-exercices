@@ -1,4 +1,4 @@
-import { Browser, BrowserContext, Locator, Page, chromium } from 'playwright'
+import { Browser, BrowserContext, Page, chromium } from 'playwright'
 import { gamesMockRoute, oddsMockRoute } from '../_mocks_/apiMock'
 
 import { BettingPage } from './Betting-page'
@@ -70,7 +70,7 @@ describe('Betting page', () => {
 
         await bettingPage.goto()
         await bettingPage.getStarted()
-        
+
     })
 
     afterAll(async () => {

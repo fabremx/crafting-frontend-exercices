@@ -5,17 +5,17 @@ exports[`should return footer when user is NOT connected 1`] = `
   id="footer"
 >
   
-        
+            
   <h3>
     Besoin d'aide ?
   </h3>
   
-        
+            
   <p>
     Contact | Plan | Connexion
   </p>
   
-    
+        
 </div>
 `;
 
@@ -24,16 +24,16 @@ exports[`should return footer when user is connected 1`] = `
   id="footer"
 >
   
-        
+            
   <h3>
     Besoin d'aide ?
   </h3>
   
-        
+            
   <p>
     Contact | Plan | Deconnexion
   </p>
   
-    
+        
 </div>
 `;
