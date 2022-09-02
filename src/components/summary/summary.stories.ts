@@ -3,11 +3,22 @@ import './summary'
 
 export default {
     title: 'Components/Summary',
+    argTypes: {
+        stake: {
+            control: 'number',
+            defaultValue: 100,
+        },
+        betsSlip: {
+            control: 'array',
+            defaultValue: [
+                {
+                    'gameId': 'gameId',
+                    'selectedChoice': 'TEAM_1_WINS',
+                    'selectedOdds': 2.98
+                }
+            ],
+        }
+    }
 }
 
-const mockedBetsSlip = [{
-    gameId: 'gameId',
-    selectedChoice: TEAM_1_WINS,
-    selectedOdds: 2.31
-}]
-export const Default = () => `<arl-summary stake="100" bets-slip='${JSON.stringify(mockedBetsSlip)}'></arl-summary>`
+export const Default = (argTypes: any) => `<arl-summary stake="${argTypes.stake}" bets-slip='${JSON.stringify(argTypes.betsSlip)}'></arl-summary>`
