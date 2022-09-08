@@ -1,5 +1,5 @@
-import { Browser, BrowserContext, Page, chromium } from 'playwright'
-import { gamesMockRoute, oddsMockRoute } from '../_mocks_/apiMock'
+import { Browser, BrowserContext, chromium, Page } from 'playwright'
+import { gamesMockRoute, oddsMockRoute } from '../../_mocks_/apiMock'
 
 import { BettingPage } from './Betting-page'
 

@@ -1,6 +1,6 @@
-import { BetChoice, BetSlip, GameOdds } from '../models'
+import { BetChoice, BetSlip, GameOdds } from '../../models'
 
-export function updateSelectedBets(betsSlip: BetSlip[], gameOdds: GameOdds, betChoice: BetChoice): BetSlip[] {
+export function updateBetsSlip(betsSlip: BetSlip[], gameOdds: GameOdds, betChoice: BetChoice): BetSlip[] {
     const newBetsSlip = betsSlip.map((betSlip: BetSlip) => ({ ...betSlip }))
 
     const existingBetSlipIndex = betsSlip.findIndex((betSlip: BetSlip) => betSlip.gameId === gameOdds.gameId)

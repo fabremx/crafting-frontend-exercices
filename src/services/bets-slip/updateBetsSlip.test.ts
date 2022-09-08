@@ -1,6 +1,6 @@
-import { BetSlip, GameOdds } from '../models'
-import { TEAM_1_WINS, TEAM_2_WINS } from '../shared'
-import { updateSelectedBets } from './updateSelectedBets'
+import { BetSlip, GameOdds } from '../../models'
+import { TEAM_1_WINS, TEAM_2_WINS } from '../../shared'
+import { updateBetsSlip } from './updateBetsSlip'
 
 const GAME_ODDS_1: GameOdds = {
     gameId: '1',
@@ -25,11 +25,11 @@ const CURRENT_BETS_SLIP: BetSlip[] = [{
     selectedOdds: 2.18,
 }]
 
-describe('updateSelectedBets', () => {
+describe('updateBetsSlip', () => {
     it('should add a new bet slip when user choose a unexisting bet slip', () => {
         const gameOdds: GameOdds = GAME_ODDS_2
 
-        const betsSlip: BetSlip[] = updateSelectedBets(CURRENT_BETS_SLIP, gameOdds, TEAM_2_WINS)
+        const betsSlip: BetSlip[] = updateBetsSlip(CURRENT_BETS_SLIP, gameOdds, TEAM_2_WINS)
 
         expect(betsSlip).toEqual([
             {
@@ -48,7 +48,7 @@ describe('updateSelectedBets', () => {
     it('should update a bet choice (of a bet slip) when user select a new choice on existing bet slip', () => {
         const gameOdds: GameOdds = GAME_ODDS_1
 
-        const betsSlip: BetSlip[] = updateSelectedBets(CURRENT_BETS_SLIP, gameOdds, TEAM_2_WINS)
+        const betsSlip: BetSlip[] = updateBetsSlip(CURRENT_BETS_SLIP, gameOdds, TEAM_2_WINS)
 
         expect(betsSlip).toEqual([{
             gameId: '1',
