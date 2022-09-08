@@ -40,7 +40,7 @@ describe('BettingItem Component', () => {
     expect(buttons[1].classList.contains('selected')).toBeTruthy()
   })
 
-  it('should emit "data" when user clicks on the odds button', () => {
+  it('should emit a valid bet slip when user clicks on the odds button', () => {
     const spyDispatchEvent = jest.spyOn(window, 'dispatchEvent')
 
     const firstOddsButton = bettingItem.shadowRoot?.querySelector('.betting-item__odds button:first-child') as HTMLElement
