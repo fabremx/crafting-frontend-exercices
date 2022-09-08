@@ -1,4 +1,5 @@
-import { TEAM_1_WINS } from '../../shared'
+import { BetSlip, StorybookControls } from '../../models'
+import { Stake } from '../stake/stake'
 import './summary'
 
 export default {
@@ -21,4 +22,9 @@ export default {
     }
 }
 
-export const Default = (argTypes: any) => `<arl-summary stake="${argTypes.stake}" bets-slip='${JSON.stringify(argTypes.betsSlip)}'></arl-summary>`
+type ArgTypes = {
+    stake: StorybookControls<Stake>,
+    betsSlip: StorybookControls<BetSlip[]>,
+}
+
+export const Default = (argTypes: ArgTypes) => `<arl-summary stake="${argTypes.stake}" bets-slip='${JSON.stringify(argTypes.betsSlip)}'></arl-summary>`

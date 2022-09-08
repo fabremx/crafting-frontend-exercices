@@ -1,3 +1,4 @@
+import { StorybookControls } from '../../models'
 import './footer'
 
 export default {
@@ -9,6 +10,8 @@ export default {
     }
 }
 
-const Template = (argTypes: any) => `<arl-footer is-user-connected="${argTypes.isUserConnected}"></arl-footer>`
-export const Default = Template.bind({})
+type ArgTypes = {
+    isUserConnected: StorybookControls,
+}
 
+export const Default = (argTypes: ArgTypes) => `<arl-footer is-user-connected="${argTypes.isUserConnected}"></arl-footer>`

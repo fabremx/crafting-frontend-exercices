@@ -66,8 +66,8 @@ customElements.define('arl-my-component', MyComponent);
 
 *Next steps*
 
-- Import your component in `App.ts` with `import 'myPath/myFile'`
-- Call your tag `<arl-my-component></arl-my-component>` in the template of your `App.ts`
+- Import your component in `App.ts` or `Betting-page.ts` with `import 'myPath/myFile'`
+- Call your tag `<arl-my-component></arl-my-component>` in the template
 
 #### 1.2 How to set a web component attribute ?<a id='12'></a>
 
@@ -120,7 +120,7 @@ const myComponent: HTMLElement = render(MyComponent)
 #### 2.2 How to access to the DOM of my web component ?<a id='22'></a>
 
 ```js
-// myComponent is a HTMLElement you can access to the DOM with classical js methods
+// myComponent is a HTMLElement you can access to the DOM with classical js **methods**
 myComponent.shadowRoot.querySelector(...)
 ```
 
@@ -134,7 +134,7 @@ expect(...).toMatchSnapshot();
 
 ```ts
 const spyDispatchEvent = jest.spyOn(window, 'dispatchEvent');
-const expectedParameters = (spyDispatchEvent.mock.calls[0][0] as CustomEvent).detail /* First [0] represent the number of calls we're watching, the second [0] represent the number of parameters sent */
+const expectedParameters = (spyDispatchEvent.mock.calls[nthCall][nthParameter] as CustomEvent).detail /* nthCall: represent the nth call that we want to watch, nthParameter represent the nth parameter sent that we want to watch */
 expect(expectedBetChoice).toEqual({ ... })
 ```
 
@@ -148,14 +148,13 @@ jest.mock('../../services', () => ({
 }))
 ```
 
-#### 2.6 How to set attributes to a web component ?<a id='26'></a>
+#### 2.6 How to set attribute to a web component ?<a id='26'></a>
 
 ```ts
 const objectToPass = { key: 'value' }
 const myComponent: HTMLElement = render(MyComponent)
 
-/* 'stringify()' is a method from utils/webComponents.ts file */
-myComponent.setAttribute('my-prop-key', stringify(objectToPass))
+myComponent.setAttribute('my-prop-key', JSON.stringify(objectToPass))
 ```
 
 ___
@@ -271,15 +270,23 @@ attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
 #### 3.4 Storybook Example<a id='34'></a>
 
 ```ts
+import { StorybookControls } from '../../models'
 import './footer'
 
 export default {
     title: 'Components/Footer',
+    argTypes: {
+        isUserConnected: {
+            control: 'boolean',
+        },
+    }
 }
 
-export const Default = () => '<arl-footer></arl-footer>'
-export const FooterWithConnectedUser = () => '<arl-footer is-user-connected="true"></arl-footer>'
-export const FooterWithDisconnectedUser = () => '<arl-footer is-user-connected="false"></arl-footer>'
+type ArgTypes = {
+    isUserConnected: StorybookControls,
+}
+
+export const Default = (argTypes: ArgTypes) => `<arl-footer is-user-connected="${argTypes.isUserConnected}"></arl-footer>`
 ```
 
 #### 3.5 Playwrigth cheat sheet<a id='35'></a>
@@ -306,7 +313,7 @@ ___
 
 ### 4.1 Create a Footer - Exercice n°2<a id='41'></a>
 
-Update template in fucntion of recieved attribute.
+Update template depending on the recieved attributes.
 
 ```ts
 class Footer extends CustomHTMLElement {
@@ -337,7 +344,7 @@ class Footer extends CustomHTMLElement {
 
 ### 4.2 Testing Betting-list - Exercice n°4<a id='42'></a>
 
-Display a list of game odds with calling component `Betting Item`.
+Display a list of game odds using component `Betting Item`.
 
 ```ts
 function createTemplate(gameOddsList: GameOdds[]) {
