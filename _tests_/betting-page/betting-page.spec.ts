@@ -1,5 +1,5 @@
-import { Browser, BrowserContext, Page, chromium } from 'playwright'
-import { gamesMockRoute, oddsMockRoute } from '../_mocks_/apiMock'
+import { Browser, BrowserContext, chromium, Page } from 'playwright'
+import { gamesMockRoute, oddsMockRoute } from '../../_mocks_/apiMock'
 
 import { BettingPage } from './Betting-page'
 
@@ -91,8 +91,8 @@ describe('Betting page', () => {
         const button = await bettingPage.getBettingItemButton({ line: 1, button: 1 })
         await button.click()
 
-        const isStartingBetDisplayed = await bettingPage.isBlockDisplayed(STAKE_IDENTIFIER)
-        expect(isStartingBetDisplayed).toBeTruthy()
+        const isStakeDisplayed = await bettingPage.isBlockDisplayed(STAKE_IDENTIFIER)
+        expect(isStakeDisplayed).toBeTruthy()
     })
 
     it('should render summary when user selects at least one bet slip AND enter a valid stake', async () => {

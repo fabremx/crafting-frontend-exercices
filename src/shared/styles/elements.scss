@@ -16,20 +16,6 @@
     }
 }
 
-%action-button {
-    width: 130px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    background: $bg-red;
-    color: $bg-white;
-
-    &:hover {
-        background: $bg-dark-red;
-        cursor: pointer;
-    }
-}
-
 %input-text {
     height: 20px;
     border-radius: 4px;

@@ -11,7 +11,7 @@ template.innerHTML = `
 <div class="app">
     <arl-header></arl-header>
     <arl-betting-page></arl-betting-page>
-    <arl-footer is-user-connected="true"></arl-footer>
+    <arl-footer is-user-connected=true></arl-footer>
 </div>
 `
 

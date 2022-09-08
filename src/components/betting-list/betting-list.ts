@@ -1,7 +1,6 @@
 import css from './betting-list.scss'
-import { updateSelectedBets } from '../../business/updateSelectedBets'
 import { BetChoice, BetSlip, GameOdds } from '../../models'
-import { fetchGameOdds } from '../../services/fetchGameOdds'
+import { fetchGameOdds, updateBetsSlip } from '../../services'
 import { SELECT_BET_CHOICE, UPDATE_BETS_SLIP } from '../../shared'
 import { CustomHTMLElement } from '../../utils'
 
@@ -51,7 +50,7 @@ export class BettingList extends CustomHTMLElement {
   }
 
   selectBetSlip(gameOdds: GameOdds, betChoice: BetChoice) {
-    this.betsSlip = updateSelectedBets(this.betsSlip, gameOdds, betChoice)
+    this.betsSlip = updateBetsSlip(this.betsSlip, gameOdds, betChoice)
     window.dispatchEvent(new CustomEvent(UPDATE_BETS_SLIP, { detail: { betsSlip: this.betsSlip } }))
   }
 }

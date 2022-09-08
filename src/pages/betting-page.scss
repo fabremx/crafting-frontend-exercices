@@ -8,8 +8,4 @@
 .betting-page__validation {
     @extend %main-wrapper;
     text-align: right;
-
-    button {
-        @extend %action-button
-    }
 }

@@ -15,10 +15,6 @@ template.innerHTML = `
     <arl-betting-list></arl-betting-list>
     <arl-stake hidden data-test="test"></arl-stake>
     <arl-summary hidden></arl-summary>
-
-    <div class="betting-page__validation">
-        <button hidden>Valider le(s) paris</button>
-    <div>
 </div>
 `
 
