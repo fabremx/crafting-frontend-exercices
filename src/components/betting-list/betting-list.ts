@@ -1,23 +1,40 @@
-import css from './betting-list.scss'
+import { mapResponseToGameOdds } from '../../mappers/mapResponseGameOdds'
 import { BetChoice, BetSlip, GameOdds } from '../../models'
-import { fetchGameOdds, updateBetsSlip } from '../../services'
+import { GameApiResponse, OddsApiResponse } from '../../models/api'
+import { updateBetsSlip } from '../../services'
 import { SELECT_BET_CHOICE, UPDATE_BETS_SLIP } from '../../shared'
-import { CustomHTMLElement } from '../../utils'
+import { CustomHTMLElement, mockFetch } from '../../utils'
 
 import '../betting-item/betting-item'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const stubGameOddsList: GameOdds[] = [
+  {
+    gameId: 'gameId1',
+    team1: 'team1',
+    team2: 'team2',
+    oddsTeam1: 1,
+    oddsDraw: 2,
+    oddsTeam2: 3,
+  },
+  {
+    gameId: 'gameId2',
+    team1: 'team3',
+    team2: 'team4',
+    oddsTeam1: 4,
+    oddsDraw: 5,
+    oddsTeam2: 6,
+  }
+]
+
 const template = document.createElement('template')
 
-function createTemplate(gameOddsList: GameOdds[]) {
+function createTemplate() {
   return `
-    <style>${css}</style>
-
     <div class="betting-list">
-        <h3>Liste des paris - Football</h3>
-        ${gameOddsList
-      .map((gameOdds: GameOdds) => `<arl-betting-item game-odds='${JSON.stringify(gameOdds)}'></arl-betting-item>`)
-      .join('')
-    }
+      <h3>Liste des paris - Football</h3>
+      <arl-betting-item></arl-betting-item>
+      <arl-betting-item></arl-betting-item>
     </div>
   `
 }
@@ -34,13 +51,11 @@ export class BettingList extends CustomHTMLElement {
 
   async connectedCallback() {
     window.addEventListener(SELECT_BET_CHOICE, this.onSelectBetChoice.bind(this))
-
-    const gameOddsList: GameOdds[] = await fetchGameOdds()
-    this.render(gameOddsList)
+    this.render()
   }
 
-  render(gameOddsList: GameOdds[]) {
-    const newTemplate = createTemplate(gameOddsList)
+  render() {
+    const newTemplate = createTemplate()
     this.renderComponent(newTemplate)
   }
 
@@ -56,3 +71,11 @@ export class BettingList extends CustomHTMLElement {
 }
 
 customElements.define('arl-betting-list', BettingList)
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function fetchGameOdds(): Promise<GameOdds[]> {
+  const gameList = await mockFetch('games') as GameApiResponse[]
+  const oddsList = await mockFetch('odds') as OddsApiResponse[]
+
+  return mapResponseToGameOdds(gameList, oddsList)
+}
