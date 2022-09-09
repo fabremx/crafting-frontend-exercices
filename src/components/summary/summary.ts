@@ -1,15 +1,16 @@
+import { getPotentialGains } from '../../business'
 import { BetSlip } from '../../models'
 import { CustomHTMLElement, parse } from '../../utils'
 
 const template = document.createElement('template')
 
-function createTemplate() {
+function createTemplate(betSlipNumber: number, potentialGains: number) {
   return `
     <div class="summary">
       <h3 class="summary__title">Récapitulatif de vos paris</h3>
       <div class="summary__info">
-        <p class="summary__info--bets-slip">Nombre de paris joués: </p>
-        <p class="summary__info--potential-gains">Potentiel gain: €</p>
+        <p class="summary__info--bets-slip">Nombre de paris joués: ${betSlipNumber}</p>
+        <p class="summary__info--potential-gains">Potentiel gain: ${potentialGains} €</p>
       </div>
     </div>
     `
@@ -52,7 +53,10 @@ export class Summary extends CustomHTMLElement {
   }
 
   render() {
-    const newTemplate = createTemplate()
+    const betSlipNumber = this.betsSlip.length
+    const potentialGains = getPotentialGains(this.stake, this.betsSlip)
+
+    const newTemplate = createTemplate(betSlipNumber, potentialGains)
     this.renderComponent(newTemplate)
   }
 }
