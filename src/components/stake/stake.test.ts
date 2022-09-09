@@ -12,10 +12,6 @@ describe('Stake Component', () => {
         dispatchEvent = dispatchMockedEventWith(stake)
     })
 
-    it('should render correctly the component', () => {
-        expect(stake?.shadowRoot?.innerHTML).toMatchSnapshot()
-    })
-
     it('should emit new stake event when user choose a stake', () => {
         // Given
         const userInput = '2'
