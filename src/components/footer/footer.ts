@@ -1,12 +1,9 @@
-import css from './footer.scss'
 import { CustomHTMLElement } from '../../utils'
 
 const template = document.createElement('template')
 
 function createTemplate(text: string): string {
     return `
-        <style>${css}</style>
-        
         <div id="footer">
             <h3>Besoin d'aide ?</h3>
             <p>${text}</p>
