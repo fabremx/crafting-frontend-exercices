@@ -6,24 +6,25 @@ ___
 
 1. [Creating Web Component](#1)\
 1.1  [How to create a web component ?](#11)\
-1.2  [How to set a web component attribute ?](#12)\
-1.3  [How to create a custom event and dispatch it ?](#13)
-1.4  [How to listen and handle an event ?](#14)
+1.2  [How to import component in file ?](#12)\
+1.3  [How to set a web component attribute ?](#13)\
+1.4  [How to create a custom event and dispatch it ?](#14)
+1.5  [How to listen and handle an event ?](#15)
 
 1. [Testing Web component](#2)\
 2.1  [How to load my web component ?](#21)\
 2.2  [How to access to the DOM of my web component ?](#22)\
-2.3  [How to do snapshot test with Jest ?](#23)\
-2.4  [How to create a custom event and dispatch it ?](#24)\
-2.5  [How to create a stub of a function ?](#25)\
-2.6  [How to set attributes to a web component ?](#26)
+2.3  [How to create a story with controls](#23)\
+2.4  [How to do snapshot test with Jest ?](#24)\
+2.5  [How to create a custom event and dispatch it ?](#25)\
+2.6  [How to create a stub of a function ?](#26)\
+2.7  [How to set attributes to a web component ?](#27)
 
 1. [Utilities & Cheat sheet](#3)\
 3.1  [DOM selectors cheat sheet](#31)\
 3.2  [Jest cheat sheet](#32)\
 3.3  [Functions](#33)\
-3.4  [Storybook Example](#34)\
-3.5  [Playwrigth cheat sheet](#35)
+3.4  [Playwrigth cheat sheet](#34)
 
 1. [Exercices Helpers](#4)\
 4.1  [Create a Footer - Exercice n°2](#41)\
@@ -36,6 +37,8 @@ ___
 #### 1.1 How to create a web component ?<a id='11'></a>
 
 ```js
+import { CustomHTMLElement } from '../../utils'
+
 /* Create template */
 const template = document.createElement('template');
 function createTemplate(name: string): string {
@@ -43,9 +46,9 @@ function createTemplate(name: string): string {
         <div>Hello ${name} !</div>
     `
 }
-class MyComponent extends CustomHTMLElement {
+export class MyComponent extends CustomHTMLElement {
      constructor() {
-        super();
+        super()
 
         /* Attach template to shadow DOM */
         this.attachShadow({ mode: 'open' })
@@ -64,12 +67,17 @@ class MyComponent extends CustomHTMLElement {
 customElements.define('arl-my-component', MyComponent);
 ```
 
-*Next steps*
+You can call now your component with the tag `<arl-my-component></arl-my-component>`
 
-- Import your component in `App.ts` or `Betting-page.ts` with `import 'myPath/myFile'`
-- Call your tag `<arl-my-component></arl-my-component>` in the template
+#### 1.2 How to import component in file ?<a id='12'></a>
 
-#### 1.2 How to set a web component attribute ?<a id='12'></a>
+In order to import a component "Header" in `App.ts` for example use
+
+```ts
+import './src/components/header/header'
+```
+
+#### 1.3 How to set a web component attribute ?<a id='13'></a>
 
 ```HTML
 <!-- /!\ attributes must be in lowercase --> 
@@ -90,7 +98,7 @@ class MyComponent extends CustomHTMLElement {
 }
 ```
 
-#### 1.3 How to create a custom event and dispatch it ?<a id='13'></a>
+#### 1.4 How to create a custom event and dispatch it ?<a id='14'></a>
 
 ```ts
 const objectToPass = { key: 'value' }
@@ -99,7 +107,7 @@ const event = new CustomEvent('eventName', { detail: objectToPass }) /* 'detail'
 window.dispatchEvent(event)
 ```
 
-#### 1.4 How to listen and handle an event ?<a id='14'></a>
+#### 1.5 How to listen and handle an event ?<a id='15'></a>
 
 ```ts
 window.addEventListener('eventName', callback())
@@ -124,13 +132,36 @@ const myComponent: HTMLElement = render(MyComponent)
 myComponent.shadowRoot.querySelector(...)
 ```
 
-#### 2.3 How to do snapshot test with Jest ?<a id='23'></a>
+#### 2.3 How to create a story with controls ?<a id="23"></a>
+
+```ts
+import { StorybookControls } from '../../models'
+import './footer'
+
+export default {
+    title: 'Components/Footer',
+    argTypes: {
+        isUserConnected: {
+            control: 'boolean',
+            defaultValue: false
+        },
+    }
+}
+
+type ArgTypes = {
+    isUserConnected: StorybookControls,
+}
+
+export const Default = (argTypes: ArgTypes) => `<arl-footer is-user-connected="${argTypes.isUserConnected}"></arl-footer>`
+```
+
+#### 2.4 How to do snapshot test with Jest ?<a id='24'></a>
 
 ```js
 expect(...).toMatchSnapshot();
 ```
 
-#### 2.4 How to spy parameters sent (dispatchEvent) ?<a id='24'></a>
+#### 2.5 How to spy parameters sent (dispatchEvent) ?<a id='25'></a>
 
 ```ts
 const spyDispatchEvent = jest.spyOn(window, 'dispatchEvent');
@@ -138,7 +169,7 @@ const expectedParameters = (spyDispatchEvent.mock.calls[nthCall][nthParameter] a
 expect(expectedBetChoice).toEqual({ ... })
 ```
 
-#### 2.5 How to create a stub of a function ?<a id='25'></a>
+#### 2.6 How to create a stub of a function ?<a id='26'></a>
 
 ```ts
 const stub = { key: 'value' }
@@ -148,7 +179,7 @@ jest.mock('../../services', () => ({
 }))
 ```
 
-#### 2.6 How to set attribute to a web component ?<a id='26'></a>
+#### 2.7 How to set attribute to a web component ?<a id='27'></a>
 
 ```ts
 const objectToPass = { key: 'value' }
@@ -267,29 +298,7 @@ attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
 }
 ```
 
-#### 3.4 Storybook Example<a id='34'></a>
-
-```ts
-import { StorybookControls } from '../../models'
-import './footer'
-
-export default {
-    title: 'Components/Footer',
-    argTypes: {
-        isUserConnected: {
-            control: 'boolean',
-        },
-    }
-}
-
-type ArgTypes = {
-    isUserConnected: StorybookControls,
-}
-
-export const Default = (argTypes: ArgTypes) => `<arl-footer is-user-connected="${argTypes.isUserConnected}"></arl-footer>`
-```
-
-#### 3.5 Playwrigth cheat sheet<a id='35'></a>
+#### 3.4 Playwrigth cheat sheet<a id='34'></a>
 
 ```ts
 const browser: Browser = await chromium.launch({
@@ -316,8 +325,23 @@ ___
 Update template depending on the recieved attributes.
 
 ```ts
-class Footer extends CustomHTMLElement {
-    ...
+import { CustomHTMLElement } from '../../utils'
+
+function createTemplate(text: string): string {
+    return `
+        <footer>
+            <h3>Besoin d'aide ?</h3>
+            <p>${text}</p>
+        </footer>
+    `
+}
+
+export class Footer extends CustomHTMLElement {
+    constructor() {
+        ...
+        this.render()
+    }
+
 
     static get observedAttributes() {
         return ['is-user-connected']
@@ -352,7 +376,7 @@ function createTemplate(gameOddsList: GameOdds[]) {
     <div class="betting-list">
         <h3>Liste des paris - Football</h3>
         ${gameOddsList
-      .map((gameOdds: GameOdds) => `<arl-betting-item game-odds='${stringify(gameOdds)}'></arl-betting-item>`)
+      .map((gameOdds: GameOdds) => `<arl-betting-item game-odds='${JSON.stringify(gameOdds)}'></arl-betting-item>`)
       .join('')
     }
     </div>
