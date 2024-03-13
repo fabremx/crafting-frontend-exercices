@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+
+<head>
+    <title>Web Components</title>
+    <script>
+        const template = document.createElement('template');
+        template.innerHTML = `
+        <style>
+            p { 
+                color: #16A748;
+            }
+        </style>
+
+        <div id="element">
+            <p>Hello</p>
+        </div>
+        `;
+
+        class CustomElementImperative extends HTMLElement {
+            constructor() {
+                super();
+
+                this.attachShadow({ mode: 'open' })
+                    .appendChild(template.content.cloneNode(true));
+            }
+
+            connectedCallback() {
+                window.addEventListener('ON_LOAD', (event) => {
+                    this.shadowRoot.querySelector('#element p').append(` ${event.detail.firstname} ${event.detail.lastname}`)
+                })
+            }
+        }
+
+        customElements.define('custom-element-imperative', CustomElementImperative);
+    </script>
+
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:xd_Signature msdt:dt="string"></mso:xd_Signature>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor msdt:dt="string">Mathilde Salthun-Lassalle</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor>
+<mso:Order msdt:dt="string">7900.00000000000</mso:Order>
+<mso:xd_ProgID msdt:dt="string"></mso:xd_ProgID>
+<mso:_ExtendedDescription msdt:dt="string"></mso:_ExtendedDescription>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author msdt:dt="string">Mathilde Salthun-Lassalle</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author>
+<mso:ComplianceAssetId msdt:dt="string"></mso:ComplianceAssetId>
+<mso:TemplateUrl msdt:dt="string"></mso:TemplateUrl>
+<mso:ContentTypeId msdt:dt="string">0x010100C537F758ED0D71428D72E7CD5A1FB997</mso:ContentTypeId>
+<mso:TriggerFlowInfo msdt:dt="string"></mso:TriggerFlowInfo>
+<mso:_SourceUrl msdt:dt="string"></mso:_SourceUrl>
+<mso:_SharedFileIndex msdt:dt="string"></mso:_SharedFileIndex>
+<mso:TaxCatchAll msdt:dt="string"></mso:TaxCatchAll>
+<mso:MediaServiceImageTags msdt:dt="string"></mso:MediaServiceImageTags>
+<mso:lcf76f155ced4ddcb4097134ff3c332f msdt:dt="string"></mso:lcf76f155ced4ddcb4097134ff3c332f>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+
+<body>
+    <custom-element-imperative></custom-element-imperative>
+
+    <script>
+        window.dispatchEvent(new CustomEvent('ON_LOAD', { detail: { firstname: 'Toto', lastname: 'Tata' } }))
+    </script>
+</body>
+
+</html>
